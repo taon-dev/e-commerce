@@ -1,5 +1,6 @@
 {
   "type": "isomorphic-lib",
+  "overrideNpmName": "@taon-dev/e-commerce",
   "packageJsonOverride": {
     "author": "Dfilipiak",
     "description": "Description for e-commerce. Hello world!",

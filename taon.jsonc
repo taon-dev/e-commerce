@@ -15,6 +15,9 @@
   ],
   "shouldGenerateTranslationFiles": true,
   "shouldGenerateAutogenAppRoutesFile": true,
+  "isomorphicDependenciesForNpmLib": [
+    "@taon-dev/session"
+  ],
   "autoReleaseConfigAllowedItems": [
     {
       "artifactName": "npm-lib-and-cli-tool",

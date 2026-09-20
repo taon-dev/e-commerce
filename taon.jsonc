@@ -4,7 +4,7 @@
   "packageJsonOverride": {
     "author": "Dfilipiak",
     "description": "Description for e-commerce. Hello world!",
-    "private": true,
+    "private": false,
     "scripts": {}
   },
   "version": "v21",

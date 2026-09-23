@@ -53,3 +53,6 @@ export * from './taon-e-commerce-product/taon-e-commerce-product.repository';
 export * from './taon-e-commerce-product/taon-e-commerce-product.subscriber'; 
 export * from './taon-e-commerce-product/taon-e-commerce-product.utils'; 
 export * from './taon-e-commerce-product/taon-e-commerce-product.validators'; 
+export * from './taon-e-commerce-cart/i18n/taon-e-commerce-cart.translation'; 
+export * from './taon-e-commerce-cart-item/i18n/taon-e-commerce-cart-item.translation'; 
+export * from './taon-e-commerce-product/i18n/taon-e-commerce-product.translation'; 

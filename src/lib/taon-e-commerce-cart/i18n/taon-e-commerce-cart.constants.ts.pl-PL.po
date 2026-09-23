@@ -1,0 +1,9 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-cart/taon-e-commerce-cart.constants.ts:18
+msgid "Invalid Password"
+msgstr ""

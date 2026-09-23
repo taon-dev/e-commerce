@@ -6,6 +6,7 @@
 export * from './build-info._auto-generated_'; 
 export * from './my-organization-proj'; 
 export * from './start-cli'; 
+export * from './taon-e-commerce.abstract.context'; 
 export * from './i18n/lib.translation'; 
 export * from './taon-e-commerce-backoffice/taon-e-commerce-backoffice.component'; // @browser
 export * from './taon-e-commerce-backoffice/taon-e-commerce-backoffice.models'; 

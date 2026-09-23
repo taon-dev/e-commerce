@@ -6,36 +6,36 @@ msgstr ""
 
 #: src/app.ts:225
 msgid "Example users from backend API:"
-msgstr "Przykładowi użytkownicy z serwera API"
+msgstr ""
 
 #: src/app.ts:206
 msgid "Example hello world from backend API:"
-msgstr "Przykładowe witaj świecie z server-a API"
+msgstr ""
 
 #: src/app.ts:172
 msgid "Basic app info"
-msgstr "Podstawowe informacje o aplikacji"
+msgstr ""
 
 #: src/app.ts:173
 msgid "Name"
-msgstr "Nazwa"
+msgstr ""
 
 #: src/app.ts:174
 msgid "Angular version:"
-msgstr "Wersja Angulara:"
+msgstr ""
 
 #: src/app.ts:175
 msgid "Taon backend:"
-msgstr "Taon server:"
+msgstr ""
 
 #: src/app.ts:199
 msgid "Add new example user with random name"
-msgstr "Dodaj nowego przykładowego użytkownika z losowym imieniem"
+msgstr ""
 
 #: src/app.ts:207
 msgid "hello world from backend:"
-msgstr "witaj świecie z servera:"
+msgstr ""
 
 #: src/app.ts:215
 msgid "Copyright"
-msgstr "Wszelkie prawa zastrzeżone"
+msgstr ""

@@ -1,3 +1,4 @@
+import { TaonCmsAbstractContext } from '@taon-dev/cms/src';
 import { createContext, TaonBaseContext } from 'taon/src';
 
 import { TaonECommerceCartAbstractContext } from './taon-e-commerce-cart/taon-e-commerce-cart.abstract.context';
@@ -8,6 +9,9 @@ export const TaonECommerceAbstractContext = createContext(() => ({
   contextName: 'TaonECommerceAbstractContext',
   abstract: true,
   contexts: {
+    TaonCmsAbstractContext,
+
+    // local contexts
     TaonECommerceCartAbstractContext,
     TaonECommerceCartItemAbstractContext,
     TaonECommerceProductAbstractContext,

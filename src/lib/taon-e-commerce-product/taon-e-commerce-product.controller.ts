@@ -6,6 +6,7 @@ import {
   TaonBaseCrudController,
   Query,
   GET,
+  POST,
 } from 'taon/src';
 import { _ } from 'tnp-core/src';
 
@@ -15,7 +16,7 @@ import { TaonECommerceProductRepository } from './taon-e-commerce-product.reposi
 
 @TaonController<TaonECommerceProductController>({
   className: 'TaonECommerceProductController',
-  // allowedMethods: []
+  allowedMethods: ['getAll', 'paginationQuery', 'save', 'updateById'],
 })
 export class TaonECommerceProductController extends TaonBaseCrudController<
   TaonECommerceProductEntity,
@@ -24,9 +25,21 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
   },
   TaonECommerceProductController
 > {
-  entityClassResolveFn: () => typeof TaonECommerceProductEntity = () => TaonECommerceProductEntity;
+  entityClassResolveFn: () => typeof TaonECommerceProductEntity = () =>
+    TaonECommerceProductEntity;
 
-  private readonly taonECommerceProductRepository = this.injectCustomRepo(TaonECommerceProductRepository);
+  private readonly taonECommerceProductRepository = this.injectCustomRepo(
+    TaonECommerceProductRepository,
+  );
+
+  @POST()
+  syncWithStripe(): Taon.Response<void> {
+    return async () => {
+      throw new Error(
+        'Stripe synchronization is not configured for this project.',
+      );
+    };
+  }
 
   //#region methods & getters / hello world
   /**

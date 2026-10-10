@@ -1,0 +1,53 @@
+<section class="transaction-details">
+  <h2>Transaction details</h2>
+
+  @if (loading()) {
+    <p role="status">Loading transaction...</p>
+  } @else if (transaction(); as currentTransaction) {
+    <dl>
+      <dt>Transaction ID</dt>
+      <dd>{{ currentTransaction.id }}</dd>
+      <dt>Order ID</dt>
+      <dd>{{ currentTransaction.orderId }}</dd>
+      <dt>Provider</dt>
+      <dd>{{ currentTransaction.provider }}</dd>
+      <dt>Provider transaction ID</dt>
+      <dd>{{ currentTransaction.providerTransactionId }}</dd>
+      <dt>Status</dt>
+      <dd>{{ currentTransaction.status }}</dd>
+      <dt>Amount</dt>
+      <dd>{{ currentTransaction.amount }} {{ currentTransaction.currency }}</dd>
+      <dt>Created</dt>
+      <dd>{{ currentTransaction.createdAt }}</dd>
+    </dl>
+
+    @if (order(); as relatedOrder) {
+      <h3>Related order</h3>
+      <dl>
+        <dt>Order ID</dt>
+        <dd>{{ relatedOrder.id }}</dd>
+        <dt>User</dt>
+        <dd>#{{ relatedOrder.userId }}</dd>
+        <dt>Status</dt>
+        <dd>{{ relatedOrder.status }}</dd>
+        <dt>Total</dt>
+        <dd>{{ relatedOrder.total }} {{ relatedOrder.currency }}</dd>
+        <dt>Created</dt>
+        <dd>{{ relatedOrder.createdAt }}</dd>
+      </dl>
+    }
+  }
+
+  @if (error()) {
+    <p
+      class="error"
+      role="alert">
+      {{ error() }}
+    </p>
+    <button
+      type="button"
+      (click)="load()">
+      Try again
+    </button>
+  }
+</section>

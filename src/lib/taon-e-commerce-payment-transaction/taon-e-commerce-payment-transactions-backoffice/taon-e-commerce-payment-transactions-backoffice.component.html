@@ -1,4 +1,18 @@
+<h1>Transactions</h1>
+<taon-datatable
+  [entityCrudController]="crud"
+  [columns]="columns"
+  [hideAddButton]="true"
+  [allowedColumns]="[
+    'id',
+    'orderId',
+    'provider',
+    'providerTransactionId',
+    'status',
+    'amount',
+    'currency',
+    'createdAt',
+  ]"
+  searchMode="advanced">
+</taon-datatable>
 <router-outlet></router-outlet>
-<p>
-  taon-e-commerce-payment-transactions-backoffice works!
-</p>

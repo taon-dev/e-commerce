@@ -1,21 +1,37 @@
-//#region imports
+import { TaonSessionUserEntity } from '@taon-dev/session/src';
 import {
-  CustomColumn,
   Column,
-  Taon,
+  CreateDateColumn,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
   TaonBaseAbstractEntity,
   TaonEntity,
-  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'taon/src';
-import { _ } from 'tnp-core/src';
 
-import { TaonECommerceCartDefaultsValues } from './taon-e-commerce-cart.constants';
-//#endregion
+import { TaonECommerceCartItemEntity } from '../taon-e-commerce-cart-item/taon-e-commerce-cart-item.entity';
 
 @TaonEntity({
   className: 'TaonECommerceCartEntity',
   createTable: true,
 })
 export class TaonECommerceCartEntity extends TaonBaseAbstractEntity<TaonECommerceCartEntity> {
-  // TODO
+  @Column({ type: 'int' })
+  userId!: number;
+
+  @ManyToOne(() => TaonSessionUserEntity, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'userId' })
+  user!: TaonSessionUserEntity;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
+
+  @OneToMany(() => TaonECommerceCartItemEntity, item => item.cart)
+  items!: TaonECommerceCartItemEntity[];
 }

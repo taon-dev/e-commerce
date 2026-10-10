@@ -8,15 +8,24 @@ export * from './my-organization-proj';
 export * from './start-cli'; 
 export * from './taon-e-commerce.abstract.context'; 
 export * from './i18n/lib.translation'; 
+export * from './taon-cart/taon-cart.component'; // @browser
+export * from './taon-cart/taon-cart.models'; 
+export * from './taon-cart-button/taon-cart-button.component'; // @browser
+export * from './taon-cart-button/taon-cart-button.models'; 
+export * from './taon-cart-button/taon-cart-button.routes'; // @browser
 export * from './taon-e-commerce-backoffice/taon-e-commerce-backoffice.component'; // @browser
 export * from './taon-e-commerce-backoffice/taon-e-commerce-backoffice.models'; 
 export * from './taon-e-commerce-backoffice/taon-e-commerce-backoffice.routes'; // @browser
 export * from './taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component'; // @browser
 export * from './taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.models'; 
 export * from './taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.routes'; // @browser
+export * from './taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.api.service'; // @browser
 export * from './taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component'; // @browser
+export * from './taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.context'; 
+export * from './taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.controller'; 
 export * from './taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.models'; 
 export * from './taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.routes'; // @browser
+export * from './taon-e-commerce-backoffice-settings/taon-e-commerce-settings.kv.repository'; 
 export * from './taon-e-commerce-cart/taon-e-commerce-cart.abstract.context'; 
 export * from './taon-e-commerce-cart/taon-e-commerce-cart.api.service'; // @browser
 export * from './taon-e-commerce-cart/taon-e-commerce-cart.config.service'; // @browser
@@ -45,6 +54,9 @@ export * from './taon-e-commerce-cart-item/taon-e-commerce-cart-item.repository'
 export * from './taon-e-commerce-cart-item/taon-e-commerce-cart-item.subscriber'; 
 export * from './taon-e-commerce-cart-item/taon-e-commerce-cart-item.utils'; 
 export * from './taon-e-commerce-cart-item/taon-e-commerce-cart-item.validators'; 
+export * from './taon-e-commerce-customer/taon-e-commerce-customer.api.service'; // @browser
+export * from './taon-e-commerce-customer/taon-e-commerce-customer.controller'; 
+export * from './taon-e-commerce-customer/taon-e-commerce-customer.repository'; 
 export * from './taon-e-commerce-customer-address/taon-e-commerce-customer-address.abstract.context'; 
 export * from './taon-e-commerce-customer-address/taon-e-commerce-customer-address.api.service'; // @browser
 export * from './taon-e-commerce-customer-address/taon-e-commerce-customer-address.config.service'; // @browser
@@ -101,6 +113,7 @@ export * from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-tra
 export * from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-transaction.subscriber'; 
 export * from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-transaction.utils'; 
 export * from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-transaction.validators'; 
+export * from './taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component'; // @browser
 export * from './taon-e-commerce-product/taon-e-commerce-product.abstract.context'; 
 export * from './taon-e-commerce-product/taon-e-commerce-product.api.service'; // @browser
 export * from './taon-e-commerce-product/taon-e-commerce-product.config.service'; // @browser
@@ -133,11 +146,13 @@ export * from './taon-e-commerce-cart/i18n/taon-e-commerce-cart.translation';
 export * from './taon-e-commerce-cart-item/i18n/taon-e-commerce-cart-item.translation'; 
 export * from './taon-e-commerce-customer-address/i18n/taon-e-commerce-customer-address.translation'; 
 export * from './taon-e-commerce-order/i18n/taon-e-commerce-order.translation'; 
+export * from './taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component'; // @browser
 export * from './taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component'; // @browser
 export * from './taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.models'; 
 export * from './taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.routes'; // @browser
 export * from './taon-e-commerce-order-item/i18n/taon-e-commerce-order-item.translation'; 
 export * from './taon-e-commerce-payment-transaction/i18n/taon-e-commerce-payment-transaction.translation'; 
+export * from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component'; // @browser
 export * from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transactions-backoffice.component'; // @browser
 export * from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transactions-backoffice.models'; 
 export * from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transactions-backoffice.routes'; // @browser

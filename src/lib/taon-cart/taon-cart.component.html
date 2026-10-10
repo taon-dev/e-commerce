@@ -1,0 +1,176 @@
+<section class="cart-shell">
+  <header class="cart-header">
+    <h2>Shopping</h2>
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="Close cart"
+      (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+  @if (error()) {
+    <p
+      class="error"
+      role="alert">
+      {{ error() }}
+    </p>
+  }
+  <mat-tab-group
+    (selectedIndexChange)="onMainTabChange($event)"
+    [selectedIndex]="hasSuggestedProducts ? 0 : 1">
+    @if (hasSuggestedProducts) {
+      <mat-tab label="Buy">
+        <div class="products">
+          @for (product of suggestedProducts; track product.id) {
+            <article class="product">
+              <h3>{{ product.name }}</h3>
+              @if (product.description) {
+                <p>{{ product.description }}</p>
+              }
+              <p>{{ product.price | currency: product.currency }}</p>
+              <button
+                mat-flat-button
+                type="button"
+                (click)="addProduct(product)">
+                Add to cart
+              </button>
+            </article>
+          }
+        </div>
+      </mat-tab>
+    } @else {
+      <mat-tab
+        label="Buy"
+        [disabled]="true"></mat-tab>
+    }
+    <mat-tab label="Cart">
+      @if (loadingCart()) {
+        <p role="status">Loading cart...</p>
+      } @else if (!cart()?.items?.length) {
+        <p>Your cart is empty.</p>
+      } @else {
+        <div class="cart-items">
+          @for (item of cart()!.items; track item.id) {
+            <article class="cart-item">
+              <div class="item-product">
+                <strong>{{ item.product.name }}</strong>
+                <span
+                  >{{
+                    item.product.price | currency: item.product.currency
+                  }}
+                  each</span
+                >
+              </div>
+              <div class="quantity">
+                <button
+                  mat-icon-button
+                  type="button"
+                  aria-label="Decrease quantity"
+                  (click)="updateQuantity(item.id!, item.quantity - 1)">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <span>{{ item.quantity }}</span>
+                <button
+                  mat-icon-button
+                  type="button"
+                  aria-label="Increase quantity"
+                  (click)="updateQuantity(item.id!, item.quantity + 1)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+              <strong>{{
+                item.product.price * item.quantity
+                  | currency: item.product.currency
+              }}</strong>
+              <button
+                mat-button
+                type="button"
+                (click)="removeItem(item.id!)">
+                Remove
+              </button>
+            </article>
+          }
+        </div>
+      }
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon aria-hidden="true">settings</mat-icon>
+        <span>Settings</span>
+      </ng-template>
+      <mat-tab-group (selectedIndexChange)="onSettingsTabChange($event)">
+        <mat-tab label="Settings">
+          @if (loadingSubscriptions()) {
+            <p role="status">Loading subscription statuses...</p>
+          } @else if (!subscriptions().length) {
+            <p>No subscriptions.</p>
+          } @else {
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Subscription</th>
+                    <th>Status</th>
+                    <th>Valid until</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (
+                    subscription of subscriptions();
+                    track subscription.id
+                  ) {
+                    <tr>
+                      <td>{{ subscription.productName }}</td>
+                      <td>{{ subscription.status }}</td>
+                      <td>
+                        {{
+                          subscription.validUntil
+                            ? (subscription.validUntil | date)
+                            : '—'
+                        }}
+                      </td>
+                      <td>
+                        @if (subscription.status === 'active') {
+                          <button
+                            mat-button
+                            type="button"
+                            (click)="unsubscribe()">
+                            Unsubscribe
+                          </button>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </mat-tab>
+        <mat-tab label="Orders">
+          @if (loadingOrders()) {
+            <p role="status">Loading orders...</p>
+          } @else {
+            <taon-datatable
+              [data]="orders()"
+              [columns]="orderColumns"
+              [hideAddButton]="true"
+              [hideSearch]="true" />
+          }
+        </mat-tab>
+        <mat-tab label="Transactions">
+          @if (loadingTransactions()) {
+            <p role="status">Loading transactions...</p>
+          } @else {
+            <taon-datatable
+              [data]="transactions()"
+              [columns]="transactionColumns"
+              [hideAddButton]="true"
+              [hideSearch]="true" />
+          }
+        </mat-tab>
+      </mat-tab-group>
+    </mat-tab>
+  </mat-tab-group>
+</section>

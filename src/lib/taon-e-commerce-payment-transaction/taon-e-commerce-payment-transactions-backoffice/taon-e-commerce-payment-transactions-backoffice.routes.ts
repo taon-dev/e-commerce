@@ -1,23 +1,23 @@
 //#region imports
 import { Routes } from '@angular/router';
-import { adminLazyRoute } from '@taon-dev/ui/src';
 //#endregion
 
 export const TaonECommercePaymentTransactionsBackofficeRoutes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./taon-e-commerce-payment-transactions-backoffice.component').then(m => m.TaonECommercePaymentTransactionsBackofficeComponent),
+      import('./taon-e-commerce-payment-transactions-backoffice.component').then(
+        m => m.TaonECommercePaymentTransactionsBackofficeComponent,
+      ),
 
     children: [
-      // adminLazyRoute({
-      //   path: 'dashboard',
-      //   menuItem: 'Dashboard',
-      //   icon: 'dashboard',
-      //   expandable: false,
-      //   loader: () =>
-      //     import('./anothermodule.routes').then(m => m.DashboardRoutes),
-      // }),
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./taon-e-commerce-payment-transaction-details-backoffice.component').then(
+            m => m.TaonECommercePaymentTransactionDetailsBackofficeComponent,
+          ),
+      },
     ],
   },
 ];

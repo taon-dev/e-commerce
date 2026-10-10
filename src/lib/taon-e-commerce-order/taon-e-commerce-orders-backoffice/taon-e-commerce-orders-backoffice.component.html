@@ -1,4 +1,16 @@
+<h1>Orders</h1>
+<taon-datatable
+  [entityCrudController]="crud"
+  [columns]="columns"
+  [hideAddButton]="true"
+  [allowedColumns]="[
+    'id',
+    'userId',
+    'status',
+    'total',
+    'currency',
+    'createdAt',
+  ]"
+  searchMode="advanced">
+</taon-datatable>
 <router-outlet></router-outlet>
-<p>
-  taon-e-commerce-orders-backoffice works!
-</p>

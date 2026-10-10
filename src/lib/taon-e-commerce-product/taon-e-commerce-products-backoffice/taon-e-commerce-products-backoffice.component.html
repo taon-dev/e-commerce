@@ -1,4 +1,36 @@
-<router-outlet></router-outlet>
-<p>
-  taon-e-commerce-products-backoffice works!
-</p>
+<header class="page-header pb-2">
+  <h1>Products</h1>
+  <div class="actions">
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="syncInProgress()"
+      (click)="syncWithStripe()">
+      {{ syncInProgress() ? 'Syncing...' : 'Sync with Stripe' }}
+    </button>
+  </div>
+</header>
+
+@if (syncError()) {
+  <p
+    class="error"
+    role="alert">
+    {{ syncError() }}
+  </p>
+}
+
+<taon-datatable
+  [entityCrudController]="crud"
+  [columns]="columns"
+  [allowedColumns]="[
+    'id',
+    'name',
+    'type',
+    'price',
+    'currency',
+    'active',
+    'stripeLastSyncedAt',
+  ]"
+  searchMode="advanced"
+  (addingItem)="add()">
+</taon-datatable>

@@ -6,6 +6,8 @@ import { TaonECommerceCartController } from './taon-e-commerce-cart.controller';
 import { TaonECommerceCartRepository } from './taon-e-commerce-cart.repository';
 // import { TaonECommerceCartKvRepository } from './taon-e-commerce-cart.kv.repository';
 import { TaonECommerceCartProvider } from './taon-e-commerce-cart.provider';
+import { TaonECommerceCustomerController } from '../taon-e-commerce-customer/taon-e-commerce-customer.controller';
+import { TaonECommerceCustomerRepository } from '../taon-e-commerce-customer/taon-e-commerce-customer.repository';
 // import { TaonECommerceCartMiddleware } from './taon-e-commerce-cart.middleware';
 // import { TaonECommerceCartSubscriber } from './taon-e-commerce-cart.subscriber';
 //#endregion
@@ -15,11 +17,12 @@ export const TaonECommerceCartAbstractContext = createContext(() => ({
   abstract: true,
   contexts: { TaonBaseContext },
   entities: { TaonECommerceCartEntity },
-  controllers: { TaonECommerceCartController },
   repositories: {
     // TaonECommerceCartKvRepository
     TaonECommerceCartRepository,
+    TaonECommerceCustomerRepository,
   },
+  controllers: { TaonECommerceCartController, TaonECommerceCustomerController },
   providers: { TaonECommerceCartProvider },
   // middlewares: { TaonECommerceCartMiddleware },
   // subscribers: { TaonECommerceCartSubscriber },

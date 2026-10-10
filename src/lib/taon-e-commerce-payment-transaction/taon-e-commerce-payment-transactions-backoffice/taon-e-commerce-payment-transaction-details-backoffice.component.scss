@@ -1,0 +1,21 @@
+.transaction-details {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  overflow-wrap: anywhere;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1rem;
+}
+
+dt {
+  font-weight: 600;
+}
+
+.error {
+  color: #b3261e;
+}

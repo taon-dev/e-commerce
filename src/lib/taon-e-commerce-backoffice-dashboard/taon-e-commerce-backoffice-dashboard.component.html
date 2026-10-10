@@ -1,4 +1,39 @@
-<router-outlet></router-outlet>
-<p>
-  taon-e-commerce-backoffice-dashboard works!
-</p>
+<h1>E-commerce Dashboard</h1>
+
+@if (loading()) {
+  <p role="status">Loading e-commerce summary...</p>
+} @else if (summary(); as stats) {
+  <section
+    class="summary-cards"
+    aria-label="E-commerce summary">
+    <article>
+      <h2>Paid orders</h2>
+      <p>{{ stats.paidOrders }}</p>
+    </article>
+    <article>
+      <h2>Products sold</h2>
+      <p>{{ stats.productsSold }}</p>
+    </article>
+    <article>
+      <h2>Total earnings</h2>
+      @for (earning of stats.earnings; track earning.currency) {
+        <p>{{ earning.total.toFixed(2) }} {{ earning.currency }}</p>
+      } @empty {
+        <p>0.00</p>
+      }
+    </article>
+  </section>
+}
+
+@if (error()) {
+  <p
+    class="error"
+    role="alert">
+    {{ error() }}
+  </p>
+  <button
+    type="button"
+    (click)="load()">
+    Try again
+  </button>
+}

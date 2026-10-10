@@ -1,0 +1,35 @@
+.product-form {
+  display: grid;
+  gap: 1rem;
+  min-width: min(36rem, 80vw);
+}
+
+.price-fields {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
+.stripe-info {
+  border-top: 1px solid #ddd;
+  padding-top: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.stripe-info h3 {
+  margin: 0 0 0.5rem;
+}
+
+.stripe-info p {
+  margin: 0.25rem 0;
+}
+
+.error {
+  color: #b3261e;
+}
+
+@media (max-width: 600px) {
+  .product-form {
+    min-width: 0;
+  }
+}

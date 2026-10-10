@@ -9,6 +9,7 @@ import { TaonECommerceOrderItemAbstractContext } from './taon-e-commerce-order-i
 import { TaonECommercePaymentTransactionAbstractContext } from './taon-e-commerce-payment-transaction/taon-e-commerce-payment-transaction.abstract.context';
 import { TaonECommerceProductAbstractContext } from './taon-e-commerce-product/taon-e-commerce-product.abstract.context';
 import { TaonECommerceProductPermissionAbstractContext } from './taon-e-commerce-product-permission/taon-e-commerce-product-permission.abstract.context';
+import { TaonECommerceBackofficeSettingsContext } from './taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.context';
 
 export const TaonECommerceAbstractContext = createContext(() => ({
   contextName: 'TaonECommerceAbstractContext',
@@ -23,5 +24,6 @@ export const TaonECommerceAbstractContext = createContext(() => ({
     TaonECommercePaymentTransactionAbstractContext,
     TaonECommerceProductAbstractContext,
     TaonECommerceProductPermissionAbstractContext,
+    TaonECommerceBackofficeSettingsContext,
   },
 }));

@@ -1,25 +1,49 @@
-//#region imports
 import {
-  CustomColumn,
   Column,
-  Taon,
+  CreateDateColumn,
+  Index,
+  JoinColumn,
+  ManyToOne,
   TaonBaseAbstractEntity,
   TaonEntity,
+  UpdateDateColumn,
 } from 'taon/src';
-import { _ } from 'tnp-core/src';
 
-import { TaonECommercePaymentTransactionDefaultsValues } from './taon-e-commerce-payment-transaction.constants';
-//#endregion
+import { TaonECommerceOrderEntity } from '../taon-e-commerce-order/taon-e-commerce-order.entity';
 
+@Index(['provider', 'providerTransactionId'], { unique: true })
 @TaonEntity<TaonECommercePaymentTransactionEntity>({
   className: 'TaonECommercePaymentTransactionEntity',
   createTable: true,
-  // defaultModelMapping: () => ({
-  //   '': TaonECommercePaymentTransactionEntity,
-  //   nestedObjectField: ClassField,
-  //   nestedArrField: [ClassObjArrField],
-  // }),
 })
 export class TaonECommercePaymentTransactionEntity extends TaonBaseAbstractEntity<TaonECommercePaymentTransactionEntity> {
-   // TODO
+  @Column({ type: 'int' })
+  orderId!: number;
+
+  @Column({ type: 'varchar' })
+  provider!: string;
+
+  @Column({ type: 'varchar' })
+  providerTransactionId!: string;
+
+  @Column({ type: 'varchar' })
+  status!: 'pending' | 'succeeded' | 'failed' | 'cancelled';
+
+  @Column({ type: 'float' })
+  amount!: number;
+
+  @Column({ type: 'varchar', length: 3 })
+  currency!: string;
+
+  @ManyToOne(() => TaonECommerceOrderEntity, order => order.transactions, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'orderId' })
+  order!: TaonECommerceOrderEntity;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

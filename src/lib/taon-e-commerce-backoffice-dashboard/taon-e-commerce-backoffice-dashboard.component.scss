@@ -1,3 +1,28 @@
 :host {
   display: block;
 }
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+
+.summary-cards article {
+  padding: 1.25rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.summary-cards h2 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.summary-cards p {
+  margin-bottom: 0;
+  font-size: 1.5rem;
+}
+
+.error {
+  color: #b3261e;
+}

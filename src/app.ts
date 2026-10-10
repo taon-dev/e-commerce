@@ -48,6 +48,12 @@ import {
   TaonECommerceAbstractContext,
 } from '@taon-dev/e-commerce/src';
 import {
+  TaonCartButtonComponent,
+  TaonCartComponent,
+  TaonECommerceProductApiService,
+  TaonCartConfig,
+} from '@taon-dev/e-commerce/src'; // @browser
+import {
   ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID,
   ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_SECRET,
   ENV_ANGULAR_NODE_APP_CONFIG_SUPER_USERS,
@@ -148,9 +154,11 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
     TaonDraggableButtonPanelComponent,
     TaonSessionComponent,
     TaonSessionButtonComponent,
+    TaonCartButtonComponent,
+    TaonCartComponent,
     JsonPipe,
   ],
-  // // Uncomment to have simples template
+  providers: [TaonECommerceProductApiService],
   template: `
     @if (itemsLoaded()) {
       <mat-card class="m-2">
@@ -161,7 +169,7 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
           Taon backend: {{ taonMode }}<br />
           <div class="flex  flex-row items-center justify-center">
             <taon-session-button [config]="config" />
-
+            <taon-cart-button [config]="cartConfig" />
             <taon-draggable-button-panel
               title="Taon Admin"
               [outlet]="outlet"
@@ -176,6 +184,7 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
         <mat-card-content>
           Test
           <!-- <taon-session [config]="config" /> -->
+          <taon-cart [config]="cartConfig$ | async" />
         </mat-card-content>
       </mat-card>
       <router-outlet></router-outlet>
@@ -185,6 +194,8 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
 export class ECommerceApp implements OnInit {
   t = t.for(this);
 
+  taonECommerceProductApiService = inject(TaonECommerceProductApiService);
+
   outlet = TaonBaselineBackofficeOutletName;
 
   config: TaonSessionConfig = {
@@ -192,6 +203,9 @@ export class ECommerceApp implements OnInit {
     // defaultEmail: DEFAULT_EMAIL,
     // defaultPassword: DEFAULT_PASSWORD,
   };
+
+  cartConfig$: Observable<TaonCartConfig> =
+    this.taonECommerceProductApiService.getAllProductForUser();
 
   /**Required for proper theme*/
   theme = inject(TaonThemeService);

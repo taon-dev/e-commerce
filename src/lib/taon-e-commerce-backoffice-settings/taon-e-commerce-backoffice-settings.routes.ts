@@ -1,13 +1,14 @@
 //#region imports
 import { Routes } from '@angular/router';
-import { adminLazyRoute } from '@taon-dev/ui/src';
 //#endregion
 
 export const TaonECommerceBackofficeSettingsRoutes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./taon-e-commerce-backoffice-settings.component').then(m => m.TaonECommerceBackofficeSettingsComponent),
+      import('./taon-e-commerce-backoffice-settings.component').then(
+        m => m.TaonECommerceBackofficeSettingsComponent,
+      ),
 
     children: [
       // adminLazyRoute({

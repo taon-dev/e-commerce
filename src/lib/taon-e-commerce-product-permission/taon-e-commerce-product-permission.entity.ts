@@ -1,25 +1,36 @@
-//#region imports
+import { TaonPermissionEntity } from '@taon-dev/session/src';
 import {
-  CustomColumn,
   Column,
-  Taon,
+  Index,
+  JoinColumn,
+  ManyToOne,
   TaonBaseAbstractEntity,
   TaonEntity,
 } from 'taon/src';
-import { _ } from 'tnp-core/src';
 
-import { TaonECommerceProductPermissionDefaultsValues } from './taon-e-commerce-product-permission.constants';
-//#endregion
+import { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon-e-commerce-product.entity';
 
+@Index(['productId', 'permissionId'], { unique: true })
 @TaonEntity<TaonECommerceProductPermissionEntity>({
   className: 'TaonECommerceProductPermissionEntity',
   createTable: true,
-  // defaultModelMapping: () => ({
-  //   '': TaonECommerceProductPermissionEntity,
-  //   nestedObjectField: ClassField,
-  //   nestedArrField: [ClassObjArrField],
-  // }),
 })
 export class TaonECommerceProductPermissionEntity extends TaonBaseAbstractEntity<TaonECommerceProductPermissionEntity> {
-  // TODO
+  @Column({ type: 'int' })
+  productId!: number;
+
+  @Column({ type: 'int' })
+  permissionId!: number;
+
+  @ManyToOne(() => TaonECommerceProductEntity, product => product.permissions, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'productId' })
+  product!: TaonECommerceProductEntity;
+
+  @ManyToOne(() => TaonPermissionEntity, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'permissionId' })
+  permission!: TaonPermissionEntity;
 }

@@ -4,23 +4,37 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Taon, TaonBaseAngularService } from 'taon/src';
 
-import type { TaonECommerceProductEntity } from './taon-e-commerce-product.entity';
+import type { TaonCartConfig } from '../index';
+
 import { TaonECommerceProductController } from './taon-e-commerce-product.controller';
+import type { TaonECommerceProductEntity } from './taon-e-commerce-product.entity';
 //#endregion
 
 @Injectable()
 export class TaonECommerceProductApiService extends TaonBaseAngularService {
-  public readonly taonECommerceProductController = this.injectController(TaonECommerceProductController);
+  public readonly taonECommerceProductController = this.injectController(
+    TaonECommerceProductController,
+  );
 
-  public get allMyEntities$(): Observable<TaonECommerceProductEntity[]> {
-    return this.taonECommerceProductController.getAll().request!().observable.pipe(
-      map(res => res.body?.json),
+  public getAllProductForUser(): Observable<TaonCartConfig> {
+    return this.taonECommerceProductController.getAll()
+      .request!().observable.pipe(
+      map(res => res.body.json),
+      map(c => ({
+        suggestedProducts: c,
+      })),
     );
   }
 
-  public helloWorld(user: string): Observable<string> {
-    return this.taonECommerceProductController.helloWord(user).request!().observable.pipe(
-      map(res => res.responseText as string),
-    );
+  public async syncWithStripe(): Promise<void> {
+    const response =
+      await this.taonECommerceProductController.syncWithStripe().request!();
+
+    if (response.statusCode >= 400) {
+      throw new Error(
+        response.responseText ||
+          'Stripe synchronization is not configured for this project.',
+      );
+    }
   }
 }

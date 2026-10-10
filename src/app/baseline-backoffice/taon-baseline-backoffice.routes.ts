@@ -22,6 +22,25 @@ export const TaonBaselineBackofficeRoutes: Routes = [
           import('@taon-dev/sudo/src').then(m => m.TaonSudoBackofficeRoutes),
       }),
       adminLazyRoute({
+        path: 'cms',
+        menuItem: 'CMS',
+        expandable: true,
+        icon: 'content_copy',
+        loader: () =>
+          import('@taon-dev/cms/src').then(m => m.TaonCmsBackofficeRoutes),
+      }),
+      adminLazyRoute({
+        path: 'e-commerce',
+        menuItem: 'E-commerce',
+        expandable: true,
+        icon: 'sell',
+        loader: () =>
+          import('@taon-dev/e-commerce/src').then(
+            m => m.TaonECommerceBackofficeRoutes,
+          ),
+      }),
+
+      adminLazyRoute({
         path: 'users',
         menuItem: 'Users',
         icon: 'manage_accounts',
@@ -60,22 +79,6 @@ export const TaonBaselineBackofficeRoutes: Routes = [
           import('@taon-dev/emails/src').then(
             m => m.TaonEmailsBackofficeRoutes,
           ),
-      }),
-      adminLazyRoute({
-        path: 'cms',
-        menuItem: 'CMS',
-        expandable: true,
-        icon: 'content_copy',
-        loader: () =>
-          import('@taon-dev/cms/src').then(m => m.TaonCmsBackofficeRoutes),
-      }),
-      adminLazyRoute({
-        path: 'e-commerce',
-        menuItem: 'E-commerce',
-        expandable: true,
-        icon: 'sell',
-        loader: () =>
-          import('@taon-dev/e-commerce/src').then(m => m.TaonECommerceBackofficeRoutes),
       }),
     ],
   },

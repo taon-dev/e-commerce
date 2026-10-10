@@ -11,4 +11,14 @@ import { RouterOutlet } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, RouterOutlet],
 })
-export class TaonECommerceBackofficeComponent {}
+export class TaonECommerceBackofficeComponent {
+  componentLoaded = false;
+
+  onRouteActivate(component: any): void {
+    this.componentLoaded = !!component;
+  }
+
+  onRouteDeactivate(component: any): void {
+    this.componentLoaded = false;
+  }
+}

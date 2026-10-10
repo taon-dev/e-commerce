@@ -33,8 +33,19 @@ export const TaonECommerceBackofficeRoutes: Routes = [
       }),
 
       adminLazyRoute({
+        path: 'orders',
+        menuItem: 'Orders',
+        icon: 'receipt_long',
+        expandable: false,
+        loader: () =>
+          import('../taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.routes').then(
+            m => m.TaonECommerceOrdersBackofficeRoutes,
+          ),
+      }),
+
+      adminLazyRoute({
         path: 'payment-transactions',
-        menuItem: 'Payment Trasactions',
+        menuItem: 'Transactions',
         icon: 'payments',
         expandable: false,
         loader: () =>
@@ -49,8 +60,8 @@ export const TaonECommerceBackofficeRoutes: Routes = [
         icon: 'settings',
         expandable: false,
         loader: () =>
-          import('../taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.routes').then(
-            m => m.TaonECommerceBackofficeDashboardRoutes,
+          import('../taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.routes').then(
+            m => m.TaonECommerceBackofficeSettingsRoutes,
           ),
       }),
     ],

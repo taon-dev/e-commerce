@@ -1,0 +1,137 @@
+<h2 mat-dialog-title>{{ data.product ? 'Edit product' : 'Add product' }}</h2>
+<br>
+<mat-dialog-content>
+  @if (loading()) {
+    <p role="status">Loading permissions...</p>
+  } @else {
+    <form class="product-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          required
+          [ngModel]="draft().name"
+          (ngModelChange)="updateName($event)"
+          name="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          rows="4"
+          [ngModel]="draft().description"
+          (ngModelChange)="updateDescription($event)"
+          name="description"></textarea>
+      </mat-form-field>
+
+      <mat-checkbox
+        [checked]="draft().active"
+        (change)="updateActive($event.checked)"
+        >Active</mat-checkbox
+      >
+
+      <mat-form-field appearance="outline">
+        <mat-label>Type</mat-label>
+        <mat-select
+          [value]="draft().type"
+          (selectionChange)="updateType($event.value)">
+          @for (type of productTypes; track type) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="price-fields">
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input
+            matInput
+            type="number"
+            min="0"
+            step="0.01"
+            [ngModel]="draft().price"
+            (ngModelChange)="updatePrice($event)"
+            name="price" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Currency</mat-label>
+          <mat-select
+            [value]="draft().currency"
+            (selectionChange)="updateCurrency($event.value)">
+            @for (currency of currencies; track currency) {
+              <mat-option [value]="currency">{{ currency }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Attached permissions</mat-label>
+        <mat-select
+          multiple
+          [value]="selectedPermissionIds()"
+          (selectionChange)="selectedPermissionIds.set($event.value)">
+          @for (permission of permissions(); track permission.id) {
+            <mat-option [value]="permission.id"
+              >{{ permission.name }} ({{ permission.code }})</mat-option
+            >
+          }
+        </mat-select>
+      </mat-form-field>
+
+      @if (data.product) {
+        <section
+          class="stripe-info"
+          aria-label="Stripe synchronization information">
+          <h3>Stripe synchronization</h3>
+          <p>
+            Stripe Product ID:
+            {{ data.product.stripeProductId || 'Not synchronized' }}
+          </p>
+          <p>
+            Stripe Price ID:
+            {{ data.product.stripePriceId || 'Not synchronized' }}
+          </p>
+          <p>
+            Last synchronized: {{ data.product.stripeLastSyncedAt || 'Never' }}
+          </p>
+        </section>
+      }
+    </form>
+  }
+
+  @if (error()) {
+    <p
+      class="error"
+      role="alert">
+      {{ error() }}
+    </p>
+    @if (!permissionsLoaded() && !loading()) {
+      <button
+        mat-button
+        type="button"
+        (click)="load()">
+        Retry loading permissions
+      </button>
+    }
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    type="button"
+    [disabled]="saving()"
+    (click)="dialogRef.close()">
+    Cancel
+  </button>
+  <button
+    mat-flat-button
+    type="button"
+    [disabled]="loading() || saving() || !permissionsLoaded()"
+    (click)="save()">
+    {{ saving() ? 'Saving...' : 'Save' }}
+  </button>
+</mat-dialog-actions>

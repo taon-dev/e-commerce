@@ -1,4 +1,9 @@
-<router-outlet></router-outlet>
-<p>
-  taon-e-commerce-backoffice works!
-</p>
+@if (!componentLoaded) {
+  <code>
+    In E-commerce section you can manager everything about your e-business.
+  </code>
+}
+
+<router-outlet
+  (activate)="onRouteActivate($event)"
+  (deactivate)="onRouteDeactivate($event)"></router-outlet>

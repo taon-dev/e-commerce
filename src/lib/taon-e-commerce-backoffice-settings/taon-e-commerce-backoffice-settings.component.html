@@ -1,4 +1,40 @@
-<router-outlet></router-outlet>
-<p>
-  taon-e-commerce-backoffice-settings works!
-</p>
+<h1>E-commerce Settings</h1>
+
+<section
+  class="setting"
+  aria-labelledby="selling-setting">
+  <div>
+    <h2 id="selling-setting">Selling enabled</h2>
+    @if (sellingEnabled() === false) {
+      <p>Checkout and purchasing are paused.</p>
+    } @else if (sellingEnabled() === true) {
+      <p>Customers can purchase products.</p>
+    }
+  </div>
+
+  @if (loading()) {
+    <p role="status">Loading setting...</p>
+  } @else if (sellingEnabled() !== null) {
+    <button
+      mat-flat-button
+      type="button"
+      [disabled]="saving()"
+      (click)="toggleSelling()">
+      @if (saving()) {
+        Saving...
+      } @else if (sellingEnabled()) {
+        Disable selling
+      } @else {
+        Enable selling
+      }
+    </button>
+  }
+</section>
+
+@if (error()) {
+  <p
+    class="error"
+    role="alert">
+    {{ error() }}
+  </p>
+}

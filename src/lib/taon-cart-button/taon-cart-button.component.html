@@ -1,0 +1,12 @@
+<button
+  mat-icon-button
+  type="button"
+  aria-label="Open shopping cart"
+  [matBadge]="badgeText"
+  [matBadgeHidden]="false"
+  (click)="openCart()">
+  <mat-icon>shopping_cart</mat-icon>
+</button>
+@if (error()) {
+  <span class="cart-button-error" role="alert" [title]="error()">!</span>
+}

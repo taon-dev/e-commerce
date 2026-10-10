@@ -1,3 +1,29 @@
 :host {
   display: block;
 }
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 48rem;
+  padding: 1.25rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.setting h2,
+.setting p {
+  margin: 0.25rem 0;
+}
+
+.error {
+  color: #b3261e;
+}
+
+@media (max-width: 600px) {
+  .setting {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

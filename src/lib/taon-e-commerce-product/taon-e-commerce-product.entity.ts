@@ -1,6 +1,7 @@
 //#region imports
 import {
-  CustomColumn, Column,
+  CustomColumn,
+  Column,
   Taon,
   TaonBaseAbstractEntity,
   TaonEntity,
@@ -10,17 +11,15 @@ import { _ } from 'tnp-core/src';
 import { TaonECommerceProductDefaultsValues } from './taon-e-commerce-product.constants';
 //#endregion
 
-@TaonEntity({
+@TaonEntity<TaonECommerceProductEntity>({
   className: 'TaonECommerceProductEntity',
   createTable: true,
+  // defaultModelMapping: () => ({
+  //   '': TaonECommerceProductEntity,
+  //   nestedObjectField: ClassField,
+  //   nestedArrField: [ClassObjArrField],
+  // }),
 })
 export class TaonECommerceProductEntity extends TaonBaseAbstractEntity<TaonECommerceProductEntity> {
-  //#region @websql
-  @CustomColumn({
-    type: 'varchar',
-    length: 100,
-    default: TaonECommerceProductDefaultsValues.description,
-  })
-  //#endregion
-  description?: string;
+  // TODO
 }

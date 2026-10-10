@@ -16,7 +16,7 @@
   "shouldGenerateTranslationFiles": true,
   "shouldGenerateAutogenAppRoutesFile": true,
   "isomorphicDependenciesForNpmLib": [
-    "@taon-dev/session"
+    "@taon-dev/session",
   ],
   "autoReleaseConfigAllowedItems": [
     {

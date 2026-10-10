@@ -16,28 +16,6 @@ import { TaonECommerceCartItemDefaultsValues } from './taon-e-commerce-cart-item
   createTable: true,
 })
 export class TaonECommerceCartItemEntity extends TaonBaseAbstractEntity<TaonECommerceCartItemEntity> {
-  //#region @websql
-  @Column({ type: 'integer' })
-  //#endregion
-  cartId: number;
 
-  //#region @websql
-  @Column({ type: 'integer' })
-  //#endregion
-  productVariantId: number;
-
-  //#region @websql
-  @Column({ type: 'integer', default: 1 })
-  //#endregion
-  quantity: number;
-
-  //#region @websql
-  @Column({ type: 'integer' })
-  //#endregion
-  unitPrice: number;
-
-  //#region @websql
-  @Column({ type: 'datetime' })
-  //#endregion
-  createdAt: Date;
+  // TODO
 }

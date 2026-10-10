@@ -14,4 +14,9 @@ export class TaonECommerceProductConfigService extends TaonBaseAngularService {
   get isEnableOption() {
     return this.taonECommerceProductProvider.enabledTaonECommerceProductOption;
   }
+
+  clone(): Partial<TaonECommerceProductProvider> {
+    const cloned = this.taonECommerceProductProvider.clone();
+    return cloned;
+  }
 }

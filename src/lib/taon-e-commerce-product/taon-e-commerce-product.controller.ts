@@ -15,11 +15,18 @@ import { TaonECommerceProductRepository } from './taon-e-commerce-product.reposi
 
 @TaonController<TaonECommerceProductController>({
   className: 'TaonECommerceProductController',
+  // allowedMethods: []
 })
-export class TaonECommerceProductController extends TaonBaseCrudController<TaonECommerceProductEntity> {
+export class TaonECommerceProductController extends TaonBaseCrudController<
+  TaonECommerceProductEntity,
+  {
+    /* file upload query params type */
+  },
+  TaonECommerceProductController
+> {
   entityClassResolveFn: () => typeof TaonECommerceProductEntity = () => TaonECommerceProductEntity;
 
-  taonECommerceProductRepository = this.injectCustomRepo(TaonECommerceProductRepository);
+  private readonly taonECommerceProductRepository = this.injectCustomRepo(TaonECommerceProductRepository);
 
   //#region methods & getters / hello world
   /**

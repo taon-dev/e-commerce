@@ -43,21 +43,14 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { provideServerRendering, withRoutes } from '@angular/ssr';
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import Aura from '@primeng/themes/aura'; // @browser
-import {
-  MIGRATIONS_CLASSES_FOR_ECommerceContext,
-  TaonECommerceAbstractContext,
-} from '@taon-dev/e-commerce/src';
+import { TaonECommerceAbstractContext } from '@taon-dev/e-commerce/src';
 import {
   TaonCartButtonComponent,
   TaonCartComponent,
   TaonECommerceProductApiService,
   TaonCartConfig,
 } from '@taon-dev/e-commerce/src'; // @browser
-import {
-  ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID,
-  ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_SECRET,
-  ENV_ANGULAR_NODE_APP_CONFIG_SUPER_USERS,
-} from '@taon-dev/e-commerce/src';
+
 import { Translation, TranslationManager } from '@taon-dev/i18n/src';
 // TranslationManager.globalDefautlLanguageOverride = 'pl-PL';
 import { TranslateDirective } from '@taon-dev/i18n/src'; // @browser
@@ -384,26 +377,23 @@ export const ECommerceConfig = mergeApplicationConfig(
 class TaonSessionProviderOverride extends TaonSessionProvider {
   constructor() {
     super();
-    this.socialLogin.google.enabled = true;
-    this.socialLogin.google.googleClientId =
-      ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID;
+    // this.socialLogin.google.enabled = true;
+    // this.socialLogin.google.googleClientId =
+    //   ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID;
 
-    this.login.defaultEmail = DEFAULT_EMAIL;
+    // this.login.defaultEmail = DEFAULT_EMAIL;
   }
 
   //#region @backend
   async _() {
-    const googleSecret = await ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_SECRET();
-    this.socialLogin.google.googleSecret = googleSecret;
-
-    this.superUsersEmails = [
-      DEFAULT_EMAIL,
-      ...(await ENV_ANGULAR_NODE_APP_CONFIG_SUPER_USERS()).split(','),
-    ];
-
-    console.log('active super users', this.superUsersEmails);
-
-    await super._();
+    // const googleSecret = await ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_SECRET();
+    // this.socialLogin.google.googleSecret = googleSecret;
+    // this.superUsersEmails = [
+    //   DEFAULT_EMAIL,
+    //   ...(await ENV_ANGULAR_NODE_APP_CONFIG_SUPER_USERS()).split(','),
+    // ];
+    // console.log('active super users', this.superUsersEmails);
+    // await super._();
   }
   //#endregion
 }
@@ -417,7 +407,7 @@ var ECommerceContext = Taon.createContext(() => ({
     TaonBaseContext,
   },
   migrations: {
-    ...MIGRATIONS_CLASSES_FOR_ECommerceContext,
+    // ...MIGRATIONS_CLASSES_FOR_ECommerceContext,
   },
   providers: {
     [ClassHelpers.getName(TaonSessionProvider)]: TaonSessionProviderOverride,

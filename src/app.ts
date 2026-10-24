@@ -43,7 +43,12 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { provideServerRendering, withRoutes } from '@angular/ssr';
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import Aura from '@primeng/themes/aura'; // @browser
-import { TaonECommerceAbstractContext } from '@taon-dev/e-commerce/src';
+import {
+  EcommerceContext_1791132517217_initial,
+  TaonAuthContextEntity,
+  TaonAuthContextRepository,
+  TaonECommerceAbstractContext,
+} from '@taon-dev/e-commerce/src';
 import {
   TaonCartButtonComponent,
   TaonCartComponent,
@@ -104,7 +109,12 @@ import {
 import { Utils, UtilsOs } from 'tnp-core/src';
 
 import { HOST_CONFIG } from './app.hosts';
-import { ENV_ANGULAR_NODE_APP_BUILD_PWA_DISABLE_SERVICE_WORKER } from './lib/env/env.angular-node-app';
+import {
+  ENV_ANGULAR_NODE_APP_BUILD_PWA_DISABLE_SERVICE_WORKER,
+  ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID,
+} from './lib/env/env.angular-node-app';
+import { TaonSudoAbstractContext } from '@taon-dev/sudo/src';
+import { MIGRATIONS_CLASSES_FOR_CmsContext } from '@taon-dev/cms/src';
 // @placeholder-for-imports
 
 //#endregion
@@ -377,11 +387,12 @@ export const ECommerceConfig = mergeApplicationConfig(
 class TaonSessionProviderOverride extends TaonSessionProvider {
   constructor() {
     super();
-    // this.socialLogin.google.enabled = true;
-    // this.socialLogin.google.googleClientId =
-    //   ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID;
+    this.socialLogin.google.enabled = true;
+    this.socialLogin.google.googleClientId =
+      ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID;
 
-    // this.login.defaultEmail = DEFAULT_EMAIL;
+    this.login.defaultEmail = DEFAULT_EMAIL;
+    this.linkSocialAccountEmail = true;
   }
 
   //#region @backend
@@ -404,16 +415,26 @@ var ECommerceContext = Taon.createContext(() => ({
   ...HOST_CONFIG['ECommerceContext'],
   contexts: {
     TaonECommerceAbstractContext,
+    TaonSudoAbstractContext,
     TaonBaseContext,
   },
   migrations: {
-    // ...MIGRATIONS_CLASSES_FOR_ECommerceContext,
+    EcommerceContext_1791132517217_initial,
+    ...MIGRATIONS_CLASSES_FOR_CmsContext,
   },
   providers: {
     [ClassHelpers.getName(TaonSessionProvider)]: TaonSessionProviderOverride,
   },
+  entities: {
+    [ClassHelpers.getName(TaonAuthContextEntity)]: TaonAuthContextEntity,
+  },
+  repositories: {
+    [ClassHelpers.getName(TaonAuthContextRepository)]:
+      TaonAuthContextRepository,
+  },
   logs: {
     // db
+    migrations: true,
   },
   database: true,
   disabledRealtime: true,

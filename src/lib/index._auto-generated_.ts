@@ -7,6 +7,7 @@ export * from './build-info._auto-generated_';
 export * from './my-organization-proj'; 
 export * from './start-cli'; 
 export * from './taon-e-commerce.abstract.context'; 
+export * from './decorators/taon-cms-authorization'; 
 export * from './taon-cart/taon-cart.component'; // @browser
 export * from './taon-cart/taon-cart.models'; 
 export * from './taon-cart-button/taon-cart-button.component'; // @browser

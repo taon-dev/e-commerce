@@ -94,13 +94,16 @@
         </div>
       }
     </mat-tab>
+    <mat-tab label="Checkout">
+     <h1>TODO</h1>
+    </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon aria-hidden="true">settings</mat-icon>
-        <span>Settings</span>
+        <span>Purchased</span>
       </ng-template>
       <mat-tab-group (selectedIndexChange)="onSettingsTabChange($event)">
-        <mat-tab label="Settings">
+        <mat-tab label="Active">
           @if (loadingSubscriptions()) {
             <p role="status">Loading subscription statuses...</p>
           } @else if (!subscriptions().length) {

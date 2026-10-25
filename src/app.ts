@@ -225,9 +225,13 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
 
       <mat-card class="m-2">
         <mat-card-content>
-          Test
-          <!-- <taon-session [config]="config" /> -->
-          <taon-cart [config]="cartConfig$ | async" />
+          @if (context?.user) {
+            Test
+            <!-- <taon-session [config]="config" /> -->
+            <taon-cart [config]="cartConfig$ | async" />
+          } @else {
+            <h3>Login to see cart</h3>
+          }
         </mat-card-content>
       </mat-card>
       <router-outlet></router-outlet>

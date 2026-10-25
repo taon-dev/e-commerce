@@ -3,3 +3,12 @@ msgstr ""
 "Language: en-US\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/app.ts:195
+msgctxt "header-taon-admin"
+msgid "Hello [[ username ]]"
+msgstr ""
+
+#: src/app.ts:207
+msgid "Please login to use Taon Admin"
+msgstr ""

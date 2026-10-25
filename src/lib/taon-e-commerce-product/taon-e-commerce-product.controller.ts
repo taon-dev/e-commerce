@@ -64,15 +64,15 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
     TaonECommerceStripeRepository,
   );
 
-  private readonly customerRepository = this.injectCustomRepo(
+  private readonly taonECommerceCustomerRepository = this.injectCustomRepo(
     TaonECommerceCustomerRepository,
   );
 
-  private readonly sessionRepository = this.injectCustomRepo(
+  private readonly taonSessionRepository = this.injectCustomRepo(
     TaonSessionRepository,
   );
 
-  private readonly authContextRepository = this.injectCustomRepo(
+  private readonly taonAuthContextRepository = this.injectCustomRepo(
     TaonAuthContextRepository,
   );
   //#endregion
@@ -162,8 +162,8 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
     if (methodConfig.methodName === 'stripeWebhook') {
       return;
     }
-    await this.sessionRepository.throwIfNotAuthenticated({ req, res });
-    const context = await this.authContextRepository.getContext(
+    await this.taonSessionRepository.throwIfNotAuthenticated({ req, res });
+    const context = await this.taonAuthContextRepository.getContext(
       req.userId,
       req.sessionId,
     );
@@ -290,7 +290,7 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
         ) {
           throw new Error('The Stripe webhook payload is invalid.');
         }
-        await this.customerRepository.processStripeEvent(
+        await this.taonECommerceCustomerRepository.processStripeEvent(
           event as TaonStripeWebhookEvent,
         );
         return { received: true };

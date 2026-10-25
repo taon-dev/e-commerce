@@ -91,9 +91,15 @@ export class TaonAuthContextRepository extends TaonAuthContextRepositoryBase<
   public override async getContext(
     userId?: number | string,
     sessionId?: number | string,
+    returnEmptyContext = false,
   ): Promise<TaonAuthContextEntity> {
     //#region @websqlFunc
-    const context = await super.getContext(userId, sessionId);
+
+    const context = await super.getContext(
+      userId,
+      sessionId,
+      returnEmptyContext,
+    );
     if (!userId) {
       return context;
     }

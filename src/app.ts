@@ -242,7 +242,7 @@ export class ECommerceApp implements OnInit {
   t = t.for(this);
 
   @ViewChild(TaonSessionButtonComponent)
-  taonSessionButtonComponent: TaonSessionButtonComponent;
+  taonSessionButtonComponent!: TaonSessionButtonComponent;
 
   taonECommerceProductApiService = inject(TaonECommerceProductApiService);
 
@@ -260,7 +260,7 @@ export class ECommerceApp implements OnInit {
   /**Required for proper theme*/
   theme = inject(TaonThemeService);
 
-  public readonly context: TaonAuthContextEntity;
+  public readonly context!: TaonAuthContextEntity;
 
   taonAdminService = inject(TaonAdminService);
 
@@ -541,6 +541,8 @@ export const ECommerceStartFunction = async (
 
   //#region add default email
   //#region @backend
+  //#region @esmRemove
+
   const taonSessionUserRepository = ref.getInstanceBy(
     TaonSessionUserRepository,
   );
@@ -658,6 +660,7 @@ export const ECommerceStartFunction = async (
       );
     }
   })();
+  //#endregion
 
   //#endregion
   //#endregion

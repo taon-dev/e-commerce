@@ -10,17 +10,17 @@
     </button>
   </header>
   @if (error()) {
-    <p
-      class="error"
-      role="alert">
-      {{ error() }}
-    </p>
+    <p class="error" role="alert">{{ error() }}</p>
   }
   <mat-tab-group
-    (selectedIndexChange)="onMainTabChange($event)"
-    [selectedIndex]="hasSuggestedProducts ? 0 : 1">
-    @if (hasSuggestedProducts) {
-      <mat-tab label="Buy">
+    [selectedIndex]="mainTabIndex()"
+    (selectedIndexChange)="onMainTabChange($event)">
+    <mat-tab label="Buy">
+      @if (!productsLoaded()) {
+        <p role="status">Loading products...</p>
+      } @else if (!suggestedProducts.length) {
+        <p>No products are currently available to you.</p>
+      } @else {
         <div class="products">
           @for (product of suggestedProducts; track product.id) {
             <article class="product">
@@ -32,35 +32,27 @@
               <button
                 mat-flat-button
                 type="button"
+                [disabled]="product.active !== true"
                 (click)="addProduct(product)">
                 Add to cart
               </button>
             </article>
           }
         </div>
-      </mat-tab>
-    } @else {
-      <mat-tab
-        label="Buy"
-        [disabled]="true"></mat-tab>
-    }
+      }
+    </mat-tab>
     <mat-tab label="Cart">
       @if (loadingCart()) {
         <p role="status">Loading cart...</p>
-      } @else if (!cart()?.items?.length) {
+      } @else if (!validCartItems.length) {
         <p>Your cart is empty.</p>
       } @else {
         <div class="cart-items">
-          @for (item of cart()!.items; track item.id) {
+          @for (item of validCartItems; track item.id) {
             <article class="cart-item">
               <div class="item-product">
                 <strong>{{ item.product.name }}</strong>
-                <span
-                  >{{
-                    item.product.price | currency: item.product.currency
-                  }}
-                  each</span
-                >
+                <span>{{ item.product.price | currency: item.product.currency }} each</span>
               </div>
               <div class="quantity">
                 <button
@@ -79,96 +71,140 @@
                   <mat-icon>add</mat-icon>
                 </button>
               </div>
-              <strong>{{
-                item.product.price * item.quantity
-                  | currency: item.product.currency
-              }}</strong>
-              <button
-                mat-button
-                type="button"
-                (click)="removeItem(item.id!)">
+              <strong>
+                {{ item.product.price * item.quantity | currency: item.product.currency }}
+              </strong>
+              <button mat-button type="button" (click)="removeItem(item.id!)">
                 Remove
               </button>
             </article>
           }
         </div>
+        <button mat-flat-button type="button" (click)="goToCheckout()">
+          Go to Checkout
+        </button>
       }
     </mat-tab>
-    <mat-tab label="Checkout">
-     <h1>TODO</h1>
+    <mat-tab label="Checkout" [disabled]="!validCartItems.length">
+      @if (!validCartItems.length) {
+        <p>Add an active product to your cart to continue.</p>
+      } @else {
+        <div class="checkout-items">
+          @for (item of validCartItems; track item.id) {
+            <article class="checkout-item">
+              <span>{{ item.product.name }} × {{ item.quantity }}</span>
+              <span>{{ item.product.price | currency: item.product.currency }} each</span>
+              <strong>
+                {{ item.product.price * item.quantity | currency: item.product.currency }}
+              </strong>
+            </article>
+          }
+        </div>
+        <p>
+          Subtotal:
+          {{ cartSubtotal | currency: validCartItems[0].product.currency }}
+        </p>
+        <p>
+          Total:
+          {{ cartSubtotal | currency: validCartItems[0].product.currency }}
+        </p>
+        <p>Final prices and availability are revalidated by the server.</p>
+        <button
+          mat-flat-button
+          type="button"
+          [disabled]="creatingCheckout()"
+          (click)="checkout()">
+          {{ creatingCheckout() ? 'Preparing checkout...' : 'Buy' }}
+        </button>
+      }
     </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon aria-hidden="true">settings</mat-icon>
-        <span>Purchased</span>
-      </ng-template>
-      <mat-tab-group (selectedIndexChange)="onSettingsTabChange($event)">
+    <mat-tab label="Purchased">
+      <mat-tab-group
+        [selectedIndex]="purchasedTabIndex()"
+        (selectedIndexChange)="onSettingsTabChange($event)">
         <mat-tab label="Active">
-          @if (loadingSubscriptions()) {
-            <p role="status">Loading subscription statuses...</p>
-          } @else if (!subscriptions().length) {
-            <p>No subscriptions.</p>
+          @if (loadingEntitlements()) {
+            <p role="status">Loading purchases...</p>
           } @else {
-            <div class="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Subscription</th>
-                    <th>Status</th>
-                    <th>Valid until</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (
-                    subscription of subscriptions();
-                    track subscription.id
-                  ) {
+            <h3>Active subscriptions</h3>
+            @if (!activeSubscriptionEntitlements.length) {
+              <p>No active subscriptions.</p>
+            } @else {
+              <div class="table-scroll">
+                <table>
+                  <thead>
                     <tr>
-                      <td>{{ subscription.productName }}</td>
-                      <td>{{ subscription.status }}</td>
-                      <td>
-                        {{
-                          subscription.validUntil
-                            ? (subscription.validUntil | date)
-                            : '—'
-                        }}
-                      </td>
-                      <td>
-                        @if (subscription.status === 'active') {
-                          <button
-                            mat-button
-                            type="button"
-                            (click)="unsubscribe()">
-                            Unsubscribe
-                          </button>
-                        }
-                      </td>
+                      <th>Subscription</th>
+                      <th>Status</th>
+                      <th>Started</th>
+                      <th>Current period end</th>
                     </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    @for (entitlement of activeSubscriptionEntitlements; track entitlement.id) {
+                      <tr>
+                        <td>{{ entitlement.product.name }}</td>
+                        <td>{{ entitlement.status }}</td>
+                        <td>{{ entitlement.startedAt | date }}</td>
+                        <td>
+                          {{ entitlement.currentPeriodEnd ? (entitlement.currentPeriodEnd | date) : '—' }}
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+            <h3>Purchased product history</h3>
+            @if (!purchasedProductHistory.length) {
+              <p>No purchased products.</p>
+            } @else {
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Status</th>
+                      <th>Purchased</th>
+                      <th>Access expires</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (entitlement of purchasedProductHistory; track entitlement.id) {
+                      <tr>
+                        <td>
+                          {{ entitlement.product.name }}
+                          @if (entitlement.product.type === 'lifetime') {
+                            <strong>(Lifetime)</strong>
+                          }
+                        </td>
+                        <td>{{ entitlement.status }}</td>
+                        <td>{{ entitlement.startedAt | date }}</td>
+                        <td>
+                          {{ entitlement.currentPeriodEnd ? (entitlement.currentPeriodEnd | date) : 'No expiration' }}
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
           }
         </mat-tab>
         <mat-tab label="Orders">
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="loadingOrders()"
+            (click)="loadOrders()">
+            {{ loadingOrders() ? 'Refreshing...' : 'Refresh orders' }}
+          </button>
           @if (loadingOrders()) {
             <p role="status">Loading orders...</p>
           } @else {
             <taon-datatable
               [data]="orders()"
               [columns]="orderColumns"
-              [hideAddButton]="true"
-              [hideSearch]="true" />
-          }
-        </mat-tab>
-        <mat-tab label="Transactions">
-          @if (loadingTransactions()) {
-            <p role="status">Loading transactions...</p>
-          } @else {
-            <taon-datatable
-              [data]="transactions()"
-              [columns]="transactionColumns"
               [hideAddButton]="true"
               [hideSearch]="true" />
           }

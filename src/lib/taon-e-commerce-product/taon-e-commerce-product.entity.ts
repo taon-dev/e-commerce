@@ -1,7 +1,13 @@
+import { TaonCmsContentEntity } from '@taon-dev/cms/src';
+import { TaonGroupEntity } from '@taon-dev/session/src';
 import {
   BooleanColumn,
   Column,
   CreateDateColumn,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   OneToMany,
   String500Column,
   TaonBaseAbstractEntity,
@@ -28,7 +34,7 @@ export class TaonECommerceProductEntity extends TaonBaseAbstractEntity<TaonEComm
   active!: boolean;
 
   @Column({ type: 'varchar' })
-  type!: 'digital' | 'physical' | 'service';
+  type!: 'lifetime' | 'item' | 'subscription' | 'digital' | 'physical' | 'service';
 
   @Column({ type: 'float' })
   price!: number;
@@ -44,6 +50,60 @@ export class TaonECommerceProductEntity extends TaonBaseAbstractEntity<TaonEComm
 
   @Column({ type: 'datetime', nullable: true })
   stripeLastSyncedAt!: Date | null;
+
+  @Column({ type: 'float', nullable: true })
+  stripeSyncedPrice!: number | null;
+
+  @Column({ type: 'varchar', length: 3, nullable: true })
+  stripeSyncedCurrency!: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  stripeSyncedType!: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  stripeSyncedName!: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  stripeSyncedDescription!: string | null;
+
+  @Column({ type: 'boolean', nullable: true })
+  stripeSyncedActive!: boolean | null;
+
+  @Column({ type: 'int', nullable: true })
+  stripeSyncedIntervalValue!: number | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  stripeSyncedIntervalUnit!: string | null;
+
+  @Column({ type: 'int', nullable: true })
+  maxQuantityPerUser!: number | null;
+
+  @Column({ type: 'int', nullable: true })
+  stockLimit!: number | null;
+
+  @Column({ type: 'int', nullable: true })
+  subscriptionIntervalValue!: number | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  subscriptionIntervalUnit!: 'seconds' | 'minutes' | 'hours' | 'days' | null;
+
+  @Column({ type: 'int', nullable: true })
+  cmsContentId!: number | null;
+
+  @BooleanColumn(false)
+  inheritPermissionsFromPost!: boolean;
+
+  @ManyToOne(() => TaonCmsContentEntity, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'cmsContentId' })
+  cmsContent!: TaonCmsContentEntity | null;
+
+  @ManyToMany(() => TaonGroupEntity)
+  @JoinTable({
+    name: 'taon_ecommerce_product_suggested_groups',
+    joinColumn: { name: 'productId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'groupId', referencedColumnName: 'id' },
+  })
+  suggestedGroups!: TaonGroupEntity[];
 
   @CreateDateColumn()
   createdAt!: Date;

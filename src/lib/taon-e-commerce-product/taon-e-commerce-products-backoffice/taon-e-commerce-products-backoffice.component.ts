@@ -7,13 +7,13 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { TaonDatatableComponent } from '@taon-dev/ui/src';
 
 import { TaonECommerceProductApiService } from '../taon-e-commerce-product.api.service';
 import { TaonECommerceProductEntity } from '../taon-e-commerce-product.entity';
-import { TaonECommerceProductEditDialogComponent } from '../taon-e-commerce-product-edit-dialog.component';
-import type { TaonECommerceProductEditDialogData } from '../taon-e-commerce-product-edit-dialog.component';
+import { TaonECommerceStripeSyncDialogComponent } from '../taon-e-commerce-stripe-sync-dialog.component';
 
 @Component({
   selector: 'app-taon-e-commerce-products-backoffice',
@@ -57,60 +57,45 @@ export class TaonECommerceProductsBackofficeComponent {
   ];
 
   private readonly dialog = inject(MatDialog);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  readonly syncInProgress = signal(false);
-
-  readonly syncError = signal('');
+  readonly syncDialogOpen = signal(false);
 
   ngAfterViewInit(): void {
     this.datatable.reload();
   }
 
   add(): void {
-    this.openEditor({});
+    void this.router.navigate(['new'], { relativeTo: this.route });
   }
 
   edit(product: TaonECommerceProductEntity): void {
-    this.openEditor({ product });
+    if (typeof product.id === 'number') {
+      void this.router.navigate(['edit', product.id], {
+        relativeTo: this.route,
+      });
+    }
   }
 
   async syncWithStripe(): Promise<void> {
-    if (this.syncInProgress()) {
+    if (this.syncDialogOpen()) {
       return;
     }
-
-    this.syncInProgress.set(true);
-    this.syncError.set('');
-    try {
-      await this.api.syncWithStripe();
-      this.datatable.reload();
-    } catch (error) {
-      console.error(
-        '[taon-e-commerce-products-backoffice] Stripe sync failed',
-        error,
-      );
-      this.syncError.set(
-        error instanceof Error
-          ? error.message
-          : 'Stripe synchronization could not be completed.',
-      );
-    } finally {
-      this.syncInProgress.set(false);
-    }
-  }
-
-  private openEditor(data: TaonECommerceProductEditDialogData): void {
-    const ref = this.dialog.open(TaonECommerceProductEditDialogComponent, {
-      data,
-      width: '44rem',
-      maxWidth: '95vw',
-      disableClose: true,
-    });
-    ref.afterClosed().subscribe(product => {
-      if (product) {
-        this.datatable.reload();
-      }
-    });
+    this.syncDialogOpen.set(true);
+    this.dialog
+      .open(TaonECommerceStripeSyncDialogComponent, {
+        width: '42rem',
+        maxWidth: '95vw',
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe(results => {
+        this.syncDialogOpen.set(false);
+        if (Array.isArray(results) && results.some(result => result.success)) {
+          this.datatable.reload();
+        }
+      });
   }
 
   public get crud() {

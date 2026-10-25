@@ -1,24 +1,17 @@
 # @taon-dev/e-commerce
 
-Use `taon-cart-button` to expose the shared cart UI in an application. Both
-cart components accept the same `TaonCartConfig`; Buy is shown only when
-suggested products are provided.
+`taon-cart-button` opens the authenticated cart and checkout flow. Available
+products are loaded from the backend, which filters inactive products and
+applies product-group suggestions for the current user.
 
-```ts
-import type { TaonCartConfig } from '@taon-dev/e-commerce/src';
+Configure Stripe's secret key and webhook signing secret in the server-side
+Taon environment (`STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_KEY`). Never expose
+these values to browser code. The Products page's **Sync with Stripe** dialog
+checks the server connection, synchronizes local products, and displays the
+dedicated webhook URL to register in Stripe.
 
-const cartConfig: TaonCartConfig = {
-  suggestedProducts: products,
-  iconShortText: 'Shop',
-};
-```
-
-```html
-<taon-cart-button [config]="cartConfig" />
-```
-
-The cart's Orders and Transactions pages use authenticated backend endpoints
-that derive the current user from the session. Subscription statuses are
-example data and are not a complete subscription implementation.
-
-       
+Stripe webhooks are signature-verified against the raw request body. Orders
+and product entitlements are finalized from verified Stripe events, not from
+the browser success redirect. Day-based subscription intervals use Stripe
+recurring prices; seconds, minutes, and hours are represented as Taon-side
+entitlement expirations.

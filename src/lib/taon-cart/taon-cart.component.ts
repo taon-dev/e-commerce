@@ -15,9 +15,8 @@ import { TaonDatatableComponent } from '@taon-dev/ui/src';
 
 import type { TaonECommerceCartEntity } from '../taon-e-commerce-cart/taon-e-commerce-cart.entity';
 import type { TaonECommerceOrderEntity } from '../taon-e-commerce-order/taon-e-commerce-order.entity';
-import type { TaonECommercePaymentTransactionEntity } from '../taon-e-commerce-payment-transaction/taon-e-commerce-payment-transaction.entity';
 import { TaonECommerceCustomerApiService } from '../taon-e-commerce-customer/taon-e-commerce-customer.api.service';
-import type { TaonECommerceSubscriptionStatus } from '../taon-e-commerce-customer/taon-e-commerce-customer.controller';
+import type { TaonECommerceEntitlementEntity } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.entity';
 import type { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon-e-commerce-product.entity';
 import type { TaonCartConfig } from './taon-cart.models';
 
@@ -44,12 +43,15 @@ export class TaonCartComponent {
 
   readonly cart = signal<TaonECommerceCartEntity | null>(null);
   readonly orders = signal<TaonECommerceOrderEntity[]>([]);
-  readonly transactions = signal<TaonECommercePaymentTransactionEntity[]>([]);
-  readonly subscriptions = signal<TaonECommerceSubscriptionStatus[]>([]);
+  readonly entitlements = signal<TaonECommerceEntitlementEntity[]>([]);
+  readonly products = signal<TaonECommerceProductEntity[]>([]);
+  readonly productsLoaded = signal(false);
+  readonly mainTabIndex = signal(0);
+  readonly purchasedTabIndex = signal(0);
   readonly loadingCart = signal(false);
   readonly loadingOrders = signal(false);
-  readonly loadingTransactions = signal(false);
-  readonly loadingSubscriptions = signal(false);
+  readonly loadingEntitlements = signal(false);
+  readonly creatingCheckout = signal(false);
   readonly error = signal('');
 
   readonly orderColumns: MtxGridColumn[] = [
@@ -60,18 +62,9 @@ export class TaonCartComponent {
     { header: 'Created', field: 'createdAt', sortable: true },
   ];
 
-  readonly transactionColumns: MtxGridColumn[] = [
-    { header: 'ID', field: 'id', sortable: true },
-    { header: 'Order ID', field: 'orderId', sortable: true },
-    { header: 'Provider', field: 'provider', sortable: true },
-    { header: 'Status', field: 'status', sortable: true },
-    { header: 'Amount', field: 'amount', sortable: true },
-    { header: 'Currency', field: 'currency', sortable: true },
-    { header: 'Created', field: 'createdAt', sortable: true },
-  ];
-
   constructor() {
     void this.loadCart();
+    void this.loadProducts();
   }
 
   close(): void {
@@ -79,27 +72,58 @@ export class TaonCartComponent {
   }
 
   onMainTabChange(index: number): void {
-    if (index === (this.hasSuggestedProducts ? 2 : 1)) {
-      void this.loadSubscriptions();
+    this.mainTabIndex.set(index);
+    if (index === 3) {
+      void this.loadEntitlements();
     }
   }
 
   onSettingsTabChange(index: number): void {
+    this.purchasedTabIndex.set(index);
     if (index === 0) {
-      void this.loadSubscriptions();
+      void this.loadEntitlements();
     } else if (index === 1) {
       void this.loadOrders();
-    } else if (index === 2) {
-      void this.loadTransactions();
     }
   }
 
   get suggestedProducts(): TaonECommerceProductEntity[] {
-    return this.config?.suggestedProducts ?? [];
+    return this.products();
   }
 
   get hasSuggestedProducts(): boolean {
     return this.suggestedProducts.length > 0;
+  }
+
+  get validCartItems() {
+    return (this.cart()?.items ?? []).filter(
+      item => item.product?.active === true,
+    );
+  }
+
+  get cartSubtotal(): number {
+    return this.validCartItems.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0,
+    );
+  }
+
+  get activeSubscriptionEntitlements(): TaonECommerceEntitlementEntity[] {
+    const now = Date.now();
+    return this.entitlements().filter(
+      entitlement =>
+        entitlement.product.type === 'subscription' &&
+        (entitlement.status === 'active' ||
+          (entitlement.status === 'canceled' &&
+            Boolean(entitlement.currentPeriodEnd) &&
+          Date.parse(entitlement.currentPeriodEnd!.toString()) > now)),
+    );
+  }
+
+  get purchasedProductHistory(): TaonECommerceEntitlementEntity[] {
+    return this.entitlements().filter(
+      entitlement => entitlement.product.type !== 'subscription',
+    );
   }
 
   async loadCart(): Promise<void> {
@@ -115,6 +139,20 @@ export class TaonCartComponent {
       this.reportError('Unable to load your cart.', error);
     } finally {
       this.loadingCart.set(false);
+    }
+  }
+
+  async loadProducts(): Promise<void> {
+    try {
+      const products = await this.request<TaonECommerceProductEntity[]>(
+        this.api.controller.getBuyProducts().request!(),
+      );
+      this.products.set(products.filter(product => product.active === true));
+      this.productsLoaded.set(true);
+    } catch (error) {
+      this.reportError('Unable to load available products.', error);
+      this.products.set([]);
+      this.productsLoaded.set(true);
     }
   }
 
@@ -178,50 +216,44 @@ export class TaonCartComponent {
     }
   }
 
-  async loadTransactions(): Promise<void> {
-    this.loadingTransactions.set(true);
+  async loadEntitlements(): Promise<void> {
+    this.loadingEntitlements.set(true);
     this.error.set('');
     try {
-      this.transactions.set(
-        await this.request<TaonECommercePaymentTransactionEntity[]>(
-          this.api.controller.getMyTransactions().request!(),
+      this.entitlements.set(
+        await this.request<TaonECommerceEntitlementEntity[]>(
+          this.api.controller.getMyEntitlements().request!(),
         ),
       );
     } catch (error) {
-      this.reportError('Unable to load your transactions.', error);
+      this.reportError('Unable to load your purchases.', error);
     } finally {
-      this.loadingTransactions.set(false);
+      this.loadingEntitlements.set(false);
     }
   }
 
-  async loadSubscriptions(): Promise<void> {
-    this.loadingSubscriptions.set(true);
+  goToCheckout(): void {
+    if (!this.validCartItems.length) {
+      return;
+    }
+    this.mainTabIndex.set(2);
+  }
+
+  async checkout(): Promise<void> {
+    if (this.creatingCheckout() || !this.validCartItems.length) {
+      return;
+    }
+    this.creatingCheckout.set(true);
     this.error.set('');
     try {
-      this.subscriptions.set(
-        await this.request<TaonECommerceSubscriptionStatus[]>(
-          this.api.controller.getMySubscriptionStatuses().request!(),
-        ),
+      const session = await this.request<{ checkoutUrl: string }>(
+        this.api.controller.createMyCheckoutSession().request!(),
       );
+      window.location.assign(session.checkoutUrl);
     } catch (error) {
-      this.reportError('Unable to load subscription statuses.', error);
+      this.reportError('Unable to start Stripe Checkout.', error);
     } finally {
-      this.loadingSubscriptions.set(false);
-    }
-  }
-
-  async unsubscribe(): Promise<void> {
-    this.error.set('');
-    try {
-      const response = await this.api.controller
-        .unsubscribeFromExampleSubscription()
-        .request!();
-      if (response.statusCode >= 400) {
-        throw new Error(response.responseText || 'The request failed.');
-      }
-      await this.loadSubscriptions();
-    } catch (error) {
-      this.reportError('Unable to unsubscribe.', error);
+      this.creatingCheckout.set(false);
     }
   }
 

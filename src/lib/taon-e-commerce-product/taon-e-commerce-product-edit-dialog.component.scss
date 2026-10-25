@@ -1,13 +1,19 @@
 .product-form {
   display: grid;
   gap: 1rem;
-  min-width: min(36rem, 80vw);
+  max-width: 52rem;
 }
 
 .price-fields {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+.product-editor {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 1.5rem;
 }
 
 .stripe-info {
@@ -28,8 +34,19 @@
   color: #b3261e;
 }
 
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
 @media (max-width: 600px) {
-  .product-form {
-    min-width: 0;
+  .product-editor {
+    padding: 1rem;
+  }
+
+  .price-fields {
+    grid-template-columns: 1fr;
   }
 }

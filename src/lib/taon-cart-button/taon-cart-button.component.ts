@@ -4,9 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 
-import { TaonECommerceCustomerApiService } from '../taon-e-commerce-customer/taon-e-commerce-customer.api.service';
 import { TaonCartComponent } from '../taon-cart/taon-cart.component';
 import type { TaonCartConfig } from '../taon-cart/taon-cart.models';
+import { TaonECommerceCustomerApiService } from '../taon-e-commerce-customer/taon-e-commerce-customer.api.service';
+import { TaonECommerceProductApiService } from '../taon-e-commerce-product/taon-e-commerce-product.api.service';
 
 @Component({
   selector: 'taon-cart-button',
@@ -14,22 +15,48 @@ import type { TaonCartConfig } from '../taon-cart/taon-cart.models';
   styleUrls: ['./taon-cart-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatBadgeModule, MatButtonModule, MatIconModule],
-  providers: [TaonECommerceCustomerApiService],
+  providers: [
+    TaonECommerceCustomerApiService,
+    TaonECommerceProductApiService,
+  ],
 })
 export class TaonCartButtonComponent {
   @Input() config: TaonCartConfig = {};
 
   private readonly dialog = inject(MatDialog);
+
   private readonly api = inject(TaonECommerceCustomerApiService);
+
   readonly cartItemCount = signal(0);
+
+  readonly suggestedProductCount = signal(0);
+
   readonly error = signal('');
 
   constructor() {
     void this.loadCartCount();
+    this.apiProducts.getAllProductForUser().subscribe({
+      next: config =>
+        this.suggestedProductCount.set(
+          config.suggestedProducts?.length ?? 0,
+        ),
+      error: error => {
+        console.error('[taon-cart-button] Unable to load suggested products', error);
+        this.error.set('Unable to load suggested products.');
+      },
+    });
   }
 
+  private readonly apiProducts = inject(TaonECommerceProductApiService);
+
   get badgeText(): string {
-    return this.config?.iconShortText ?? String(this.cartItemCount());
+    return String(
+      this.cartItemCount() || this.suggestedProductCount(),
+    );
+  }
+
+  get badgeHidden(): boolean {
+    return this.cartItemCount() === 0 && this.suggestedProductCount() === 0;
   }
 
   openCart(): void {

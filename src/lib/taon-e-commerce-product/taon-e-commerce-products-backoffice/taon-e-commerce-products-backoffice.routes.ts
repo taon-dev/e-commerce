@@ -1,6 +1,5 @@
 //#region imports
 import { Routes } from '@angular/router';
-import { adminLazyRoute } from '@taon-dev/ui/src';
 //#endregion
 
 export const TaonECommerceProductsBackofficeRoutes: Routes = [
@@ -8,17 +7,20 @@ export const TaonECommerceProductsBackofficeRoutes: Routes = [
     path: '',
     loadComponent: () =>
       import('./taon-e-commerce-products-backoffice.component').then(m => m.TaonECommerceProductsBackofficeComponent),
-
-    children: [
-      // adminLazyRoute({
-      //   path: 'dashboard',
-      //   menuItem: 'Dashboard',
-      //   icon: 'dashboard',
-      //   expandable: false,
-      //   loader: () =>
-      //     import('./anothermodule.routes').then(m => m.DashboardRoutes),
-      // }),
-    ],
+  },
+  {
+    path: 'new',
+    loadComponent: () =>
+      import('../taon-e-commerce-product-edit-dialog.component').then(
+        m => m.TaonECommerceProductEditDialogComponent,
+      ),
+  },
+  {
+    path: 'edit/:id',
+    loadComponent: () =>
+      import('../taon-e-commerce-product-edit-dialog.component').then(
+        m => m.TaonECommerceProductEditDialogComponent,
+      ),
   },
 ];
 

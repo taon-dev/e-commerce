@@ -1,5 +1,4 @@
-//#region taon auth decorator
-
+//#region imports
 import { MIGRATIONS_CLASSES_FOR_SessionContext } from '@taon-dev/session/src';
 import {
   TaonAuthContextEntity as TaonAuthContextEntityBase,
@@ -11,6 +10,10 @@ import {
   TaonAuthContextRepository as TaonAuthContextRepositoryBase,
 } from '@taon-dev/session/src';
 import { TaonEntity, TaonMigration, TaonRepository } from 'taon/src';
+
+import { TaonECommerceEntitlementEntity } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.entity';
+import { getTaonECommerceProductEffectivePermissions } from '../taon-e-commerce-product/taon-e-commerce-product-permissions.utils';
+//#endregion
 
 export const TaonSessionCoreGroups = {
   ...TaonSessionCoreGroupsBase,
@@ -63,12 +66,12 @@ export class TaonAuthContextHasAccess extends TaonAuthContextHasAccessBase {
 
   get toManagePosts(): boolean {
     //#region @browserFunc
-    return this.context.snapshoot.toManagePosts;
+    return !!this.context.snapshoot.toManagePosts;
     //#endregion
     //#region @websqlFunc
     return (
       this.context.isSuperUser ||
-      this.context.hasRole(TaonSessionCoreRoles.PostsManager)
+      this.context.isInGroup(TaonSessionCoreGroups.Administrator)
     );
     //#endregion
   }
@@ -84,6 +87,48 @@ export class TaonAuthContextRepository extends TaonAuthContextRepositoryBase<
 > {
   // @ts-ignore
   entityClassResolveFn = () => TaonAuthContextEntity;
+
+  public override async getContext(
+    userId?: number | string,
+    sessionId?: number | string,
+  ): Promise<TaonAuthContextEntity> {
+    //#region @websqlFunc
+    const context = await super.getContext(userId, sessionId);
+    if (!userId) {
+      return context;
+    }
+    const entitlements = await this.ctx.connection
+      .getRepository(TaonECommerceEntitlementEntity)
+      .find({
+        where: { userId: Number(userId) },
+        relations: {
+          product: {
+            permissions: { permission: true },
+            cmsContent: { permissions: true },
+          },
+        },
+      });
+    const now = Date.now();
+    const purchasedPermissions = entitlements
+      .filter(
+        entitlement =>
+          entitlement.status === 'active' &&
+          (!entitlement.currentPeriodEnd ||
+            entitlement.currentPeriodEnd.getTime() > now),
+      )
+      .flatMap(entitlement =>
+        getTaonECommerceProductEffectivePermissions(entitlement.product),
+      )
+      .map(
+        permission =>
+          permission.code as TaonSessionCoreAuthorization['permissions'][keyof TaonSessionCoreAuthorization['permissions']],
+      );
+    context.permissions = [
+      ...new Set([...context.permissions, ...purchasedPermissions]),
+    ];
+    return context;
+    //#endregion
+  }
 }
 
 @TaonMigration({

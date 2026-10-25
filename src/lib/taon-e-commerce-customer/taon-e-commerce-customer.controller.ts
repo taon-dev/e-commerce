@@ -1,3 +1,4 @@
+//#region imports
 import { TaonSessionRepository } from '@taon-dev/session/src';
 import {
   Body,
@@ -9,16 +10,21 @@ import {
   TaonController,
 } from 'taon/src';
 
-import { TaonECommerceCustomerRepository } from './taon-e-commerce-customer.repository';
 import type { TaonECommerceCartEntity } from '../taon-e-commerce-cart/taon-e-commerce-cart.entity';
+import type { TaonECommerceEntitlementEntity } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.entity';
 import type { TaonECommerceOrderEntity } from '../taon-e-commerce-order/taon-e-commerce-order.entity';
 import type { TaonECommercePaymentTransactionEntity } from '../taon-e-commerce-payment-transaction/taon-e-commerce-payment-transaction.entity';
+import type { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon-e-commerce-product.entity';
+
+import { TaonECommerceCustomerRepository } from './taon-e-commerce-customer.repository';
+//#endregion
 
 export interface TaonECommerceSubscriptionStatus {
-  id: string;
+  id: number;
   productName: string;
-  status: 'active' | 'cancelled';
-  validUntil: string | null;
+  status: 'active' | 'canceled' | 'past_due' | 'expired';
+  validUntil: Date | null;
+  startedAt: Date;
 }
 
 @TaonController<TaonECommerceCustomerController>({
@@ -36,15 +42,16 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     TaonECommerceCustomerRepository,
   );
 
-  private readonly unsubscribedUsers = new Set<number>();
-
+  //#region methods / before each request
   protected async beforeEachRequest({
     req,
     res,
   }: Models.TaonCtrlBeforeEachRequestParams<TaonECommerceCustomerController>): Promise<void> {
     await this.sessionRepository.throwIfNotAuthenticated({ req, res });
   }
+  //#endregion
 
+  //#region methods / get my cart
   @GET()
   getMyCart(): Taon.Response<TaonECommerceCartEntity> {
     return async req => {
@@ -52,7 +59,19 @@ export class TaonECommerceCustomerController extends TaonBaseController<
       return this.customerRepository.getCart(userId);
     };
   }
+  //#endregion
 
+  //#region methods / get buy products
+  @GET()
+  getBuyProducts(): Taon.Response<TaonECommerceProductEntity[]> {
+    return async req => {
+      const userId = Number('userId' in req ? req.userId : undefined);
+      return this.customerRepository.getSuggestedProducts(userId);
+    };
+  }
+  //#endregion
+
+  //#region methods / add to my cart
   @POST()
   addToMyCart(
     @Body('productId') productId: number,
@@ -63,7 +82,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
       return this.customerRepository.addProduct(userId, productId, quantity);
     };
   }
+  //#endregion
 
+  //#region methods / update my cart item
   @POST()
   updateMyCartItem(
     @Body('itemId') itemId: number,
@@ -74,7 +95,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
       return this.customerRepository.setItemQuantity(userId, itemId, quantity);
     };
   }
+  //#endregion
 
+  //#region methods / remove from my cart
   @POST()
   removeFromMyCart(
     @Body('itemId') itemId: number,
@@ -84,7 +107,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
       return this.customerRepository.removeItem(userId, itemId);
     };
   }
+  //#endregion
 
+  //#region methods / get my orders
   @GET()
   getMyOrders(): Taon.Response<TaonECommerceOrderEntity[]> {
     return async req => {
@@ -92,7 +117,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
       return this.customerRepository.getOrders(userId);
     };
   }
+  //#endregion
 
+  //#region methods / get my transactions
   @GET()
   getMyTransactions(): Taon.Response<TaonECommercePaymentTransactionEntity[]> {
     return async req => {
@@ -100,29 +127,54 @@ export class TaonECommerceCustomerController extends TaonBaseController<
       return this.customerRepository.getTransactions(userId);
     };
   }
+  //#endregion
 
+  //#region methods / get my subscription statuses
   @GET()
   getMySubscriptionStatuses(): Taon.Response<
     TaonECommerceSubscriptionStatus[]
   > {
     return async req => {
       const userId = Number('userId' in req ? req.userId : undefined);
-      return [
-        {
-          id: `example-subscription-${userId}`,
-          productName: 'Example subscription',
-          status: this.unsubscribedUsers.has(userId) ? 'cancelled' : 'active',
-          validUntil: null,
-        },
-      ];
+      const entitlements =
+        await this.customerRepository.getEntitlements(userId);
+      return entitlements.map(
+        (entitlement: TaonECommerceEntitlementEntity) => ({
+          id: entitlement.id,
+          productName: entitlement.product.name,
+          status: entitlement.status,
+          validUntil: entitlement.currentPeriodEnd,
+          startedAt: entitlement.startedAt,
+        }),
+      );
     };
   }
+  //#endregion
 
+  //#region methods / create my checkout session
   @POST()
-  unsubscribeFromExampleSubscription(): Taon.Response<void> {
+  createMyCheckoutSession(): Taon.Response<{
+    orderId: number;
+    checkoutUrl: string;
+  }> {
     return async req => {
       const userId = Number('userId' in req ? req.userId : undefined);
-      this.unsubscribedUsers.add(userId);
+      const origin = this.ctx.frontendHostUri.origin;
+      return this.customerRepository.createCheckoutSession(userId, {
+        successUrl: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}/checkout/cancel`,
+      });
     };
   }
+  //#endregion
+
+  //#region methods / get my entitlements
+  @GET()
+  getMyEntitlements(): Taon.Response<TaonECommerceEntitlementEntity[]> {
+    return async req => {
+      const userId = Number('userId' in req ? req.userId : undefined);
+      return this.customerRepository.getEntitlements(userId);
+    };
+  }
+  //#endregion
 }

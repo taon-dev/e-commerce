@@ -1,0 +1,85 @@
+import { TaonCmsContentEntity } from '@taon-dev/cms/src';
+import { TaonCmsApplicationHookEntity } from '@taon-dev/cms/src';
+import { TaonCmsApplicationHook } from '@taon-dev/cms/src';
+import { ClassHelpers, TaonBaseMigration, TaonMigration } from 'taon/src';
+import { QueryRunner, Table } from 'taon-typeorm/src';
+
+
+//#region Migration class for context "ECommerce"
+@TaonMigration({
+  className: 'ECommerce_1792506757808_applicaitonHooks',
+})
+export class ECommerce_1792506757808_applicaitonHooks extends TaonBaseMigration {
+  APPLICATION_HOOK_TABLE = ClassHelpers.getName(TaonCmsApplicationHookEntity);
+
+  CONTENT_TABLE = ClassHelpers.getName(TaonCmsContentEntity);
+
+  //#region up
+  async up(queryRunner: QueryRunner): Promise<any> {
+    await queryRunner.startTransaction();
+    try {
+      if (!(await queryRunner.hasTable(this.APPLICATION_HOOK_TABLE))) {
+        await queryRunner.createTable(
+          new Table({
+            name: this.APPLICATION_HOOK_TABLE,
+            columns: [
+              {
+                name: 'id',
+                type: 'integer',
+                isPrimary: true,
+                isGenerated: true,
+                generationStrategy: 'increment',
+              },
+              { name: 'hook', type: 'varchar', isUnique: true },
+              {
+                name: 'contentId',
+                type: 'integer',
+                isNullable: true,
+                isUnique: true,
+              },
+            ],
+            foreignKeys: [
+              {
+                columnNames: ['contentId'],
+                referencedTableName: this.CONTENT_TABLE,
+                referencedColumnNames: ['id'],
+                onDelete: 'SET NULL',
+              },
+            ],
+          }),
+          true,
+        );
+      }
+
+      await this.persistApplicationHooks(queryRunner);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      console.error('Error in migration:', error);
+      await queryRunner.rollbackTransaction();
+      throw error;
+    }
+  }
+  //#endregion
+
+  //#region down
+  async down(queryRunner: QueryRunner): Promise<any> {
+    if (await queryRunner.hasTable(this.APPLICATION_HOOK_TABLE)) {
+      await queryRunner.dropTable(this.APPLICATION_HOOK_TABLE, true);
+    }
+  }
+  //#endregion
+
+  private async persistApplicationHooks(
+    queryRunner: QueryRunner,
+  ): Promise<void> {
+    const repository = queryRunner.manager.getRepository(
+      TaonCmsApplicationHookEntity,
+    );
+    for (const hook of Object.values(TaonCmsApplicationHook)) {
+      if (!(await repository.findOneBy({ hook }))) {
+        await repository.save(repository.create({ hook, contentId: null }));
+      }
+    }
+  }
+}
+//#endregion

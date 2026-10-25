@@ -24,6 +24,9 @@ export class TaonECommerceOrderEntity extends TaonBaseAbstractEntity<TaonECommer
   @Column({ type: 'varchar' })
   status!: 'pending' | 'paid' | 'cancelled' | 'failed';
 
+  @Column({ type: 'varchar', nullable: true, unique: true })
+  stripeCheckoutSessionId!: string | null;
+
   @Column({ type: 'varchar', length: 3 })
   currency!: string;
 

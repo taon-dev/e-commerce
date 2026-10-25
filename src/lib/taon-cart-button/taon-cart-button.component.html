@@ -3,9 +3,9 @@
   type="button"
   aria-label="Open shopping cart"
   [matBadge]="badgeText"
-  [matBadgeHidden]="false"
+  [matBadgeHidden]="badgeHidden"
   (click)="openCart()">
-  <mat-icon>shopping_cart</mat-icon>
+  <mat-icon>{{ cartItemCount() ? 'shopping_cart' : 'workspace_premium' }}</mat-icon>
 </button>
 @if (error()) {
   <span class="cart-button-error" role="alert" [title]="error()">!</span>

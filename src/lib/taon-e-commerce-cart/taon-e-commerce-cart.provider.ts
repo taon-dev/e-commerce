@@ -7,5 +7,8 @@ import { _ } from 'tnp-core/src';
   className: 'TaonECommerceCartProvider',
 })
 export class TaonECommerceCartProvider extends TaonBaseProvider {
-  enabledTaonECommerceCartOption: boolean = true;
+  declare STRIPE_SECRET_KEY: string;
+
+  declare STRIPE_WEBHOOK_SECRET_KEY: string;
+
 }

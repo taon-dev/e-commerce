@@ -1,8 +1,7 @@
-<h2 mat-dialog-title>{{ data.product ? 'Edit product' : 'Add product' }}</h2>
-<br>
-<mat-dialog-content>
+<section class="product-editor">
+  <h1>{{ data.product ? 'Edit product' : 'Add product' }}</h1>
   @if (loading()) {
-    <p role="status">Loading permissions...</p>
+    <p role="status">Loading product options...</p>
   } @else {
     <form class="product-form">
       <mat-form-field appearance="outline">
@@ -27,12 +26,12 @@
 
       <mat-checkbox
         [checked]="draft().active"
-        (change)="updateActive($event.checked)"
-        >Active</mat-checkbox
-      >
+        (change)="updateActive($event.checked)">
+        Active
+      </mat-checkbox>
 
       <mat-form-field appearance="outline">
-        <mat-label>Type</mat-label>
+        <mat-label>Product type</mat-label>
         <mat-select
           [value]="draft().type"
           (selectionChange)="updateType($event.value)">
@@ -54,7 +53,6 @@
             (ngModelChange)="updatePrice($event)"
             name="price" />
         </mat-form-field>
-
         <mat-form-field appearance="outline">
           <mat-label>Currency</mat-label>
           <mat-select
@@ -67,71 +65,139 @@
         </mat-form-field>
       </div>
 
+      @if (draft().type === 'item') {
+        <div class="price-fields">
+          <mat-form-field appearance="outline">
+            <mat-label>Maximum quantity per user</mat-label>
+            <input
+              matInput
+              type="number"
+              min="1"
+              [ngModel]="draft().maxQuantityPerUser"
+              (ngModelChange)="updateMaxQuantityPerUser($event)"
+              name="maxQuantityPerUser" />
+            <mat-hint>Leave empty for no per-user limit.</mat-hint>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Overall stock limit</mat-label>
+            <input
+              matInput
+              type="number"
+              min="1"
+              [ngModel]="draft().stockLimit"
+              (ngModelChange)="updateStockLimit($event)"
+              name="stockLimit" />
+            <mat-hint>Leave empty for unlimited stock.</mat-hint>
+          </mat-form-field>
+        </div>
+      }
+
+      @if (draft().type === 'subscription') {
+        <div class="price-fields">
+          <mat-form-field appearance="outline">
+            <mat-label>Subscription interval value</mat-label>
+            <input
+              matInput
+              type="number"
+              min="1"
+              [ngModel]="draft().subscriptionIntervalValue"
+              (ngModelChange)="updateSubscriptionIntervalValue($event)"
+              name="subscriptionIntervalValue" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Subscription interval unit</mat-label>
+            <mat-select
+              [value]="draft().subscriptionIntervalUnit"
+              (selectionChange)="updateSubscriptionIntervalUnit($event.value)">
+              @for (unit of intervalUnits; track unit) {
+                <mat-option [value]="unit">{{ unit }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <p>Stripe recurring prices are used for day-based intervals. Shorter Taon intervals expire locally.</p>
+      }
+
       <mat-form-field appearance="outline">
         <mat-label>Attached permissions</mat-label>
         <mat-select
           multiple
+          [disabled]="draft().inheritPermissionsFromPost"
           [value]="selectedPermissionIds()"
           (selectionChange)="selectedPermissionIds.set($event.value)">
           @for (permission of permissions(); track permission.id) {
-            <mat-option [value]="permission.id"
-              >{{ permission.name }} ({{ permission.code }})</mat-option
-            >
+            <mat-option [value]="permission.id">
+              {{ permission.name }} ({{ permission.code }})
+            </mat-option>
+          }
+        </mat-select>
+        @if (draft().inheritPermissionsFromPost) {
+          <mat-hint>Inherited permissions are configured on the linked post.</mat-hint>
+        }
+      </mat-form-field>
+
+      <mat-checkbox
+        [checked]="draft().inheritPermissionsFromPost"
+        (change)="updatePermissionInheritance($event.checked)">
+        Attach permission from post
+      </mat-checkbox>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Suggest product only for groups of users</mat-label>
+        <mat-select
+          multiple
+          [value]="selectedGroupIds()"
+          (selectionChange)="selectedGroupIds.set($event.value)">
+          @for (group of groups(); track group.id) {
+            <mat-option [value]="group.id">{{ group.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-hint>No groups means default product visibility.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Link to post</mat-label>
+        <mat-select
+          [value]="draft().cmsContentId"
+          (selectionChange)="updateCmsContentId($event.value || null)">
+          <mat-option [value]="null">No linked post</mat-option>
+          @for (post of posts(); track post.id) {
+            <mat-option [value]="post.id">{{ post.title }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
+      @if (draft().inheritPermissionsFromPost && !draft().cmsContentId) {
+        <p role="status">No post is linked, so no post permissions can be inherited.</p>
+      }
 
       @if (data.product) {
-        <section
-          class="stripe-info"
-          aria-label="Stripe synchronization information">
-          <h3>Stripe synchronization</h3>
-          <p>
-            Stripe Product ID:
-            {{ data.product.stripeProductId || 'Not synchronized' }}
-          </p>
-          <p>
-            Stripe Price ID:
-            {{ data.product.stripePriceId || 'Not synchronized' }}
-          </p>
-          <p>
-            Last synchronized: {{ data.product.stripeLastSyncedAt || 'Never' }}
-          </p>
+        <section class="stripe-info" aria-label="Stripe synchronization information">
+          <h2>Stripe synchronization</h2>
+          <p>Stripe Product ID: {{ data.product.stripeProductId || 'Not synchronized' }}</p>
+          <p>Stripe Price ID: {{ data.product.stripePriceId || 'Not synchronized' }}</p>
+          <p>Last synchronized: {{ data.product.stripeLastSyncedAt || 'Never' }}</p>
         </section>
       }
     </form>
   }
 
   @if (error()) {
-    <p
-      class="error"
-      role="alert">
-      {{ error() }}
-    </p>
+    <p class="error" role="alert">{{ error() }}</p>
     @if (!permissionsLoaded() && !loading()) {
-      <button
-        mat-button
-        type="button"
-        (click)="load()">
-        Retry loading permissions
-      </button>
+      <button mat-button type="button" (click)="load()">Retry loading options</button>
     }
   }
-</mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button
-    mat-button
-    type="button"
-    [disabled]="saving()"
-    (click)="dialogRef.close()">
-    Cancel
-  </button>
-  <button
-    mat-flat-button
-    type="button"
-    [disabled]="loading() || saving() || !permissionsLoaded()"
-    (click)="save()">
-    {{ saving() ? 'Saving...' : 'Save' }}
-  </button>
-</mat-dialog-actions>
+  <div class="editor-actions">
+    <button mat-button type="button" [disabled]="saving()" (click)="cancel()">
+      Cancel
+    </button>
+    <button
+      mat-flat-button
+      type="button"
+      [disabled]="loading() || saving() || !permissionsLoaded()"
+      (click)="save()">
+      {{ saving() ? 'Saving...' : 'Save' }}
+    </button>
+  </div>
+</section>

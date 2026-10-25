@@ -4,20 +4,12 @@
     <button
       mat-stroked-button
       type="button"
-      [disabled]="syncInProgress()"
+      [disabled]="syncDialogOpen()"
       (click)="syncWithStripe()">
-      {{ syncInProgress() ? 'Syncing...' : 'Sync with Stripe' }}
+      Sync with Stripe
     </button>
   </div>
 </header>
-
-@if (syncError()) {
-  <p
-    class="error"
-    role="alert">
-    {{ syncError() }}
-  </p>
-}
 
 <taon-datatable
   [entityCrudController]="crud"

@@ -11,7 +11,11 @@ import { TaonECommerceCartProvider } from './taon-e-commerce-cart.provider';
 export class TaonECommerceCartConfigService extends TaonBaseAngularService {
   private taonECommerceCartProvider = this.injectProvider(TaonECommerceCartProvider);
 
-  get isEnableOption() {
-    return this.taonECommerceCartProvider.enabledTaonECommerceCartOption;
+  get STRIPE_SECRET_KEY():string {
+    return this.taonECommerceCartProvider.STRIPE_SECRET_KEY;
+  }
+
+  get STRIPE_WEBHOOK_SECRET_KEY():string {
+    return this.taonECommerceCartProvider.STRIPE_WEBHOOK_SECRET_KEY;
   }
 }

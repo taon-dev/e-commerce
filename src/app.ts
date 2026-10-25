@@ -538,6 +538,7 @@ export const ECommerceStartFunction = async (
   //#endregion
 
   const ref = await ECommerceContext.initialize(startParams);
+  console.log('I AM AFTER INIT')
 
   //#region add default email
   //#region @backend

@@ -454,7 +454,6 @@ class TaonSessionProviderOverride extends TaonSessionProvider {
     this.linkSocialAccountEmail = true;
   }
 
-  //#region @backend
   async _() {
     console.log('helo world!!!!!!!!!!!');
 
@@ -486,7 +485,6 @@ class TaonSessionProviderOverride extends TaonSessionProvider {
 
     await super._();
   }
-  //#endregion
 }
 //#endregion
 

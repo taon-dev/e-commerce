@@ -113,8 +113,10 @@ import { Utils, UtilsOs } from 'tnp-core/src';
 import { HOST_CONFIG } from './app.hosts';
 import {
   ENV_ANGULAR_NODE_APP_BUILD_PWA_DISABLE_SERVICE_WORKER,
+  ENV_ANGULAR_NODE_APP_CONFIG_ACCESS_TOKEN_SECRET,
   ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID,
   ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_SECRET,
+  ENV_ANGULAR_NODE_APP_CONFIG_REFRESH_TOKEN_SECRET,
   ENV_ANGULAR_NODE_APP_CONFIG_STRIPE_SECRET_KEY,
   ENV_ANGULAR_NODE_APP_CONFIG_STRIPE_WEBHOOK_KEY,
   ENV_ANGULAR_NODE_APP_CONFIG_SUPER_USERS,
@@ -454,6 +456,9 @@ class TaonSessionProviderOverride extends TaonSessionProvider {
 
   //#region @backend
   async _() {
+    console.log('helo world!!!!!!!!!!!');
+
+    //#region @backend
     const googleSecret = await ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_SECRET();
     this.socialLogin.google.googleSecret = googleSecret;
 
@@ -463,6 +468,21 @@ class TaonSessionProviderOverride extends TaonSessionProvider {
     ];
 
     console.log('active super users', this.superUsersEmails);
+
+    this.cookies.ACCESS_TOKEN_SECRET =
+      await ENV_ANGULAR_NODE_APP_CONFIG_ACCESS_TOKEN_SECRET();
+
+    this.cookies.REFRESH_TOKEN_SECRET =
+      await ENV_ANGULAR_NODE_APP_CONFIG_REFRESH_TOKEN_SECRET();
+    //#endregion
+
+    console.log('is localhost ', this.isLocalhost);
+
+    if (this.isLocalhost) {
+      this.login.diableLoginByEmail = false;
+    } else {
+      this.login.diableLoginByEmail = true;
+    }
 
     await super._();
   }

@@ -7,8 +7,12 @@ msgstr ""
 #: src/app.ts:197
 msgctxt "header-taon-admin"
 msgid "Hello [[ username ]]"
-msgstr ""
+msgstr "Cześć, miasto. [[ username ]]"
 
 #: src/app.ts:209
 msgid "Please login to use Taon Admin"
-msgstr ""
+msgstr "Proszę zalogować się do Taon Admin"
+
+#: src/app.ts:235
+msgid "Please login to see cart"
+msgstr "Proszę się zalogować, aby zobaczyć koszyk"

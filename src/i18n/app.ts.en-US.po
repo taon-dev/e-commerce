@@ -12,3 +12,7 @@ msgstr ""
 #: src/app.ts:209
 msgid "Please login to use Taon Admin"
 msgstr ""
+
+#: src/app.ts:235
+msgid "Please login to see cart"
+msgstr ""

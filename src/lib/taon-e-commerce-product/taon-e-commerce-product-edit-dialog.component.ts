@@ -18,6 +18,7 @@ import type { TaonCmsContentEntity } from '@taon-dev/cms/src';
 import type { TaonPermissionEntity } from '@taon-dev/session/src';
 import type { TaonGroupEntity } from '@taon-dev/session/src';
 import { TaonPermissionApiService } from '@taon-dev/session/src';
+import { firstValueFrom } from 'rxjs';
 
 import { TaonECommerceProductPermissionApiService } from '../taon-e-commerce-product-permission/taon-e-commerce-product-permission.api.service';
 import { TaonECommerceProductPermissionEntity } from '../taon-e-commerce-product-permission/taon-e-commerce-product-permission.entity';
@@ -86,13 +87,15 @@ export class TaonECommerceProductEditDialogComponent {
 
   private readonly router = inject(Router);
 
-  private readonly productApi = inject(TaonECommerceProductApiService);
+  private readonly taonECommerceProductApiService = inject(
+    TaonECommerceProductApiService,
+  );
 
   private readonly productPermissionApi = inject(
     TaonECommerceProductPermissionApiService,
   );
 
-  private readonly permissionApi = inject(TaonPermissionApiService);
+  private readonly taonPermissionApiService = inject(TaonPermissionApiService);
 
   readonly productTypes: ProductType[] = ['lifetime', 'item', 'subscription'];
 
@@ -172,10 +175,9 @@ export class TaonECommerceProductEditDialogComponent {
         Number.isSafeInteger(productId) &&
         productId > 0
       ) {
-        const productResponse =
-          await this.productApi.taonECommerceProductController.getProductForEditing(
-            productId,
-          ).request!();
+        const productResponse = await firstValueFrom(
+          this.taonECommerceProductApiService.getProductForEditing(productId),
+        );
         if (productResponse.statusCode >= 400 || !productResponse.body?.json) {
           throw new Error(
             productResponse.responseText || 'Unable to load the product.',
@@ -191,11 +193,13 @@ export class TaonECommerceProductEditDialogComponent {
         groupsResponse,
         postsResponse,
       ] = await Promise.all([
-        this.permissionApi.taonPermissionController.getAll().request!(),
+        this.taonPermissionApiService.taonPermissionController.getAll()
+          .request!(),
         this.productPermissionApi.taonECommerceProductPermissionController.getAll()
           .request!(),
-        this.productApi.groupController.getAll().request!(),
-        this.productApi.cmsContentController.getAll().request!(),
+        this.taonECommerceProductApiService.groupController.getAll().request!(),
+        this.taonECommerceProductApiService.cmsContentController.getAll()
+          .request!(),
       ]);
 
       if (
@@ -379,6 +383,7 @@ export class TaonECommerceProductEditDialogComponent {
 
     this.saving.set(true);
     this.error.set('');
+    const isUpdate = this.data.product;
 
     try {
       const product = Object.assign(new TaonECommerceProductEntity(), {
@@ -406,13 +411,17 @@ export class TaonECommerceProductEditDialogComponent {
           this.selectedGroupIds().includes(group.id),
         ),
       });
-      const productResponse = this.data.product
-        ? await this.productApi.taonECommerceProductController.updateById(
-            this.data.product.id!,
-            product,
-          ).request!()
-        : await this.productApi.taonECommerceProductController.save(product)
-            .request!();
+
+      const productResponse = isUpdate
+        ? await firstValueFrom(
+            this.taonECommerceProductApiService.updateById(
+              this.data.product.id!,
+              product,
+            ),
+          )
+        : await firstValueFrom(
+            this.taonECommerceProductApiService.save(product),
+          );
 
       if (productResponse.statusCode >= 400) {
         throw new Error(
@@ -485,7 +494,11 @@ export class TaonECommerceProductEditDialogComponent {
       if (this.dialogRef) {
         this.dialogRef.close(savedProduct);
       } else {
-        await this.router.navigate(['..'], { relativeTo: this.route });
+        if (isUpdate) {
+          await this.router.navigate(['../..'], { relativeTo: this.route });
+        } else {
+          await this.router.navigate(['..'], { relativeTo: this.route });
+        }
       }
     } catch (error) {
       console.error(

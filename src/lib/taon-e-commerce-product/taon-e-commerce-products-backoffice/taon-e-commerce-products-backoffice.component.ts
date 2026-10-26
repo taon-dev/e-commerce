@@ -4,6 +4,7 @@ import {
   ViewChild,
   inject,
   signal,
+  AfterViewInit,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,11 +24,13 @@ import { TaonECommerceStripeSyncDialogComponent } from '../taon-e-commerce-strip
   imports: [MatButtonModule, TaonDatatableComponent],
   providers: [TaonECommerceProductApiService],
 })
-export class TaonECommerceProductsBackofficeComponent {
+export class TaonECommerceProductsBackofficeComponent implements AfterViewInit {
   @ViewChild(TaonDatatableComponent)
   readonly datatable!: TaonDatatableComponent;
 
-  readonly api = inject(TaonECommerceProductApiService);
+  readonly taonECommerceProductApiService = inject(
+    TaonECommerceProductApiService,
+  );
 
   readonly columns: MtxGridColumn[] = [
     { header: 'ID', field: 'id', sortable: true },
@@ -57,7 +60,9 @@ export class TaonECommerceProductsBackofficeComponent {
   ];
 
   private readonly dialog = inject(MatDialog);
+
   private readonly router = inject(Router);
+
   private readonly route = inject(ActivatedRoute);
 
   readonly syncDialogOpen = signal(false);
@@ -99,6 +104,6 @@ export class TaonECommerceProductsBackofficeComponent {
   }
 
   public get crud() {
-    return this.api.taonECommerceProductController;
+    return this.taonECommerceProductApiService.crudController;
   }
 }

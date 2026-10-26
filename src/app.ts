@@ -232,7 +232,7 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
             <!-- <taon-session [config]="config" /> -->
             <taon-cart [config]="cartConfig$ | async" />
           } @else {
-            <h3>Login to see cart</h3>
+            <h3>{{ t.gettext('Please login to see cart') }}</h3>
           }
         </mat-card-content>
       </mat-card>
@@ -303,7 +303,11 @@ export class ECommerceApp implements OnInit {
         }));
 
   login(): void {
-    this.taonSessionButtonComponent?.open();
+    if (this.context.user) {
+      this.taonSessionButtonComponent?.taonSessionStateService.refreshContext();
+    } else {
+      this.taonSessionButtonComponent?.open();
+    }
   }
 
   openDialog(

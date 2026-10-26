@@ -13,6 +13,7 @@ import {
   Models,
   getStatusCode,
   HttpStatusEnum,
+  TaonUpdateOptions,
 } from 'taon/src';
 import { _ } from 'tnp-core/src';
 
@@ -80,22 +81,23 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
   //#region methods / save
   @POST()
   override save(
-    @Body() product: TaonECommerceProductEntity,
+    @Body('item') item: TaonECommerceProductEntity,
   ): Taon.Response<TaonECommerceProductEntity> {
     //#region @websqlFunc
+    super.save;
     return async () => {
-      product.stripeProductId = null;
-      product.stripePriceId = null;
-      product.stripeLastSyncedAt = null;
-      product.stripeSyncedPrice = null;
-      product.stripeSyncedCurrency = null;
-      product.stripeSyncedType = null;
-      product.stripeSyncedName = null;
-      product.stripeSyncedDescription = null;
-      product.stripeSyncedActive = null;
-      product.stripeSyncedIntervalValue = null;
-      product.stripeSyncedIntervalUnit = null;
-      return this.taonECommerceProductRepository.save(product);
+      item.stripeProductId = null;
+      item.stripePriceId = null;
+      item.stripeLastSyncedAt = null;
+      item.stripeSyncedPrice = null;
+      item.stripeSyncedCurrency = null;
+      item.stripeSyncedType = null;
+      item.stripeSyncedName = null;
+      item.stripeSyncedDescription = null;
+      item.stripeSyncedActive = null;
+      item.stripeSyncedIntervalValue = null;
+      item.stripeSyncedIntervalUnit = null;
+      return this.taonECommerceProductRepository.save(item);
     };
     //#endregion
   }
@@ -103,10 +105,11 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
 
   //#region methods / update by id
   @PUT()
-  override updateById(
+  updateById(
     @Query('id') id: number | string,
-    @Body() product: TaonECommerceProductEntity,
-  ): Taon.Response<TaonECommerceProductEntity> {
+    @Body('item') item: TaonECommerceProductEntity,
+    @Body('options') options?: TaonUpdateOptions<TaonECommerceProductEntity>,
+  ): Models.Http.Response<TaonECommerceProductEntity> {
     //#region @websqlFunc
     return async () => {
       const existing = await this.taonECommerceProductRepository.findOne({
@@ -115,18 +118,18 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
       if (!existing) {
         throw new Error('The product was not found.');
       }
-      product.stripeProductId = existing.stripeProductId;
-      product.stripePriceId = existing.stripePriceId;
-      product.stripeLastSyncedAt = existing.stripeLastSyncedAt;
-      product.stripeSyncedPrice = existing.stripeSyncedPrice;
-      product.stripeSyncedCurrency = existing.stripeSyncedCurrency;
-      product.stripeSyncedType = existing.stripeSyncedType;
-      product.stripeSyncedName = existing.stripeSyncedName;
-      product.stripeSyncedDescription = existing.stripeSyncedDescription;
-      product.stripeSyncedActive = existing.stripeSyncedActive;
-      product.stripeSyncedIntervalValue = existing.stripeSyncedIntervalValue;
-      product.stripeSyncedIntervalUnit = existing.stripeSyncedIntervalUnit;
-      return this.db.updateById<TaonECommerceProductEntity>(id, product);
+      item.stripeProductId = existing.stripeProductId;
+      item.stripePriceId = existing.stripePriceId;
+      item.stripeLastSyncedAt = existing.stripeLastSyncedAt;
+      item.stripeSyncedPrice = existing.stripeSyncedPrice;
+      item.stripeSyncedCurrency = existing.stripeSyncedCurrency;
+      item.stripeSyncedType = existing.stripeSyncedType;
+      item.stripeSyncedName = existing.stripeSyncedName;
+      item.stripeSyncedDescription = existing.stripeSyncedDescription;
+      item.stripeSyncedActive = existing.stripeSyncedActive;
+      item.stripeSyncedIntervalValue = existing.stripeSyncedIntervalValue;
+      item.stripeSyncedIntervalUnit = existing.stripeSyncedIntervalUnit;
+      return this.db.updateById(id, item);
     };
     //#endregion
   }
@@ -300,7 +303,8 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
           status: 400,
           message: '[taon-e-commerce] Stripe webhook rejected',
         });
-        return { // TODO not needed
+        return {
+          // TODO not needed
           received: false,
         };
       }

@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { TaonCmsContentController } from '@taon-dev/cms/src';
 import { TaonGroupController } from '@taon-dev/session/src';
+import { HttpResponse } from 'ng2-rest/src';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Taon, TaonBaseAngularService } from 'taon/src';
@@ -24,7 +25,7 @@ export interface TaonECommerceStripeConfiguration {
 
 @Injectable()
 export class TaonECommerceProductApiService extends TaonBaseAngularService {
-  public readonly taonECommerceProductController = this.injectController(
+  protected readonly taonECommerceProductController = this.injectController(
     TaonECommerceProductController,
   );
 
@@ -32,13 +33,18 @@ export class TaonECommerceProductApiService extends TaonBaseAngularService {
     TaonECommerceCustomerController,
   );
 
-  readonly cmsContentController = this.injectController(TaonCmsContentController);
+  readonly cmsContentController = this.injectController(
+    TaonCmsContentController,
+  );
 
   readonly groupController = this.injectController(TaonGroupController);
 
+  public get crudController(): TaonECommerceProductController {
+    return this.taonECommerceProductController;
+  }
+
   public getAllProductForUser(): Observable<TaonCartConfig> {
-    return this.customerController.getBuyProducts()
-      .request!().observable.pipe(
+    return this.customerController.getBuyProducts().request!().observable.pipe(
       map(res => {
         if (res.statusCode >= 400) {
           throw new Error(res.responseText || 'Unable to load products.');
@@ -57,15 +63,16 @@ export class TaonECommerceProductApiService extends TaonBaseAngularService {
       await this.taonECommerceProductController.getStripeConfiguration()
         .request!();
     if (response.statusCode >= 400 || !response.body?.json) {
-      throw new Error(response.responseText || 'Unable to check Stripe status.');
+      throw new Error(
+        response.responseText || 'Unable to check Stripe status.',
+      );
     }
     return response.body.json;
   }
 
   public async syncWithStripe(syncId: string): Promise<TaonStripeSyncResult[]> {
     const response =
-      await this.taonECommerceProductController
-        .syncWithStripe(syncId)
+      await this.taonECommerceProductController.syncWithStripe(syncId)
         .request!();
 
     if (response.statusCode >= 400 || !Array.isArray(response.body?.json)) {
@@ -75,5 +82,28 @@ export class TaonECommerceProductApiService extends TaonBaseAngularService {
       );
     }
     return response.body.json;
+  }
+
+  save(
+    product: TaonECommerceProductEntity,
+  ): Observable<HttpResponse<TaonECommerceProductEntity>> {
+    return this.taonECommerceProductController.save(product).request()
+      .observable;
+  }
+
+  updateById(
+    id: number | string,
+    product: TaonECommerceProductEntity,
+  ): Observable<HttpResponse<TaonECommerceProductEntity>> {
+    return this.taonECommerceProductController.updateById(id, product).request()
+      .observable;
+  }
+
+  getProductForEditing(
+    productId: number,
+  ): Observable<HttpResponse<TaonECommerceProductEntity>> {
+    return this.taonECommerceProductController
+      .getProductForEditing(productId)
+      .request().observable;
   }
 }

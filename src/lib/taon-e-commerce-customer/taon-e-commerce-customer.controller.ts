@@ -10,6 +10,10 @@ import {
   TaonController,
 } from 'taon/src';
 
+import {
+  TaonCartCheckoutCancelParam,
+  TaonCartCheckoutSuccessParam,
+} from '../taon-cart/taon-cart.models';
 import type { TaonECommerceCartEntity } from '../taon-e-commerce-cart/taon-e-commerce-cart.entity';
 import type { TaonECommerceEntitlementEntity } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.entity';
 import type { TaonECommerceOrderEntity } from '../taon-e-commerce-order/taon-e-commerce-order.entity';
@@ -19,6 +23,7 @@ import type { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon
 import { TaonECommerceCustomerRepository } from './taon-e-commerce-customer.repository';
 //#endregion
 
+//#region subscription status
 export interface TaonECommerceSubscriptionStatus {
   id: number;
   productName: string;
@@ -26,6 +31,7 @@ export interface TaonECommerceSubscriptionStatus {
   validUntil: Date | null;
   startedAt: Date;
 }
+//#endregion
 
 @TaonController<TaonECommerceCustomerController>({
   className: 'TaonECommerceCustomerController',
@@ -157,14 +163,16 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     orderId: number;
     checkoutUrl: string;
   }> {
+    //#region @websqlFunc
     return async req => {
       const userId = Number('userId' in req ? req.userId : undefined);
       const origin = this.ctx.frontendHostUri.origin;
       return this.customerRepository.createCheckoutSession(userId, {
-        successUrl: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancelUrl: `${origin}/checkout/cancel`,
+        successUrl: `${origin}?${TaonCartCheckoutSuccessParam}=true&session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}?${TaonCartCheckoutCancelParam}=cancel`,
       });
     };
+    //#endregion
   }
   //#endregion
 

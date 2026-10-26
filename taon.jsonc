@@ -41,7 +41,7 @@
       "envName": "cloudflare",
       "releaseType": "manual-cloudflare",
       "taskName": "cloudflare",
-      "workerName": "e-commerce-github-75282",
+      "workerName": "taon-e-commerce-62e39",
     },
   ],
   "cloudFlareAccountSubdomain": "darekf77",

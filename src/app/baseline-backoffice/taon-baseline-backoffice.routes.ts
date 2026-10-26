@@ -1,7 +1,9 @@
 //#region imports
 import { Routes } from '@angular/router';
-import { adminLazyRoute } from '@taon-dev/ui/src';
+import { TaonAuthContextEntity } from '@taon-dev/e-commerce/src';
+import { adminLazyRoute as adminLazyRouteBase } from '@taon-dev/ui/src';
 //#endregion
+const adminLazyRoute = adminLazyRouteBase<TaonAuthContextEntity>;
 
 export const TaonBaselineBackofficeRoutes: Routes = [
   {
@@ -12,6 +14,17 @@ export const TaonBaselineBackofficeRoutes: Routes = [
       ),
 
     children: [
+      adminLazyRoute({
+        isVisible: ({ context }) =>
+          context?.isSuperUser || context?.isLocalhostBackend,
+        path: 'welcome',
+        menuItem: 'Welcome',
+        // color: 'red',
+        icon: 'waving_hand',
+        expandable: false,
+        loader: () =>
+          import('@taon-dev/ui/src').then(m => m.TaonAdminWelcomeRoutes),
+      }),
       adminLazyRoute({
         path: 'sudo',
         menuItem: 'Sudo',

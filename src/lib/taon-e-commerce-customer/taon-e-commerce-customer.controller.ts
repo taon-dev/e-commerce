@@ -61,7 +61,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   @GET()
   getMyCart(): Taon.Response<TaonECommerceCartEntity> {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       return this.customerRepository.getCart(userId);
     };
   }
@@ -71,7 +71,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   @GET()
   getBuyProducts(): Taon.Response<TaonECommerceProductEntity[]> {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       return this.customerRepository.getSuggestedProducts(userId);
     };
   }
@@ -84,7 +84,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     @Body('quantity') quantity: number,
   ): Taon.Response<TaonECommerceCartEntity> {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       return this.customerRepository.addProduct(userId, productId, quantity);
     };
   }
@@ -97,7 +97,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     @Body('quantity') quantity: number,
   ): Taon.Response<TaonECommerceCartEntity> {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       return this.customerRepository.setItemQuantity(userId, itemId, quantity);
     };
   }
@@ -109,7 +109,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     @Body('itemId') itemId: number,
   ): Taon.Response<TaonECommerceCartEntity> {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       return this.customerRepository.removeItem(userId, itemId);
     };
   }
@@ -119,7 +119,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   @GET()
   getMyOrders(): Taon.Response<TaonECommerceOrderEntity[]> {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       return this.customerRepository.getOrders(userId);
     };
   }
@@ -129,7 +129,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   @GET()
   getMyTransactions(): Taon.Response<TaonECommercePaymentTransactionEntity[]> {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       return this.customerRepository.getTransactions(userId);
     };
   }
@@ -141,7 +141,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     TaonECommerceSubscriptionStatus[]
   > {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       const entitlements =
         await this.customerRepository.getEntitlements(userId);
       return entitlements.map(
@@ -165,11 +165,11 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   }> {
     //#region @websqlFunc
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req?.userId);
       const origin = this.ctx.frontendHostUri.origin;
       return this.customerRepository.createCheckoutSession(userId, {
-        successUrl: `${origin}?${TaonCartCheckoutSuccessParam}=true&session_id={CHECKOUT_SESSION_ID}`,
-        cancelUrl: `${origin}?${TaonCartCheckoutCancelParam}=cancel`,
+        successUrl: `${origin}/#/app?${TaonCartCheckoutSuccessParam}=true&session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}/#/app?${TaonCartCheckoutCancelParam}=cancel`,
       });
     };
     //#endregion
@@ -180,7 +180,7 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   @GET()
   getMyEntitlements(): Taon.Response<TaonECommerceEntitlementEntity[]> {
     return async req => {
-      const userId = Number('userId' in req ? req.userId : undefined);
+      const userId = Number(req.userId);
       return this.customerRepository.getEntitlements(userId);
     };
   }

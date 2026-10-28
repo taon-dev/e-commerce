@@ -25,7 +25,7 @@ import {
 import { TaonECommerceCustomerRepository } from '../taon-e-commerce-customer/taon-e-commerce-customer.repository';
 import {
   TaonStripeSyncResult,
-  TaonStripeWebhookEvent,
+  isHandledStripeEvent,
 } from '../taon-stripe/taon-stripe.models';
 import { TaonECommerceStripeRepository } from '../taon-stripe/taon-stripe.repository';
 
@@ -293,9 +293,9 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
         ) {
           throw new Error('The Stripe webhook payload is invalid.');
         }
-        await this.taonECommerceCustomerRepository.processStripeEvent(
-          event as TaonStripeWebhookEvent,
-        );
+        if (isHandledStripeEvent(event)) {
+          await this.taonECommerceCustomerRepository.processStripeEvent(event);
+        }
         return { received: true };
       } catch (error) {
         console.error(error);

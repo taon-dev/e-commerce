@@ -12,6 +12,7 @@ import {
 import { TaonEntity, TaonMigration, TaonRepository } from 'taon/src';
 
 import { TaonECommerceEntitlementEntity } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.entity';
+import { entitlementHasAccess } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.utils';
 import { getTaonECommerceProductEffectivePermissions } from '../taon-e-commerce-product/taon-e-commerce-product-permissions.utils';
 //#endregion
 
@@ -114,14 +115,8 @@ export class TaonAuthContextRepository extends TaonAuthContextRepositoryBase<
           },
         },
       });
-    const now = Date.now();
     const purchasedPermissions = entitlements
-      .filter(
-        entitlement =>
-          entitlement.status === 'active' &&
-          (!entitlement.currentPeriodEnd ||
-            entitlement.currentPeriodEnd.getTime() > now),
-      )
+      .filter(entitlement => entitlementHasAccess(entitlement))
       .flatMap(entitlement =>
         getTaonECommerceProductEffectivePermissions(entitlement.product),
       )

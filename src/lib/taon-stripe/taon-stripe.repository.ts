@@ -6,7 +6,14 @@ import {
 } from 'taon/src';
 
 import type { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon-e-commerce-product.entity';
-import { StripeApiError, TaonStripeSubscription } from './taon-stripe.models';
+import {
+  StripeApiError,
+  StripeCharge,
+  StripeDispute,
+  StripeInvoiceEvent,
+  StripeCheckoutSessionEvent,
+  TaonStripeSubscription,
+} from './taon-stripe.models';
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import { TaonECommerceCartProvider } from '../taon-e-commerce-cart/taon-e-commerce-cart.provider';
 //#endregion
@@ -162,6 +169,41 @@ export class TaonECommerceStripeRepository extends TaonBaseCustomRepository {
   //#endregion
 
   //#region methods / verify webhook signature
+  async getInvoice(id: string): Promise<StripeInvoiceEvent> {
+    //#region @backendFunc
+    return this.request(`/v1/invoices/${encodeURIComponent(id)}`);
+    //#endregion
+  }
+
+  async getCharge(id: string): Promise<StripeCharge> {
+    //#region @backendFunc
+    return this.request(`/v1/charges/${encodeURIComponent(id)}`);
+    //#endregion
+  }
+
+  async getDispute(id: string): Promise<StripeDispute> {
+    //#region @backendFunc
+    return this.request(`/v1/disputes/${encodeURIComponent(id)}`);
+    //#endregion
+  }
+
+  async getCheckoutSession(id: string): Promise<StripeCheckoutSessionEvent> {
+    //#region @backendFunc
+    return this.request(`/v1/checkout/sessions/${encodeURIComponent(id)}`);
+    //#endregion
+  }
+
+  async getCheckoutForPaymentIntent(
+    id: string,
+  ): Promise<StripeCheckoutSessionEvent | undefined> {
+    //#region @backendFunc
+    const sessions = await this.request<{ data: StripeCheckoutSessionEvent[] }>(
+      `/v1/checkout/sessions?payment_intent=${encodeURIComponent(id)}&limit=1`,
+    );
+    return sessions.data[0];
+    //#endregion
+  }
+
   async verifyWebhookSignature(
     rawBody: Uint8Array | undefined,
     signatureHeader: string | undefined,

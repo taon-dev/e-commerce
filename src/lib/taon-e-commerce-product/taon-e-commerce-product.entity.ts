@@ -18,12 +18,15 @@ import {
 import { TaonECommerceCartItemEntity } from '../taon-e-commerce-cart-item/taon-e-commerce-cart-item.entity';
 import { TaonECommerceOrderItemEntity } from '../taon-e-commerce-order-item/taon-e-commerce-order-item.entity';
 import { TaonECommerceProductPermissionEntity } from '../taon-e-commerce-product-permission/taon-e-commerce-product-permission.entity';
+import type { TaonProductEligibility } from './taon-e-commerce-product-eligibility';
 
 @TaonEntity<TaonECommerceProductEntity>({
   className: 'TaonECommerceProductEntity',
   createTable: true,
 })
 export class TaonECommerceProductEntity extends TaonBaseAbstractEntity<TaonECommerceProductEntity> {
+  purchaseEligibility?: TaonProductEligibility;
+
   @String500Column()
   name!: string;
 

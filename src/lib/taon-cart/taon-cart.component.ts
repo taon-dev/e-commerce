@@ -5,6 +5,7 @@ import {
   Component,
   Input,
   OnInit,
+  OnDestroy,
   inject,
   signal,
 } from '@angular/core';
@@ -21,9 +22,16 @@ import { Subscription } from 'rxjs';
 import type { TaonECommerceCartEntity } from '../taon-e-commerce-cart/taon-e-commerce-cart.entity';
 import { TaonECommerceCustomerApiService } from '../taon-e-commerce-customer/taon-e-commerce-customer.api.service';
 import type { TaonECommerceEntitlementEntity } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.entity';
+import { entitlementHasAccess } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.utils';
 import type { TaonECommerceOrderEntity } from '../taon-e-commerce-order/taon-e-commerce-order.entity';
+import { isQuantityProduct } from '../taon-e-commerce-product/taon-e-commerce-product-eligibility';
 import type { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon-e-commerce-product.entity';
 
+import {
+  TaonCartProductDialogComponent,
+  TaonCartProductDialogData,
+} from './taon-cart-product-dialog/taon-cart-product-dialog.component';
+import { TaonCartProductThumbnailComponent } from './taon-cart-product-thumbnail/taon-cart-product-thumbnail.component';
 import {
   TaonCartCheckoutCancelParam,
   TaonCartCheckoutSuccessParam,
@@ -43,10 +51,11 @@ import {
     MatIconModule,
     MatTabsModule,
     TaonDatatableComponent,
+    TaonCartProductThumbnailComponent,
   ],
   providers: [TaonECommerceCustomerApiService],
 })
-export class TaonCartComponent implements OnInit {
+export class TaonCartComponent implements OnInit, OnDestroy {
   //#region fields & getters
   @Input() config: TaonCartConfig = {};
 
@@ -75,6 +84,10 @@ export class TaonCartComponent implements OnInit {
   readonly loadingEntitlements = signal(false);
 
   readonly creatingCheckout = signal(false);
+
+  readonly changingCart = signal(false);
+
+  readonly isQuantityProduct = isQuantityProduct;
 
   readonly dialog = inject(MatDialog);
 
@@ -116,14 +129,10 @@ export class TaonCartComponent implements OnInit {
   }
 
   get activeSubscriptionEntitlements(): TaonECommerceEntitlementEntity[] {
-    const now = Date.now();
     return this.entitlements().filter(
       entitlement =>
         entitlement.product.type === 'subscription' &&
-        (entitlement.status === 'active' ||
-          (entitlement.status === 'canceled' &&
-            Boolean(entitlement.currentPeriodEnd) &&
-            Date.parse(entitlement.currentPeriodEnd!.toString()) > now)),
+        entitlementHasAccess(entitlement),
     );
   }
 
@@ -144,14 +153,11 @@ export class TaonCartComponent implements OnInit {
       this.activatedRoute.queryParamMap.subscribe(params => {
         const success = params.get(TaonCartCheckoutSuccessParam);
         const cancel = params.get(TaonCartCheckoutCancelParam);
-        const stripeSessionId = params.get('session_id');
-        // TODO with stripe session id if order is ready ?
-
         if (success === 'true') {
           this.dialog.open(TaonPurchaseStatusDialogComponent, {
             data: {
               success: true,
-              message: 'Payment successful 🎉 Your purchase is now available.',
+              message: 'Checkout completed. Your purchase will appear after Stripe confirms payment.',
             },
           });
           this.cleanQueryParams();
@@ -161,13 +167,41 @@ export class TaonCartComponent implements OnInit {
           this.dialog.open(TaonPurchaseStatusDialogComponent, {
             data: {
               success: false,
-              message: 'Payment cancelled.',
+              message: 'You left checkout. Your order will be updated when Stripe confirms its status.',
             },
           });
 
           this.cleanQueryParams();
         }
       }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
+  eligibility(product: TaonECommerceProductEntity) {
+    return this.products().find(candidate => candidate.id === product.id)?.purchaseEligibility;
+  }
+
+  openProduct(product: TaonECommerceProductEntity): void {
+    if (!product.cmsContent) {
+      return;
+    }
+    this.dialog.open<TaonCartProductDialogComponent, TaonCartProductDialogData>(
+      TaonCartProductDialogComponent,
+      {
+        width: '640px',
+        maxWidth: '95vw',
+        data: {
+          product,
+          eligibility: () => this.eligibility(product),
+          inCart: () => this.validCartItems.some(item => item.productId === product.id),
+          addToCart: () => this.addProduct(product),
+          goToCart: () => this.onMainTabChange(1),
+        },
+      },
     );
   }
 
@@ -180,6 +214,9 @@ export class TaonCartComponent implements OnInit {
   //#region methods / on main tab change
   onMainTabChange(index: number): void {
     this.mainTabIndex.set(index);
+    if (index === 0) {
+      void this.loadProducts();
+    }
     if (index === 3) {
       void this.loadEntitlements();
     }
@@ -239,53 +276,80 @@ export class TaonCartComponent implements OnInit {
   //#endregion
 
   //#region methods / add product
-  async addProduct(product: TaonECommerceProductEntity): Promise<void> {
+  async addProduct(product: TaonECommerceProductEntity): Promise<boolean> {
+    if (this.changingCart()) {
+      return false;
+    }
+    if (!this.eligibility(product)?.canAdd) {
+      this.error.set(this.eligibility(product)?.reason ?? 'This product is not available.');
+      return false;
+    }
     if (typeof product.id !== 'number') {
       this.error.set(
         'This suggested product does not have a saved product ID.',
       );
-      return;
+      return false;
     }
+    this.changingCart.set(true);
     try {
       this.cart.set(
         await this.request<TaonECommerceCartEntity>(
           this.api.controller.addToMyCart(product.id, 1).request!(),
         ),
       );
+      await this.loadProducts();
+      return true;
     } catch (error) {
       this.reportError('Unable to add this product to your cart.', error);
+      return false;
+    } finally {
+      this.changingCart.set(false);
     }
   }
   //#endregion
 
   //#region methods / update quantity
   async updateQuantity(itemId: number, quantity: number): Promise<void> {
+    if (this.changingCart()) {
+      return;
+    }
     if (quantity < 1) {
       await this.removeItem(itemId);
       return;
     }
+    this.changingCart.set(true);
     try {
       this.cart.set(
         await this.request<TaonECommerceCartEntity>(
           this.api.controller.updateMyCartItem(itemId, quantity).request!(),
         ),
       );
+      await this.loadProducts();
     } catch (error) {
       this.reportError('Unable to update the cart item.', error);
+    } finally {
+      this.changingCart.set(false);
     }
   }
   //#endregion
 
   //#region methods / remove item
   async removeItem(itemId: number): Promise<void> {
+    if (this.changingCart()) {
+      return;
+    }
+    this.changingCart.set(true);
     try {
       this.cart.set(
         await this.request<TaonECommerceCartEntity>(
           this.api.controller.removeFromMyCart(itemId).request!(),
         ),
       );
+      await this.loadProducts();
     } catch (error) {
       this.reportError('Unable to remove the cart item.', error);
+    } finally {
+      this.changingCart.set(false);
     }
   }
   //#endregion

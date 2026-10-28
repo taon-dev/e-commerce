@@ -11,3 +11,4 @@ export * from './taon-e-commerce-product.repository';
 export * from './taon-e-commerce-product.subscriber';
 export * from './taon-e-commerce-product.utils';
 export * from './taon-e-commerce-stripe-sync-dialog.component'; // @browser
+export * from './taon-e-commerce-product-eligibility';

@@ -23,21 +23,32 @@
       } @else {
         <div class="products">
           @for (product of suggestedProducts; track product.id) {
-            <article class="product">
-              <h3>{{ product.name }}</h3>
-              @if (product.description) {
-                <p>{{ product.description }}</p>
+            <article class="product" [class.unavailable]="!eligibility(product)?.canAdd">
+              <button class="product-info" type="button"
+                [disabled]="!product.cmsContent"
+                (click)="openProduct(product)">
+                <taon-cart-product-thumbnail [product]="product" />
+                <h3>{{ product.name }}</h3>
+                @if (product.description) {
+                  <p>{{ product.description }}</p>
+                }
+                <p>{{ product.price | currency: product.currency }}</p>
+              </button>
+              @if (eligibility(product)?.reason) {
+                <p class="eligibility-reason">{{ eligibility(product)?.reason }}</p>
               }
-              <p>{{ product.price | currency: product.currency }}</p>
               <button
                 mat-flat-button
                 type="button"
-                [disabled]="product.active !== true"
+                [disabled]="changingCart() || !eligibility(product)?.canAdd"
                 (click)="addProduct(product)">
                 Add to cart
               </button>
             </article>
           }
+          <button mat-stroked-button type="button" (click)="onMainTabChange(1)">
+            Go To Cart
+          </button>
         </div>
       }
     </mat-tab>
@@ -50,31 +61,40 @@
         <div class="cart-items">
           @for (item of validCartItems; track item.id) {
             <article class="cart-item">
-              <div class="item-product">
+              <button class="product-info item-product" type="button"
+                [disabled]="!item.product.cmsContent"
+                (click)="openProduct(item.product)">
+                <taon-cart-product-thumbnail [product]="item.product" />
                 <strong>{{ item.product.name }}</strong>
                 <span>{{ item.product.price | currency: item.product.currency }} each</span>
-              </div>
+              </button>
               <div class="quantity">
+                @if (isQuantityProduct(item.product)) {
                 <button
                   mat-icon-button
                   type="button"
                   aria-label="Decrease quantity"
+                  [disabled]="changingCart()"
                   (click)="updateQuantity(item.id!, item.quantity - 1)">
                   <mat-icon>remove</mat-icon>
                 </button>
+                }
                 <span>{{ item.quantity }}</span>
+                @if (isQuantityProduct(item.product)) {
                 <button
                   mat-icon-button
                   type="button"
                   aria-label="Increase quantity"
+                  [disabled]="changingCart()"
                   (click)="updateQuantity(item.id!, item.quantity + 1)">
                   <mat-icon>add</mat-icon>
                 </button>
+                }
               </div>
               <strong>
                 {{ item.product.price * item.quantity | currency: item.product.currency }}
               </strong>
-              <button mat-button type="button" (click)="removeItem(item.id!)">
+              <button mat-button type="button" [disabled]="changingCart()" (click)="removeItem(item.id!)">
                 Remove
               </button>
             </article>
@@ -90,10 +110,19 @@
         <p>Add an active product to your cart to continue.</p>
       } @else {
         <div class="checkout-items">
+          <div class="checkout-item checkout-heading" aria-hidden="true">
+            <span>Product</span><span>Qty</span><span>Unit price</span><span>Total</span>
+          </div>
           @for (item of validCartItems; track item.id) {
             <article class="checkout-item">
-              <span>{{ item.product.name }} × {{ item.quantity }}</span>
-              <span>{{ item.product.price | currency: item.product.currency }} each</span>
+              <button class="product-info checkout-product" type="button"
+                [disabled]="!item.product.cmsContent"
+                (click)="openProduct(item.product)">
+                <taon-cart-product-thumbnail [product]="item.product" [maxHeight]="50" />
+                <span>{{ item.product.name }}</span>
+              </button>
+              <span aria-label="Quantity">{{ item.quantity }}</span>
+              <span>{{ item.product.price | currency: item.product.currency }}</span>
               <strong>
                 {{ item.product.price * item.quantity | currency: item.product.currency }}
               </strong>
@@ -112,7 +141,7 @@
         <button
           mat-flat-button
           type="button"
-          [disabled]="creatingCheckout()"
+          [disabled]="creatingCheckout() || changingCart()"
           (click)="checkout()">
           {{ creatingCheckout() ? 'Preparing checkout...' : 'Buy' }}
         </button>

@@ -37,7 +37,7 @@ export class TaonECommerceEntitlementEntity extends TaonBaseAbstractEntity<TaonE
   stripeSubscriptionId!: string | null;
 
   @Column({ type: 'varchar' })
-  status!: 'active' | 'canceled' | 'past_due' | 'expired';
+  status!: 'active' | 'canceled' | 'past_due' | 'unpaid' | 'incomplete' | 'paused' | 'expired';
 
   @Column({ type: 'datetime' })
   startedAt!: Date;

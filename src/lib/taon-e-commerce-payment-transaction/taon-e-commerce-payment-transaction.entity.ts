@@ -27,7 +27,7 @@ export class TaonECommercePaymentTransactionEntity extends TaonBaseAbstractEntit
   providerTransactionId!: string;
 
   @Column({ type: 'varchar' })
-  status!: 'pending' | 'succeeded' | 'failed' | 'cancelled';
+  status!: 'pending' | 'succeeded' | 'failed' | 'cancelled' | 'refunded';
 
   @Column({ type: 'float' })
   amount!: number;

@@ -1,6 +1,8 @@
 //#region imports
 import { TaonSessionUserGroupEntity } from '@taon-dev/session/src';
+import { TaonCmsContentRepository } from '@taon-dev/cms/src';
 import { TaonBaseRepository, TaonRepository } from 'taon/src';
+import type { EntityManager } from 'taon-typeorm/src';
 
 import { TaonECommerceCartEntity } from '../taon-e-commerce-cart/taon-e-commerce-cart.entity';
 import { TaonECommerceCartItemEntity } from '../taon-e-commerce-cart-item/taon-e-commerce-cart-item.entity';
@@ -14,8 +16,19 @@ import {
   StripeInvoiceEvent,
   StripeWebhookEvent,
   TaonStripeSubscription,
+  StripeCharge,
 } from '../taon-stripe/taon-stripe.models';
 import { TaonECommerceStripeRepository } from '../taon-stripe/taon-stripe.repository';
+import {
+  isRecurringProduct,
+  isQuantityProduct,
+  productPurchaseEligibility,
+  TaonProductEligibility,
+} from '../taon-e-commerce-product/taon-e-commerce-product-eligibility';
+import {
+  entitlementHasAccess,
+  stripeSubscriptionState,
+} from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.utils';
 //#endregion
 
 @TaonRepository({
@@ -29,22 +42,69 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     TaonECommerceStripeRepository,
   );
 
+  private readonly cmsContentRepository = this.injectCustomRepo(
+    TaonCmsContentRepository,
+  );
+
+  private async prepareProductPosts(
+    products: TaonECommerceProductEntity[],
+  ): Promise<void> {
+    //#region @websqlFunc
+    for (const product of products) {
+      const post = product.cmsContent;
+      if (!post) {
+        continue;
+      }
+      if (post.status !== 'published') {
+        product.cmsContent = null;
+        continue;
+      }
+      // Product previews must not expose the content being sold.
+      const { permissions } =
+        await this.cmsContentRepository.getPermissionConfiguration(post.id);
+      if (permissions.length) {
+        post.body = null;
+      }
+      post.videoKey = null;
+      post.audioKey = null;
+      post.attachmentKey = null;
+      post.permissions = [];
+    }
+    //#endregion
+  }
+
   //#region methods / get cart
   async getCart(userId: number): Promise<TaonECommerceCartEntity> {
     //#region @websqlFunc
     let cart = await this.repo.findOne({
       where: { userId },
-      relations: { items: { product: true } },
+      relations: { items: { product: { cmsContent: { permissions: true } } } },
     });
     if (!cart) {
       cart = await this.repo.save(this.repo.create({ userId }));
       cart = await this.repo.findOne({
         where: { id: cart.id },
-        relations: { items: { product: true } },
+        relations: {
+          items: { product: { cmsContent: { permissions: true } } },
+        },
       });
     }
     if (!cart) {
       throw new Error('Unable to load the current user cart.');
+    }
+    const singletonItems = cart.items.filter(
+      item =>
+        item.product?.active === true &&
+        !isQuantityProduct(item.product) &&
+        item.quantity !== 1,
+    );
+    if (singletonItems.length) {
+      for (const item of singletonItems) {
+        item.quantity = 1;
+      }
+      await this.connection
+        .getRepository(TaonECommerceCartItemEntity)
+        .save(singletonItems);
     }
     const inactiveItems = cart.items.filter(
       item => item.product?.active !== true,
@@ -55,13 +115,19 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         .remove(inactiveItems);
       const refreshedCart = await this.repo.findOne({
         where: { id: cart.id },
-        relations: { items: { product: true } },
+        relations: {
+          items: { product: { cmsContent: { permissions: true } } },
+        },
       });
       if (!refreshedCart) {
         throw new Error('Unable to refresh the current user cart.');
       }
+      await this.prepareProductPosts(
+        refreshedCart.items.map(item => item.product),
+      );
       return refreshedCart;
     }
+    await this.prepareProductPosts(cart.items.map(item => item.product));
     return cart;
     //#endregion
   }
@@ -78,16 +144,28 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         .find({ where: { userId } }),
       this.connection.getRepository(TaonECommerceProductEntity).find({
         where: { active: true },
-        relations: { suggestedGroups: true },
+        relations: { suggestedGroups: true, cmsContent: { permissions: true } },
         order: { name: 'ASC' },
       }),
     ]);
     const groupIds = new Set(memberships.map(membership => membership.groupId));
-    return products.filter(
+    const suggested = products.filter(
       product =>
         !product.suggestedGroups.length ||
         product.suggestedGroups.some(group => groupIds.has(group.id)),
     );
+    const cart = await this.getCart(userId);
+    for (const product of suggested) {
+      product.purchaseEligibility = await this.getPurchaseEligibility(
+        userId,
+        product,
+        (cart.items.find(item => item.productId === product.id)?.quantity ??
+          0) + 1,
+        cart,
+      );
+    }
+    await this.prepareProductPosts(suggested);
+    return suggested;
     //#endregion
   }
   //#endregion
@@ -108,24 +186,46 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       throw new Error('Product and quantity must be positive whole numbers.');
     }
 
-    const product = await this.connection
-      .getRepository(TaonECommerceProductEntity)
-      .findOne({ where: { id: productId, active: true } });
-    if (!product) {
-      throw new Error('The selected product is not available.');
-    }
-
     const cart = await this.getCart(userId);
-    const items = this.connection.getRepository(TaonECommerceCartItemEntity);
-    const existing = await items.findOne({
-      where: { cartId: cart.id, productId },
+    await this.connection.transaction('SERIALIZABLE', async manager => {
+      const product = await manager
+        .getRepository(TaonECommerceProductEntity)
+        .findOne({ where: { id: productId, active: true } });
+      if (!product) {
+        throw new Error('The selected product is not available.');
+      }
+      const currentCart = await manager
+        .getRepository(TaonECommerceCartEntity)
+        .findOne({
+          where: { id: cart.id },
+          relations: { items: { product: true } },
+        });
+      if (!currentCart) {
+        throw new Error('The cart was not found.');
+      }
+      const items = manager.getRepository(TaonECommerceCartItemEntity);
+      const existing = await items.findOne({
+        where: { cartId: cart.id, productId },
+      });
+      const eligibility = await this.getPurchaseEligibility(
+        userId,
+        product,
+        (existing?.quantity ?? 0) + quantity,
+        currentCart,
+        manager,
+      );
+      if (!eligibility.canAdd) {
+        throw new Error(eligibility.reason!);
+      }
+      if (existing) {
+        existing.quantity += quantity;
+        await items.save(existing);
+      } else {
+        await items.save(
+          items.create({ cartId: cart.id, productId, quantity }),
+        );
+      }
     });
-    if (existing) {
-      existing.quantity += quantity;
-      await items.save(existing);
-    } else {
-      await items.save(items.create({ cartId: cart.id, productId, quantity }));
-    }
     return this.getCart(userId);
     //#endregion
   }
@@ -147,15 +247,32 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       throw new Error('Item and quantity must be positive whole numbers.');
     }
     const cart = await this.getCart(userId);
-    const items = this.connection.getRepository(TaonECommerceCartItemEntity);
-    const item = await items.findOne({
-      where: { id: itemId, cartId: cart.id },
+    await this.connection.transaction('SERIALIZABLE', async manager => {
+      const currentCart = await manager
+        .getRepository(TaonECommerceCartEntity)
+        .findOne({
+          where: { id: cart.id },
+          relations: { items: { product: true } },
+        });
+      const item = currentCart?.items.find(
+        candidate => candidate.id === itemId,
+      );
+      if (!item) {
+        throw new Error('The cart item was not found.');
+      }
+      const eligibility = await this.getPurchaseEligibility(
+        userId,
+        item.product,
+        quantity,
+        currentCart,
+        manager,
+      );
+      if (!eligibility.canAdd) {
+        throw new Error(eligibility.reason!);
+      }
+      item.quantity = quantity;
+      await manager.getRepository(TaonECommerceCartItemEntity).save(item);
     });
-    if (!item) {
-      throw new Error('The cart item was not found.');
-    }
-    item.quantity = quantity;
-    await items.save(item);
     return this.getCart(userId);
     //#endregion
   }
@@ -213,6 +330,60 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   //#endregion
 
   //#region methods / create checkout session
+  private async getPurchaseEligibility(
+    userId: number,
+    product: TaonECommerceProductEntity,
+    quantity: number,
+    cart: TaonECommerceCartEntity,
+    manager: Pick<EntityManager, 'getRepository'> = this.connection,
+  ): Promise<TaonProductEligibility> {
+    //#region @websqlFunc
+    const priorItems = await manager
+      .getRepository(TaonECommerceOrderItemEntity)
+      .find({
+        where: [
+          { productId: product.id, order: { status: 'paid' } },
+          { productId: product.id, order: { status: 'pending' } },
+        ],
+        relations: { order: true },
+      });
+    const entitlements =
+      product.type === 'subscription'
+        ? await manager.getRepository(TaonECommerceEntitlementEntity).find({
+            where: { userId, productId: product.id },
+          })
+        : [];
+    return productPurchaseEligibility(
+      product,
+      quantity,
+      {
+        purchasedQuantity: priorItems
+          .filter(item => item.order.userId === userId)
+          .reduce((total, item) => total + item.quantity, 0),
+        soldQuantity: priorItems.reduce(
+          (total, item) => total + item.quantity,
+          0,
+        ),
+        subscriptionReserved:
+          priorItems.some(
+            item =>
+              item.order.userId === userId && item.order.status === 'pending',
+          ) ||
+          entitlements.some(
+            entitlement =>
+              entitlementHasAccess(entitlement) ||
+              (Boolean(entitlement.stripeSubscriptionId) &&
+                entitlement.status !== 'canceled' &&
+                entitlement.status !== 'expired'),
+          ),
+      },
+      cart.items
+        .filter(item => item.productId !== product.id)
+        .map(item => item.product),
+    );
+    //#endregion
+  }
+
   async createCheckoutSession(
     userId: number,
     urls: { successUrl: string; cancelUrl: string },
@@ -226,16 +397,8 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     const productRepository = this.connection.getRepository(
       TaonECommerceProductEntity,
     );
-    const orderItemRepository = this.connection.getRepository(
-      TaonECommerceOrderItemEntity,
-    );
     const products = new Map<number, TaonECommerceProductEntity>();
     let currency: string | null = null;
-    const isRecurringSubscription = (product: TaonECommerceProductEntity) =>
-      product.type === 'subscription' &&
-      product.subscriptionIntervalUnit === 'days' &&
-      Boolean(product.subscriptionIntervalValue) &&
-      product.subscriptionIntervalValue! <= 365;
     let recurringCount = 0;
 
     for (const item of cart.items) {
@@ -285,49 +448,18 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
           `"${product.name}" does not allow this purchase quantity.`,
         );
       }
-      if (isRecurringSubscription(product)) {
+      if (isRecurringProduct(product)) {
         recurringCount += 1;
       }
 
-      const priorItems = await orderItemRepository.find({
-        where: [
-          { productId: product.id, order: { userId, status: 'paid' } },
-          { productId: product.id, order: { userId, status: 'pending' } },
-        ],
-        relations: { order: true },
-      });
-      const priorQuantity = priorItems.reduce(
-        (total, prior) => total + prior.quantity,
-        0,
+      const eligibility = await this.getPurchaseEligibility(
+        userId,
+        product,
+        item.quantity,
+        cart,
       );
-      const previouslySold =
-        product.stockLimit === null
-          ? 0
-          : (
-              await orderItemRepository.find({
-                where: [
-                  { productId: product.id, order: { status: 'paid' } },
-                  { productId: product.id, order: { status: 'pending' } },
-                ],
-                relations: { order: true },
-              })
-            ).reduce((total, prior) => total + prior.quantity, 0);
-      if (product.type === 'lifetime' && priorQuantity > 0) {
-        throw new Error(`"${product.name}" has already been purchased.`);
-      }
-      if (
-        product.maxQuantityPerUser !== null &&
-        priorQuantity + item.quantity > product.maxQuantityPerUser
-      ) {
-        throw new Error(
-          `The per-user purchase limit for "${product.name}" was reached.`,
-        );
-      }
-      if (
-        product.stockLimit !== null &&
-        previouslySold + item.quantity > product.stockLimit
-      ) {
-        throw new Error(`"${product.name}" is out of stock.`);
+      if (!eligibility.canAdd) {
+        throw new Error(eligibility.reason!);
       }
       products.set(product.id, product);
     }
@@ -345,35 +477,50 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       const product = products.get(item.productId)!;
       return total + product.price * item.quantity;
     }, 0);
-    const order = await this.connection.transaction(async manager => {
-      const orderRepository = manager.getRepository(TaonECommerceOrderEntity);
-      const itemRepository = manager.getRepository(
-        TaonECommerceOrderItemEntity,
-      );
-      const createdOrder = await orderRepository.save(
-        orderRepository.create({
-          userId,
-          status: 'pending',
-          currency: currency!,
-          subtotal,
-          total: subtotal,
-          stripeCheckoutSessionId: null,
-        }),
-      );
-      const orderItems = cart.items.map(item => {
-        const product = products.get(item.productId)!;
-        return itemRepository.create({
-          orderId: createdOrder.id,
-          productId: product.id,
-          productName: product.name,
-          unitPrice: product.price,
-          quantity: item.quantity,
-          totalPrice: product.price * item.quantity,
+    const order = await this.connection.transaction(
+      'SERIALIZABLE',
+      async manager => {
+        for (const item of cart.items) {
+          const eligibility = await this.getPurchaseEligibility(
+            userId,
+            products.get(item.productId)!,
+            item.quantity,
+            cart,
+            manager,
+          );
+          if (!eligibility.canAdd) {
+            throw new Error(eligibility.reason!);
+          }
+        }
+        const orderRepository = manager.getRepository(TaonECommerceOrderEntity);
+        const itemRepository = manager.getRepository(
+          TaonECommerceOrderItemEntity,
+        );
+        const createdOrder = await orderRepository.save(
+          orderRepository.create({
+            userId,
+            status: 'pending',
+            currency: currency!,
+            subtotal,
+            total: subtotal,
+            stripeCheckoutSessionId: null,
+          }),
+        );
+        const orderItems = cart.items.map(item => {
+          const product = products.get(item.productId)!;
+          return itemRepository.create({
+            orderId: createdOrder.id,
+            productId: product.id,
+            productName: product.name,
+            unitPrice: product.price,
+            quantity: item.quantity,
+            totalPrice: product.price * item.quantity,
+          });
         });
-      });
-      await itemRepository.save(orderItems);
-      return createdOrder;
-    });
+        await itemRepository.save(orderItems);
+        return createdOrder;
+      },
+    );
     const orderRepository = this.connection.getRepository(
       TaonECommerceOrderEntity,
     );
@@ -406,59 +553,108 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   //#region methods / process stripe event
   async processStripeEvent(event: StripeWebhookEvent): Promise<void> {
     //#region @websqlFunc
-    const payload = event.data?.object;
-    if (!payload) {
-      throw new Error('Stripe webhook event has no data object.');
-    }
-    if (event.type === 'checkout.session.completed') {
-      await this.completeCheckoutSession(
-        payload as unknown as StripeCheckoutSessionEvent,
-      );
-      return;
-    }
+    await this.connection.transaction('SERIALIZABLE', manager =>
+      this.processStripeEventInTransaction(event, manager),
+    );
+    //#endregion
+  }
+
+  private async processStripeEventInTransaction(
+    event: StripeWebhookEvent,
+    manager: EntityManager,
+  ): Promise<void> {
+    //#region @websqlFunc
     if (
+      event.type === 'checkout.session.completed' ||
+      event.type === 'checkout.session.async_payment_succeeded' ||
       event.type === 'checkout.session.expired' ||
       event.type === 'checkout.session.async_payment_failed'
     ) {
-      await this.markCheckoutSessionFailed(
-        payload as unknown as StripeCheckoutSessionEvent,
-      );
-      return;
-    }
-    if (event.type === 'checkout.session.async_payment_succeeded') {
-      await this.completeCheckoutSession(
-        payload as unknown as StripeCheckoutSessionEvent,
-      );
+      const session =
+        await this.taonECommerceStripeRepository.getCheckoutSession(
+          event.data.object.id,
+        );
+      if (
+        session.status === 'expired' ||
+        (event.type === 'checkout.session.async_payment_failed' &&
+          session.payment_status === 'unpaid')
+      ) {
+        await this.markCheckoutSessionFailed(session, manager);
+      } else {
+        await this.completeCheckoutSession(session, manager);
+      }
       return;
     }
     if (
+      event.type === 'customer.subscription.created' ||
       event.type === 'customer.subscription.updated' ||
       event.type === 'customer.subscription.deleted'
     ) {
       await this.updateSubscription(
-        payload as unknown as TaonStripeSubscription,
+        await this.taonECommerceStripeRepository.getSubscription(
+          event.data.object.id,
+        ),
+        manager,
       );
       return;
     }
     if (
+      event.type === 'invoice.paid' ||
       event.type === 'invoice.payment_succeeded' ||
       event.type === 'invoice.payment_failed'
     ) {
-      const invoice = payload as unknown as StripeInvoiceEvent;
+      const invoice = await this.taonECommerceStripeRepository.getInvoice(
+        event.data.object.id,
+      );
       const subscriptionId = this.stripeObjectId(
         invoice.subscription ??
           invoice.parent?.subscription_details?.subscription,
       );
       if (subscriptionId) {
-        await this.updateSubscription(
+        const subscription =
           await this.taonECommerceStripeRepository.getSubscription(
             subscriptionId,
-          ),
-        );
-        if (event.type === 'invoice.payment_succeeded') {
-          await this.recordInvoicePayment(invoice, subscriptionId);
+          );
+        if (
+          !subscription.metadata?.taonOrderId &&
+          !(await manager
+            .getRepository(TaonECommerceEntitlementEntity)
+            .findOne({
+              where: { stripeSubscriptionId: subscriptionId },
+            }))
+        ) {
+          return;
+        }
+        await this.updateSubscription(subscription, manager);
+        if (invoice.status === 'paid') {
+          await this.recordInvoicePayment(invoice, subscriptionId, manager);
         } else {
-          await this.recordInvoiceFailure(invoice, subscriptionId);
+          await this.recordInvoiceFailure(invoice, subscriptionId, manager);
+        }
+      }
+
+      return;
+    }
+    if (event.type === 'charge.refunded') {
+      const charge = await this.taonECommerceStripeRepository.getCharge(
+        event.data.object.id,
+      );
+      if (charge.refunded || charge.amount_refunded >= charge.amount) {
+        await this.reversePurchase(charge, manager);
+      }
+    } else if (event.type === 'charge.dispute.closed') {
+      const dispute = await this.taonECommerceStripeRepository.getDispute(
+        event.data.object.id,
+      );
+      if (dispute.status === 'lost') {
+        const chargeId = this.stripeObjectId(dispute.charge);
+        if (!chargeId) {
+          throw new Error('The Stripe dispute has no charge ID.');
+        }
+        const charge =
+          await this.taonECommerceStripeRepository.getCharge(chargeId);
+        if (dispute.amount >= charge.amount) {
+          await this.reversePurchase(charge, manager);
         }
       }
     }
@@ -483,6 +679,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     for (const entitlement of entitlements) {
       if (
         entitlement.status === 'active' &&
+        !entitlement.stripeSubscriptionId &&
         entitlement.currentPeriodEnd &&
         entitlement.currentPeriodEnd.getTime() <= now
       ) {
@@ -498,6 +695,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   //#region methods / complete checkout session
   private async completeCheckoutSession(
     session: StripeCheckoutSessionEvent,
+    manager: EntityManager,
   ): Promise<void> {
     const orderId = Number(session.metadata?.taonOrderId);
     if (!Number.isSafeInteger(orderId) || orderId <= 0 || !session.id) {
@@ -505,9 +703,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         'The Stripe Checkout session has invalid Taon order metadata.',
       );
     }
-    const orderRepository = this.connection.getRepository(
-      TaonECommerceOrderEntity,
-    );
+    const orderRepository = manager.getRepository(TaonECommerceOrderEntity);
     const order = await orderRepository.findOne({
       where: { id: orderId },
       relations: { items: { product: true } },
@@ -521,6 +717,9 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       throw new Error(
         'The Stripe Checkout session user does not match the local order.',
       );
+    }
+    if (order.status === 'refunded') {
+      return;
     }
     if (
       (session.payment_status !== 'paid' &&
@@ -553,7 +752,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       );
     }
 
-    const transactionRepository = this.connection.getRepository(
+    const transactionRepository = manager.getRepository(
       TaonECommercePaymentTransactionEntity,
     );
     const paymentIntentId =
@@ -586,12 +785,12 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     await orderRepository.save(order);
 
     const cart = shouldConsumeCart
-      ? await this.repo.findOne({ where: { userId: order.userId } })
+      ? await manager
+          .getRepository(TaonECommerceCartEntity)
+          .findOne({ where: { userId: order.userId } })
       : null;
     if (cart) {
-      const cartItems = this.connection.getRepository(
-        TaonECommerceCartItemEntity,
-      );
+      const cartItems = manager.getRepository(TaonECommerceCartItemEntity);
       const ownedItems = await cartItems.find({ where: { cartId: cart.id } });
       const purchasedQuantities = new Map<number, number>();
       for (const item of order.items) {
@@ -612,7 +811,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       }
     }
 
-    const entitlementRepository = this.connection.getRepository(
+    const entitlementRepository = manager.getRepository(
       TaonECommerceEntitlementEntity,
     );
     for (const item of order.items) {
@@ -621,8 +820,9 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       let periodEnd: Date | null = null;
       let periodStart: Date | null = null;
       if (subscription && product.type === 'subscription') {
-        periodStart = this.dateFromUnix(subscription.current_period_start);
-        periodEnd = this.dateFromUnix(subscription.current_period_end);
+        const state = stripeSubscriptionState(subscription);
+        periodStart = this.dateFromUnix(state.start);
+        periodEnd = this.dateFromUnix(state.end);
       } else if (product.type === 'subscription') {
         periodStart = startedAt;
         periodEnd = this.calculateEntitlementExpiry(product, startedAt);
@@ -644,15 +844,15 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
           stripeCustomerId: this.stripeObjectId(session.customer),
           startedAt,
         });
-      entitlement.status = 'active';
-      entitlement.currentPeriodStart = periodStart;
-      entitlement.currentPeriodEnd = periodEnd;
-      if (
-        subscription &&
-        subscription.status !== 'active' &&
-        subscription.status !== 'trialing'
-      ) {
-        entitlement.status = 'past_due';
+      if (!existingEntitlement || subscription) {
+        entitlement.status = subscription
+          ? stripeSubscriptionState(subscription).status
+          : 'active';
+        entitlement.currentPeriodStart = periodStart;
+        entitlement.currentPeriodEnd = periodEnd;
+        entitlement.canceledAt = subscription
+          ? this.dateFromUnix(subscription.canceled_at)
+          : null;
       }
       await entitlementRepository.save(entitlement);
     }
@@ -663,8 +863,9 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   private async recordInvoicePayment(
     invoice: StripeInvoiceEvent,
     subscriptionId: string,
+    manager: EntityManager,
   ): Promise<void> {
-    const entitlement = await this.connection
+    const entitlement = await manager
       .getRepository(TaonECommerceEntitlementEntity)
       .findOne({ where: { stripeSubscriptionId: subscriptionId } });
     if (!entitlement) {
@@ -672,13 +873,13 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         'The Stripe invoice subscription has no local entitlement.',
       );
     }
-    const order = await this.connection
+    const order = await manager
       .getRepository(TaonECommerceOrderEntity)
       .findOne({ where: { id: entitlement.orderId } });
     if (!order) {
       throw new Error('The Stripe invoice order was not found.');
     }
-    const repository = this.connection.getRepository(
+    const repository = manager.getRepository(
       TaonECommercePaymentTransactionEntity,
     );
     const transaction =
@@ -701,6 +902,9 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         'The Stripe invoice is already associated with another order.',
       );
     }
+    if (transaction.status === 'refunded') {
+      return;
+    }
     transaction.status = 'succeeded';
     transaction.amount =
       typeof invoice.amount_paid === 'number'
@@ -715,20 +919,30 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   private async recordInvoiceFailure(
     invoice: StripeInvoiceEvent,
     subscriptionId: string,
+    manager: EntityManager,
   ): Promise<void> {
-    const entitlement = await this.connection
+    const entitlement = await manager
       .getRepository(TaonECommerceEntitlementEntity)
       .findOne({ where: { stripeSubscriptionId: subscriptionId } });
-    if (!entitlement) {
-      throw new Error('The failed Stripe invoice has no local entitlement.');
+    const subscription = !entitlement
+      ? await this.taonECommerceStripeRepository.getSubscription(subscriptionId)
+      : null;
+    const orderId =
+      entitlement?.orderId ?? Number(subscription?.metadata?.taonOrderId);
+    if (!Number.isSafeInteger(orderId) || orderId <= 0) {
+      throw new Error('The failed Stripe invoice has no local order.');
     }
-    const order = await this.connection
+    const order = await manager
       .getRepository(TaonECommerceOrderEntity)
-      .findOne({ where: { id: entitlement.orderId } });
-    if (!order) {
+      .findOne({ where: { id: orderId } });
+    if (
+      !order ||
+      (subscription &&
+        subscription.metadata?.taonUserId !== String(order.userId))
+    ) {
       throw new Error('The failed Stripe invoice order was not found.');
     }
-    const repository = this.connection.getRepository(
+    const repository = manager.getRepository(
       TaonECommercePaymentTransactionEntity,
     );
     const transaction =
@@ -736,19 +950,22 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         where: { provider: 'stripe', providerTransactionId: invoice.id },
       })) ??
       repository.create({
-        orderId: entitlement.orderId,
+        orderId: order.id,
         provider: 'stripe',
         providerTransactionId: invoice.id,
         amount: (invoice.amount_due ?? 0) / 100,
         currency: order.currency,
         status: 'failed',
       });
-    if (transaction.orderId !== entitlement.orderId) {
+    if (transaction.orderId !== order.id) {
       throw new Error(
         'The Stripe invoice is already associated with another order.',
       );
     }
-    if (transaction.status !== 'succeeded') {
+    if (
+      transaction.status !== 'succeeded' &&
+      transaction.status !== 'refunded'
+    ) {
       transaction.status = 'failed';
       await repository.save(transaction);
     }
@@ -758,30 +975,30 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   //#region methods / mark checkout session failed
   private async markCheckoutSessionFailed(
     session: StripeCheckoutSessionEvent,
+    manager: EntityManager,
   ): Promise<void> {
+    //#region @websqlFunc
     const orderId = Number(session.metadata?.taonOrderId);
     if (!Number.isSafeInteger(orderId) || orderId <= 0 || !session.id) {
       throw new Error(
         'The Stripe Checkout session has invalid Taon order metadata.',
       );
     }
-    const orderRepository = this.connection.getRepository(
-      TaonECommerceOrderEntity,
-    );
+    const orderRepository = manager.getRepository(TaonECommerceOrderEntity);
     const order = await orderRepository.findOne({ where: { id: orderId } });
     if (!order || order.stripeCheckoutSessionId !== session.id) {
       throw new Error(
         'The Stripe Checkout session does not match a local order.',
       );
     }
-    if (order.status === 'paid') {
+    if (order.status !== 'pending') {
       return;
     }
     order.status = session.status === 'expired' ? 'cancelled' : 'failed';
     await orderRepository.save(order);
     const providerTransactionId =
       this.stripeObjectId(session.payment_intent) ?? session.id;
-    const transactionRepository = this.connection.getRepository(
+    const transactionRepository = manager.getRepository(
       TaonECommercePaymentTransactionEntity,
     );
     const transaction =
@@ -798,47 +1015,122 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       });
     transaction.status = 'failed';
     await transactionRepository.save(transaction);
+    //#endregion
   }
   //#endregion
 
   //#region methods / update subscription
   private async updateSubscription(
     subscription: TaonStripeSubscription,
+    manager: EntityManager,
   ): Promise<void> {
-    const repository = this.connection.getRepository(
-      TaonECommerceEntitlementEntity,
-    );
-    const entitlements = await repository.find({
+    const repository = manager.getRepository(TaonECommerceEntitlementEntity);
+    let entitlements = await repository.find({
       where: { stripeSubscriptionId: subscription.id },
     });
-    const status =
-      subscription.status === 'active' || subscription.status === 'trialing'
-        ? 'active'
-        : subscription.status === 'canceled'
-          ? 'canceled'
-          : subscription.status === 'past_due' ||
-              subscription.status === 'unpaid'
-            ? 'past_due'
-            : 'expired';
+    if (!entitlements.length && subscription.metadata?.taonOrderId) {
+      const order = await manager
+        .getRepository(TaonECommerceOrderEntity)
+        .findOne({
+          where: { id: Number(subscription.metadata.taonOrderId) },
+        });
+      if (!order?.stripeCheckoutSessionId) {
+        throw new Error('The Stripe subscription order is not ready yet.');
+      }
+      const session =
+        await this.taonECommerceStripeRepository.getCheckoutSession(
+          order.stripeCheckoutSessionId,
+        );
+      if (this.stripeObjectId(session.subscription) !== subscription.id) {
+        throw new Error(
+          'The Stripe subscription does not match the order checkout.',
+        );
+      }
+      await this.completeCheckoutSession(session, manager);
+      entitlements = await repository.find({
+        where: { stripeSubscriptionId: subscription.id },
+      });
+    }
+    const state = stripeSubscriptionState(subscription);
     for (const entitlement of entitlements) {
-      entitlement.status = status;
-      entitlement.currentPeriodStart = this.dateFromUnix(
-        subscription.current_period_start,
-      );
-      entitlement.currentPeriodEnd = this.dateFromUnix(
-        subscription.current_period_end,
-      );
+      const order = await manager
+        .getRepository(TaonECommerceOrderEntity)
+        .findOne({
+          where: { id: entitlement.orderId },
+        });
+      if (order?.status === 'refunded') {
+        continue;
+      }
+      entitlement.status = state.status;
+      entitlement.currentPeriodStart = this.dateFromUnix(state.start);
+      entitlement.currentPeriodEnd = this.dateFromUnix(state.end);
       entitlement.canceledAt = this.dateFromUnix(subscription.canceled_at);
       await repository.save(entitlement);
     }
   }
   //#endregion
 
+  private async reversePurchase(
+    charge: StripeCharge,
+    manager: EntityManager,
+  ): Promise<void> {
+    //#region @websqlFunc
+    const paymentIntentId = this.stripeObjectId(charge.payment_intent);
+    if (!paymentIntentId) {
+      return;
+    }
+    const transactions = manager.getRepository(
+      TaonECommercePaymentTransactionEntity,
+    );
+    const transaction = await transactions.findOne({
+      where: { provider: 'stripe', providerTransactionId: paymentIntentId },
+    });
+    const session = transaction
+      ? null
+      : await this.taonECommerceStripeRepository.getCheckoutForPaymentIntent(
+          paymentIntentId,
+        );
+    const orders = manager.getRepository(TaonECommerceOrderEntity);
+    const order = transaction
+      ? await orders.findOne({ where: { id: transaction.orderId } })
+      : session
+        ? await orders.findOne({
+            where: { stripeCheckoutSessionId: session.id },
+          })
+        : null;
+    // Ignore payments that were not created by this application's checkout.
+    if (!order) {
+      return;
+    }
+    const reversedTransaction =
+      transaction ??
+      transactions.create({
+        orderId: order.id,
+        provider: 'stripe',
+        providerTransactionId: paymentIntentId,
+        status: 'refunded',
+        amount: order.total,
+        currency: order.currency,
+      });
+    reversedTransaction.status = 'refunded';
+    await transactions.save(reversedTransaction);
+    const entitlements = manager.getRepository(TaonECommerceEntitlementEntity);
+    const grants = await entitlements.find({ where: { orderId: order.id } });
+    for (const grant of grants) {
+      grant.status = 'expired';
+      await entitlements.save(grant);
+    }
+    order.status = 'refunded';
+    await orders.save(order);
+    //#endregion
+  }
+
   //#region methods / calculate entitlement expiry
   private calculateEntitlementExpiry(
     product: TaonECommerceProductEntity,
     startedAt: Date,
   ): Date | null {
+    //#region @websqlFunc
     const value = product.subscriptionIntervalValue;
     const unit = product.subscriptionIntervalUnit;
     if (!value || value <= 0 || !unit) {
@@ -853,6 +1145,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       days: 86_400_000,
     }[unit];
     return new Date(startedAt.getTime() + value * multiplier);
+    //#endregion
   }
   //#endregion
 

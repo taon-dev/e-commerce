@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.ts:69
+msgid "The transaction ID is invalid."
+msgstr "Die Transaktions-ID ist ungültig."
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.ts:83
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.ts:112
+msgid "Unable to load transaction details."
+msgstr "Die Transaktionsdetails können nicht geladen werden."
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.ts:89
+msgid "The transaction details response was invalid."
+msgstr "Die Antwort mit den Transaktionsdetails ist ungültig."
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.ts:98
+msgid "Unable to load the related order."
+msgstr "Die zugehörige Bestellung kann nicht geladen werden."

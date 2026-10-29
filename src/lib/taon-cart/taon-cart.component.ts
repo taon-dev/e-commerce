@@ -8,6 +8,7 @@ import {
   OnDestroy,
   inject,
   signal,
+  computed,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -18,12 +19,15 @@ import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { TaonDatatableComponent } from '@taon-dev/ui/src';
 import { TaonPurchaseStatusDialogComponent } from '@taon-dev/ui/src';
 import { Subscription } from 'rxjs';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import type { TaonECommerceCartEntity } from '../taon-e-commerce-cart/taon-e-commerce-cart.entity';
 import { TaonECommerceCustomerApiService } from '../taon-e-commerce-customer/taon-e-commerce-customer.api.service';
 import type { TaonECommerceEntitlementEntity } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.entity';
 import { entitlementHasAccess } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.utils';
 import type { TaonECommerceOrderEntity } from '../taon-e-commerce-order/taon-e-commerce-order.entity';
+import { TaonECommerceOrdersBackofficeModels } from '../taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.models';
 import { isQuantityProduct } from '../taon-e-commerce-product/taon-e-commerce-product-eligibility';
 import type { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon-e-commerce-product.entity';
 
@@ -35,9 +39,12 @@ import { TaonCartProductThumbnailComponent } from './taon-cart-product-thumbnail
 import {
   TaonCartCheckoutCancelParam,
   TaonCartCheckoutSuccessParam,
+  TaonCartModels,
   type TaonCartConfig,
 } from './taon-cart.models';
 //#endregion
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 @Component({
   selector: 'taon-cart',
@@ -57,6 +64,8 @@ import {
 })
 export class TaonCartComponent implements OnInit, OnDestroy {
   //#region fields & getters
+  t = t.for(this);
+
   @Input() config: TaonCartConfig = {};
 
   private readonly api = inject(TaonECommerceCustomerApiService);
@@ -99,13 +108,30 @@ export class TaonCartComponent implements OnInit, OnDestroy {
 
   readonly activatedRoute = inject(ActivatedRoute);
 
-  readonly orderColumns: MtxGridColumn[] = [
-    { header: 'Order ID', field: 'id', sortable: true },
-    { header: 'Status', field: 'status', sortable: true },
-    { header: 'Total', field: 'total', sortable: true },
-    { header: 'Currency', field: 'currency', sortable: true },
-    { header: 'Created', field: 'createdAt', sortable: true },
-  ];
+  readonly statusLabels = TaonCartModels.statusLabels(this);
+
+  private readonly orderStatusLabels = TaonECommerceOrdersBackofficeModels.statusLabels(this);
+
+  private readonly orderLabels = {
+    id: this.t.signal.gettext('Order ID'),
+    status: this.t.signal.gettext('Status'),
+    total: this.t.signal.gettext('Total'),
+    currency: this.t.signal.gettext('Currency'),
+    created: this.t.signal.gettext('Created'),
+  };
+
+  readonly orderColumns = computed<MtxGridColumn[]>(() => [
+    { header: this.orderLabels.id(), field: 'id', sortable: true },
+    {
+      header: this.orderLabels.status(),
+      field: 'status',
+      sortable: true,
+      formatter: (order: TaonECommerceOrderEntity) => this.orderStatusLabels[order.status]?.() ?? order.status,
+    },
+    { header: this.orderLabels.total(), field: 'total', sortable: true },
+    { header: this.orderLabels.currency(), field: 'currency', sortable: true },
+    { header: this.orderLabels.created(), field: 'createdAt', sortable: true },
+  ]);
 
   get suggestedProducts(): TaonECommerceProductEntity[] {
     return this.products();
@@ -157,7 +183,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
           this.dialog.open(TaonPurchaseStatusDialogComponent, {
             data: {
               success: true,
-              message: 'Checkout completed. Your purchase will appear after Stripe confirms payment.',
+              message: this.t.gettext('Checkout completed. Your purchase will appear after Stripe confirms payment.'),
             },
           });
           this.cleanQueryParams();
@@ -167,7 +193,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
           this.dialog.open(TaonPurchaseStatusDialogComponent, {
             data: {
               success: false,
-              message: 'You left checkout. Your order will be updated when Stripe confirms its status.',
+              message: this.t.gettext('You left checkout. Your order will be updated when Stripe confirms its status.'),
             },
           });
 
@@ -252,7 +278,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
         ),
       );
     } catch (error) {
-      this.reportError('Unable to load your cart.', error);
+      this.reportError(this.t.gettext('Unable to load your cart.'), error);
     } finally {
       this.loadingCart.set(false);
     }
@@ -268,7 +294,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
       this.products.set(products.filter(product => product.active === true));
       this.productsLoaded.set(true);
     } catch (error) {
-      this.reportError('Unable to load available products.', error);
+      this.reportError(this.t.gettext('Unable to load available products.'), error);
       this.products.set([]);
       this.productsLoaded.set(true);
     }
@@ -281,12 +307,12 @@ export class TaonCartComponent implements OnInit, OnDestroy {
       return false;
     }
     if (!this.eligibility(product)?.canAdd) {
-      this.error.set(this.eligibility(product)?.reason ?? 'This product is not available.');
+      this.error.set(this.eligibility(product)?.reason ?? this.t.gettext('This product is not available.'));
       return false;
     }
     if (typeof product.id !== 'number') {
       this.error.set(
-        'This suggested product does not have a saved product ID.',
+        this.t.gettext('This suggested product does not have a saved product ID.'),
       );
       return false;
     }
@@ -300,7 +326,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
       await this.loadProducts();
       return true;
     } catch (error) {
-      this.reportError('Unable to add this product to your cart.', error);
+      this.reportError(this.t.gettext('Unable to add this product to your cart.'), error);
       return false;
     } finally {
       this.changingCart.set(false);
@@ -326,7 +352,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
       );
       await this.loadProducts();
     } catch (error) {
-      this.reportError('Unable to update the cart item.', error);
+      this.reportError(this.t.gettext('Unable to update the cart item.'), error);
     } finally {
       this.changingCart.set(false);
     }
@@ -347,7 +373,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
       );
       await this.loadProducts();
     } catch (error) {
-      this.reportError('Unable to remove the cart item.', error);
+      this.reportError(this.t.gettext('Unable to remove the cart item.'), error);
     } finally {
       this.changingCart.set(false);
     }
@@ -365,7 +391,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
         ),
       );
     } catch (error) {
-      this.reportError('Unable to load your orders.', error);
+      this.reportError(this.t.gettext('Unable to load your orders.'), error);
     } finally {
       this.loadingOrders.set(false);
     }
@@ -383,7 +409,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
         ),
       );
     } catch (error) {
-      this.reportError('Unable to load your purchases.', error);
+      this.reportError(this.t.gettext('Unable to load your purchases.'), error);
     } finally {
       this.loadingEntitlements.set(false);
     }
@@ -412,7 +438,7 @@ export class TaonCartComponent implements OnInit, OnDestroy {
       );
       window.location.assign(session.checkoutUrl);
     } catch (error) {
-      this.reportError('Unable to start Stripe Checkout.', error);
+      this.reportError(this.t.gettext('Unable to start Stripe Checkout.'), error);
     } finally {
       this.creatingCheckout.set(false);
     }
@@ -429,11 +455,11 @@ export class TaonCartComponent implements OnInit, OnDestroy {
   ): Promise<T> {
     const response = await endpoint;
     if (response.statusCode >= 400) {
-      throw new Error(response.responseText || 'The request failed.');
+      throw new Error(response.responseText || this.t.gettext('The request failed.'));
     }
     const result = response.body?.json;
     if (result === undefined || result === null) {
-      throw new Error('The server returned an empty response.');
+      throw new Error(this.t.gettext('The server returned an empty response.'));
     }
     return result;
   }

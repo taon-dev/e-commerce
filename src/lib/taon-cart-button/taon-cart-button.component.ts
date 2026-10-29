@@ -3,11 +3,15 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import { TaonCartComponent } from '../taon-cart/taon-cart.component';
 import type { TaonCartConfig } from '../taon-cart/taon-cart.models';
 import { TaonECommerceCustomerApiService } from '../taon-e-commerce-customer/taon-e-commerce-customer.api.service';
 import { TaonECommerceProductApiService } from '../taon-e-commerce-product/taon-e-commerce-product.api.service';
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 @Component({
   selector: 'taon-cart-button',
@@ -21,6 +25,8 @@ import { TaonECommerceProductApiService } from '../taon-e-commerce-product/taon-
   ],
 })
 export class TaonCartButtonComponent {
+  t = t.for(this);
+
   @Input() config: TaonCartConfig = {};
 
   private readonly dialog = inject(MatDialog);
@@ -42,7 +48,7 @@ export class TaonCartButtonComponent {
         ),
       error: error => {
         console.error('[taon-cart-button] Unable to load suggested products', error);
-        this.error.set('Unable to load suggested products.');
+        this.error.set(this.t.gettext('Unable to load suggested products.'));
       },
     });
   }
@@ -75,11 +81,11 @@ export class TaonCartButtonComponent {
     try {
       const response = await this.api.controller.getMyCart().request!();
       if (response.statusCode >= 400) {
-        throw new Error(response.responseText || 'Unable to load your cart.');
+        throw new Error(response.responseText || this.t.gettext('Unable to load your cart.'));
       }
       const cart = response.body?.json;
       if (!cart || !Array.isArray(cart.items)) {
-        throw new Error('The cart response was invalid.');
+        throw new Error(this.t.gettext('The cart response was invalid.'));
       }
       this.cartItemCount.set(
         cart.items.reduce(
@@ -91,7 +97,7 @@ export class TaonCartButtonComponent {
     } catch (error) {
       console.error('[taon-cart-button] Unable to load cart count', error);
       this.error.set(
-        error instanceof Error ? error.message : 'Unable to load your cart.',
+        error instanceof Error ? error.message : this.t.gettext('Unable to load your cart.'),
       );
     }
   }

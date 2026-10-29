@@ -26,9 +26,9 @@ export class TaonECommerceBackofficeSettingsController extends TaonBaseControlle
 
   @PUT()
   setSellingEnabled(@Body('enabled') enabled: boolean): Taon.Response<boolean> {
-    return async () => {
+    return async (req, res, { t }) => {
       if (typeof enabled !== 'boolean') {
-        throw new Error('Selling enabled must be a boolean.');
+        throw new Error(t.gettext('Selling enabled must be a boolean.'));
       }
 
       await this.settings.set('sellingEnabled', enabled);

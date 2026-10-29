@@ -1,0 +1,61 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:125
+msgid "Unable to copy the webhook URL. Select and copy it manually."
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:141
+msgid "Stripe synchronization failed."
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:157
+msgid "Unable to connect to Stripe."
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:22
+msgid "Sync products with Stripe"
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:25
+msgid "Checking Stripe connection..."
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:33
+msgid "Stripe webhook URL:"
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:35
+msgid "Copy"
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:40
+msgid "Synchronizing products with Stripe..."
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:44
+msgid "Synchronization finished: [[ succeeded ]] succeeded, [[ failed ]] failed."
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:50
+msgid "[[ productName ]]: synchronized"
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:51
+msgid "[[ productName ]]: [[ error ]]"
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:61
+msgid "Cancel / Close"
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:67
+msgid "Syncing..."
+msgstr ""
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:67
+msgid "Start"
+msgstr ""

@@ -12,7 +12,7 @@ export const TaonECommerceBackofficeDashboardRoutes: Routes = [
     children: [
       // adminLazyRoute({
       //   path: 'dashboard',
-      //   menuItem: 'Dashboard',
+      //   menuItem: ()=>'Dashboard',
       //   icon: 'dashboard',
       //   expandable: false,
       //   loader: () =>

@@ -2,7 +2,11 @@
 import { Routes } from '@angular/router';
 import { TaonAuthContextEntity } from '@taon-dev/e-commerce/src';
 import { adminLazyRoute as adminLazyRouteBase } from '@taon-dev/ui/src';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 //#endregion
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
+
 const adminLazyRoute = adminLazyRouteBase<TaonAuthContextEntity>;
 
 export const TaonBaselineBackofficeRoutes: Routes = [
@@ -18,7 +22,7 @@ export const TaonBaselineBackofficeRoutes: Routes = [
         isVisible: ({ context }) =>
           context?.isSuperUser || context?.isLocalhostBackend,
         path: 'welcome',
-        menuItem: 'Welcome',
+        menuItem: t.signal.gettext('Welcome'),
         // color: 'red',
         icon: 'waving_hand',
         expandable: false,
@@ -27,7 +31,7 @@ export const TaonBaselineBackofficeRoutes: Routes = [
       }),
       adminLazyRoute({
         path: 'sudo',
-        menuItem: 'Sudo',
+        menuItem: t.signal.gettext('Sudo'),
         color: 'red',
         icon: 'supervisor_account',
         expandable: true,
@@ -36,7 +40,7 @@ export const TaonBaselineBackofficeRoutes: Routes = [
       }),
       adminLazyRoute({
         path: 'cms',
-        menuItem: 'CMS',
+        menuItem: t.signal.gettext('CMS'),
         expandable: true,
         icon: 'content_copy',
         loader: () =>
@@ -44,7 +48,7 @@ export const TaonBaselineBackofficeRoutes: Routes = [
       }),
       adminLazyRoute({
         path: 'e-commerce',
-        menuItem: 'E-commerce',
+        menuItem: t.signal.gettext('E-commerce'),
         expandable: true,
         icon: 'sell',
         loader: () =>
@@ -55,7 +59,7 @@ export const TaonBaselineBackofficeRoutes: Routes = [
 
       adminLazyRoute({
         path: 'users',
-        menuItem: 'Users',
+        menuItem: t.signal.gettext('Users'),
         icon: 'manage_accounts',
         expandable: false,
         loader: () =>
@@ -65,7 +69,7 @@ export const TaonBaselineBackofficeRoutes: Routes = [
       }),
       adminLazyRoute({
         path: 'session',
-        menuItem: 'Sessions',
+        menuItem: t.signal.gettext('Sessions'),
         expandable: false,
         icon: 'login',
         loader: () =>
@@ -75,7 +79,7 @@ export const TaonBaselineBackofficeRoutes: Routes = [
       }),
       adminLazyRoute({
         path: 'authorization',
-        menuItem: 'Authorization',
+        menuItem: t.signal.gettext('Authorization'),
         icon: 'apps',
         expandable: true,
         loader: () =>
@@ -85,7 +89,7 @@ export const TaonBaselineBackofficeRoutes: Routes = [
       }),
       adminLazyRoute({
         path: 'emails',
-        menuItem: 'Emails',
+        menuItem: t.signal.gettext('Emails'),
         expandable: false,
         icon: 'email',
         loader: () =>

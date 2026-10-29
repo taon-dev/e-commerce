@@ -1,0 +1,81 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:43
+msgid "ID"
+msgstr "ID"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:44
+msgid "Name"
+msgstr "Name"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:45
+msgid "Type"
+msgstr "Typ"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:46
+msgid "Price"
+msgstr "Preis"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:47
+msgid "Currency"
+msgstr "Währung"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:48
+msgid "Active"
+msgstr "Aktiv"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:49
+msgid "Stripe synchronized"
+msgstr "Mit Stripe synchronisiert"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:50
+msgid "Actions"
+msgstr "Aktionen"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:51
+msgid "Edit product"
+msgstr "Produkt bearbeiten"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:52
+msgid "Duplicate"
+msgstr "Duplizieren"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:56
+msgid "Lifetime"
+msgstr "Unbefristet"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:57
+msgid "Item"
+msgstr "Artikel"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:58
+msgid "Subscription"
+msgstr "Abonnement"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:59
+msgid "Digital"
+msgstr "Digital"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:60
+msgid "Physical"
+msgstr "Physisch"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:61
+msgid "Service"
+msgstr "Dienstleistung"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:79
+msgid "Yes"
+msgstr "Ja"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:79
+msgid "No"
+msgstr "Nein"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:149
+msgid "Unable to duplicate the product."
+msgstr "Das Produkt kann nicht dupliziert werden."

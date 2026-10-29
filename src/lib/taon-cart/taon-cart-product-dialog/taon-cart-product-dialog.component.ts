@@ -11,10 +11,14 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import type { TaonProductEligibility } from '../../taon-e-commerce-product/taon-e-commerce-product-eligibility';
 import type { TaonECommerceProductEntity } from '../../taon-e-commerce-product/taon-e-commerce-product.entity';
 import { TaonCartProductThumbnailComponent } from '../taon-cart-product-thumbnail/taon-cart-product-thumbnail.component';
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 export interface TaonCartProductDialogData {
   product: TaonECommerceProductEntity;
@@ -37,6 +41,8 @@ export interface TaonCartProductDialogData {
   styleUrl: './taon-cart-product-dialog.component.scss',
 })
 export class TaonCartProductDialogComponent {
+  t = t.for(this);
+
   readonly data = inject<TaonCartProductDialogData>(MAT_DIALOG_DATA);
 
   readonly busy = signal(false);
@@ -46,6 +52,22 @@ export class TaonCartProductDialogComponent {
   private readonly dialogRef = inject(
     MatDialogRef<TaonCartProductDialogComponent>,
   );
+
+  get subscriptionLabel(): string {
+    const value = this.data.product.subscriptionIntervalValue;
+    switch (this.data.product.subscriptionIntervalUnit) {
+      case 'seconds':
+        return this.t.gettext('Subscription: [[ value ]] seconds', { value });
+      case 'minutes':
+        return this.t.gettext('Subscription: [[ value ]] minutes', { value });
+      case 'hours':
+        return this.t.gettext('Subscription: [[ value ]] hours', { value });
+      case 'days':
+        return this.t.gettext('Subscription: [[ value ]] days', { value });
+      default:
+        return this.t.gettext('Subscription: [[ value ]]', { value });
+    }
+  }
 
   async addToCart(): Promise<void> {
     if (this.busy() || !this.data.eligibility()?.canAdd) {
@@ -58,7 +80,7 @@ export class TaonCartProductDialogComponent {
         this.dialogRef.close();
       } else {
         this.error.set(
-          'Unable to add this product. Close the dialog for details or try again.',
+          this.t.gettext('Unable to add this product. Close the dialog for details or try again.'),
         );
       }
     } finally {

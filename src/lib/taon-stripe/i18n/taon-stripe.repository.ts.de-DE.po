@@ -1,0 +1,13 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-stripe/taon-stripe.repository.ts:42
+msgid "Connected to Stripe"
+msgstr "Mit Stripe verbunden"
+
+#: src/lib/taon-stripe/taon-stripe.repository.ts:51
+msgid "Unable to connect to Stripe."
+msgstr "Es kann keine Verbindung zu Stripe hergestellt werden."

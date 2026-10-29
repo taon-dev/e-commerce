@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component.html:1
+msgid "E-commerce Settings"
+msgstr "Ustawienia e-commerce"
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component.html:7
+msgid "Selling enabled"
+msgstr "Sprzedaż włączona"
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component.html:9
+msgid "Checkout and purchasing are paused."
+msgstr "Płatności i zakupy są wstrzymane."
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component.html:11
+msgid "Customers can purchase products."
+msgstr "Klienci mogą kupować produkty."
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component.html:16
+msgid "Loading setting..."
+msgstr "Ładowanie ustawienia..."
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component.html:24
+msgid "Saving..."
+msgstr "Zapisywanie..."
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component.html:26
+msgid "Disable selling"
+msgstr "Wyłącz sprzedaż"
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.component.html:28
+msgid "Enable selling"
+msgstr "Włącz sprzedaż"

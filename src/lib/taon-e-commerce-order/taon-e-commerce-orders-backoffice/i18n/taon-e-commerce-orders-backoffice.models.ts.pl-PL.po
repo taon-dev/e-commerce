@@ -1,0 +1,25 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.models.ts:10
+msgid "Pending"
+msgstr "Oczekuje"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.models.ts:11
+msgid "Paid"
+msgstr "Opłacono"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.models.ts:12
+msgid "Cancelled"
+msgstr "Anulowano"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.models.ts:13
+msgid "Failed"
+msgstr "Niepowodzenie"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.models.ts:14
+msgid "Refunded"
+msgstr "Zwrócono"

@@ -1,0 +1,38 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app.ts:176
+msgid "Basic app info"
+msgstr "Grundlegende App-Informationen"
+
+#: src/app.ts:178
+msgid "Name: [[ name ]]"
+msgstr "Name: [[ name ]]"
+
+#: src/app.ts:183
+msgid "Angular version: [[ version ]]"
+msgstr "Angular-Version: [[ version ]]"
+
+#: src/app.ts:187
+msgid "Taon backend: [[ mode ]]"
+msgstr "Taon-Backend: [[ mode ]]"
+
+#: src/app.ts:211
+msgctxt "header-taon-admin"
+msgid "Hello [[ username ]]"
+msgstr "Hallo [[ username ]]"
+
+#: src/app.ts:223
+msgid "Please login to use Taon Admin"
+msgstr "Bitte melden Sie sich an, um Taon Admin zu verwenden."
+
+#: src/app.ts:251
+msgid "Test"
+msgstr "Test"
+
+#: src/app.ts:255
+msgid "Please login to see cart"
+msgstr "Bitte melden Sie sich an, um den Warenkorb anzuzeigen."

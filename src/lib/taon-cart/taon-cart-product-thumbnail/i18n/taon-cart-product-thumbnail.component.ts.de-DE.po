@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-cart/taon-cart-product-thumbnail/taon-cart-product-thumbnail.component.ts:61
+msgid "The product thumbnail could not be loaded."
+msgstr "Das Produktvorschaubild konnte nicht geladen werden."
+
+#: src/lib/taon-cart/taon-cart-product-thumbnail/taon-cart-product-thumbnail.component.ts:71
+#: src/lib/taon-cart/taon-cart-product-thumbnail/taon-cart-product-thumbnail.component.ts:80
+msgid "Thumbnail unavailable."
+msgstr "Vorschaubild nicht verfügbar."

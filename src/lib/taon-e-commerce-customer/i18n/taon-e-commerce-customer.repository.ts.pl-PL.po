@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:98
+msgid "Unable to load the current user cart."
+msgstr "Nie można załadować koszyka bieżącego użytkownika."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:131
+msgid "Unable to refresh the current user cart."
+msgstr "Nie można odświeżyć koszyka bieżącego użytkownika."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:200
+msgid "Product and quantity must be positive whole numbers."
+msgstr "Produkt i ilość muszą być dodatnimi liczbami całkowitymi."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:212
+msgid "The selected product is not available."
+msgstr "Wybrany produkt jest niedostępny."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:224
+msgid "The cart was not found."
+msgstr "Nie znaleziono koszyka."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:271
+msgid "Item and quantity must be positive whole numbers."
+msgstr "Pozycja i ilość muszą być dodatnimi liczbami całkowitymi."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:288
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:331
+msgid "The cart item was not found."
+msgstr "Nie znaleziono pozycji koszyka."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:320
+msgid "The cart item ID is invalid."
+msgstr "ID pozycji koszyka jest nieprawidłowe."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:435
+msgid "Your cart has no active products to check out."
+msgstr "W koszyku nie ma aktywnych produktów do opłacenia."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:453
+msgid "A product in your cart is no longer available."
+msgstr "Produkt w koszyku nie jest już dostępny."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:484
+msgid "All products in one checkout must use the same currency."
+msgstr "Wszystkie produkty w jednym zamówieniu muszą mieć tę samą walutę."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:520
+msgid "A recurring subscription must be checked out by itself."
+msgstr "Subskrypcję cykliczną należy opłacić osobno."

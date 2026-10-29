@@ -5,8 +5,12 @@ import {
   signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import { TaonECommerceBackofficeSettingsApiService } from './taon-e-commerce-backoffice-settings.api.service';
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 @Component({
   selector: 'app-taon-e-commerce-backoffice-settings',
@@ -17,6 +21,8 @@ import { TaonECommerceBackofficeSettingsApiService } from './taon-e-commerce-bac
   providers: [TaonECommerceBackofficeSettingsApiService],
 })
 export class TaonECommerceBackofficeSettingsComponent {
+  t = t.for(this);
+
   private readonly api = inject(TaonECommerceBackofficeSettingsApiService);
 
   readonly sellingEnabled = signal<boolean | null>(null);
@@ -45,7 +51,7 @@ export class TaonECommerceBackofficeSettingsComponent {
       this.error.set(
         error instanceof Error
           ? error.message
-          : 'Unable to load the selling setting.',
+          : this.t.gettext('Unable to load the selling setting.'),
       );
     } finally {
       this.loading.set(false);
@@ -70,7 +76,7 @@ export class TaonECommerceBackofficeSettingsComponent {
       this.error.set(
         error instanceof Error
           ? error.message
-          : 'Unable to update the selling setting.',
+          : this.t.gettext('Unable to update the selling setting.'),
       );
     } finally {
       this.saving.set(false);

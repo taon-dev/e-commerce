@@ -3,13 +3,19 @@ import {
   Component,
   ViewChild,
   inject,
+  computed,
 } from '@angular/core';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { TaonDatatableComponent } from '@taon-dev/ui/src';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import { TaonECommerceOrderApiService } from '../taon-e-commerce-order.api.service';
 import { TaonECommerceOrderEntity } from '../taon-e-commerce-order.entity';
+import { TaonECommerceOrdersBackofficeModels } from './taon-e-commerce-orders-backoffice.models';
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 @Component({
   selector: 'app-taon-e-commerce-orders-backoffice',
@@ -20,6 +26,8 @@ import { TaonECommerceOrderEntity } from '../taon-e-commerce-order.entity';
   providers: [TaonECommerceOrderApiService],
 })
 export class TaonECommerceOrdersBackofficeComponent {
+  t = t.for(this);
+
   @ViewChild(TaonDatatableComponent)
   readonly datatable!: TaonDatatableComponent;
 
@@ -29,27 +37,45 @@ export class TaonECommerceOrdersBackofficeComponent {
 
   readonly api = inject(TaonECommerceOrderApiService);
 
-  readonly columns: MtxGridColumn[] = [
-    { header: 'Order ID', field: 'id', sortable: true },
-    { header: 'User', field: 'userId', sortable: true },
-    { header: 'Status', field: 'status', sortable: true },
-    { header: 'Total', field: 'total', sortable: true },
-    { header: 'Currency', field: 'currency', sortable: true },
-    { header: 'Created', field: 'createdAt', sortable: true },
+  private readonly statusLabels = TaonECommerceOrdersBackofficeModels.statusLabels(this);
+
+  private readonly columnLabels = {
+    id: this.t.signal.gettext('Order ID'),
+    user: this.t.signal.gettext('User'),
+    status: this.t.signal.gettext('Status'),
+    total: this.t.signal.gettext('Total'),
+    currency: this.t.signal.gettext('Currency'),
+    created: this.t.signal.gettext('Created'),
+    actions: this.t.signal.gettext('Actions'),
+    view: this.t.signal.gettext('View order'),
+  };
+
+  readonly columns = computed<MtxGridColumn[]>(() => [
+    { header: this.columnLabels.id(), field: 'id', sortable: true },
+    { header: this.columnLabels.user(), field: 'userId', sortable: true },
     {
-      header: 'Actions',
+      header: this.columnLabels.status(),
+      field: 'status',
+      sortable: true,
+      formatter: (order: TaonECommerceOrderEntity) => this.statusLabels[order.status]?.() ?? order.status,
+    },
+    { header: this.columnLabels.total(), field: 'total', sortable: true },
+    { header: this.columnLabels.currency(), field: 'currency', sortable: true },
+    { header: this.columnLabels.created(), field: 'createdAt', sortable: true },
+    {
+      header: this.columnLabels.actions(),
       field: 'actions',
       type: 'button',
       buttons: [
         {
           type: 'icon',
           icon: 'open_in_new',
-          tooltip: 'View order',
+          tooltip: this.columnLabels.view(),
           click: (order: TaonECommerceOrderEntity) => this.openOrder(order),
         },
       ],
     },
-  ];
+  ]);
 
   ngAfterViewInit(): void {
     this.datatable.reload();

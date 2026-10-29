@@ -1,5 +1,6 @@
 //#region imports
 import { Injectable } from '@angular/core';
+import { Translation } from '@taon-dev/i18n/src';
 import { TaonCmsContentController } from '@taon-dev/cms/src';
 import { TaonGroupController } from '@taon-dev/session/src';
 import { HttpResponse } from 'ng2-rest/src';
@@ -15,6 +16,8 @@ import { TaonECommerceProductController } from './taon-e-commerce-product.contro
 import type { TaonECommerceProductEntity } from './taon-e-commerce-product.entity';
 //#endregion
 
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
+
 //#region models
 export interface TaonECommerceStripeConfiguration {
   connected: boolean;
@@ -25,6 +28,8 @@ export interface TaonECommerceStripeConfiguration {
 
 @Injectable()
 export class TaonECommerceProductApiService extends TaonBaseAngularService {
+  readonly t = t.for(this);
+
   protected readonly taonECommerceProductController = this.injectController(
     TaonECommerceProductController,
   );
@@ -47,11 +52,11 @@ export class TaonECommerceProductApiService extends TaonBaseAngularService {
     return this.customerController.getBuyProducts().request!().observable.pipe(
       map(res => {
         if (res.statusCode >= 400) {
-          throw new Error(res.responseText || 'Unable to load products.');
+          throw new Error(res.responseText || this.t.gettext('Unable to load products.'));
         }
         const products = res.body?.json;
         if (!Array.isArray(products)) {
-          throw new Error('The available products response was invalid.');
+          throw new Error(this.t.gettext('The available products response was invalid.'));
         }
         return { suggestedProducts: products };
       }),
@@ -64,7 +69,7 @@ export class TaonECommerceProductApiService extends TaonBaseAngularService {
         .request!();
     if (response.statusCode >= 400 || !response.body?.json) {
       throw new Error(
-        response.responseText || 'Unable to check Stripe status.',
+        response.responseText || this.t.gettext('Unable to check Stripe status.'),
       );
     }
     return response.body.json;
@@ -78,7 +83,7 @@ export class TaonECommerceProductApiService extends TaonBaseAngularService {
     if (response.statusCode >= 400 || !Array.isArray(response.body?.json)) {
       throw new Error(
         response.responseText ||
-          'Stripe synchronization could not be completed.',
+          this.t.gettext('Stripe synchronization could not be completed.'),
       );
     }
     return response.body.json;
@@ -89,6 +94,17 @@ export class TaonECommerceProductApiService extends TaonBaseAngularService {
   ): Observable<HttpResponse<TaonECommerceProductEntity>> {
     return this.taonECommerceProductController.save(product).request()
       .observable;
+  }
+
+  async duplicate(productId: number): Promise<TaonECommerceProductEntity> {
+    const response = await this.taonECommerceProductController
+      .duplicate(productId).request();
+    if (response.statusCode >= 400 || typeof response.body?.json?.id !== 'number') {
+      throw new Error(
+        response.responseText || this.t.gettext('Unable to duplicate the product.'),
+      );
+    }
+    return response.body.json;
   }
 
   updateById(

@@ -59,9 +59,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     @Query('productId') productId: number,
   ): Taon.Response<string> {
     //#region @websqlFunc
-    return async req => {
+    return async (req, res, { t }) => {
       if (!Number.isSafeInteger(productId) || productId <= 0) {
-        throw new Error('The product ID is invalid.');
+        throw new Error(t.gettext('The product ID is invalid.'));
       }
       const product = await this.ctx.connection
         .getRepository(TaonECommerceProductEntity)
@@ -71,11 +71,11 @@ export class TaonECommerceCustomerController extends TaonBaseController<
         });
       const post = product?.cmsContent;
       if (post?.status !== 'published' || !post.thumbnailKey) {
-        throw new Error('The product thumbnail was not found.');
+        throw new Error(t.gettext('The product thumbnail was not found.'));
       }
       const key = post.thumbnailKey;
       if (!(await this.cmsStorageController.isMediaObjectAvailable(key))) {
-        throw new Error('The product thumbnail is unavailable.');
+        throw new Error(t.gettext('The product thumbnail is unavailable.'));
       }
       // Only the thumbnail is a sales preview; paid media stays behind CMS access checks.
       const token = await this.cmsStorageController.createStorageDownloadToken({
@@ -108,9 +108,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   @GET()
   getMyCart(): Taon.Response<TaonECommerceCartEntity> {
     //#region @websqlFunc
-    return async req => {
+    return async (req, res, { t }) => {
       const userId = Number(req.userId);
-      return this.customerRepository.getCart(userId);
+      return this.customerRepository.getCart(userId, t);
     };
     //#endregion
   }
@@ -120,9 +120,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   @GET()
   getBuyProducts(): Taon.Response<TaonECommerceProductEntity[]> {
     //#region @websqlFunc
-    return async req => {
+    return async (req, res, { t }) => {
       const userId = Number(req.userId);
-      return this.customerRepository.getSuggestedProducts(userId);
+      return this.customerRepository.getSuggestedProducts(userId, t);
     };
     //#endregion
   }
@@ -135,9 +135,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     @Body('quantity') quantity: number,
   ): Taon.Response<TaonECommerceCartEntity> {
     //#region @websqlFunc
-    return async req => {
+    return async (req, res, { t }) => {
       const userId = Number(req.userId);
-      return this.customerRepository.addProduct(userId, productId, quantity);
+      return this.customerRepository.addProduct(userId, productId, quantity, t);
     };
     //#endregion
   }
@@ -150,9 +150,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     @Body('quantity') quantity: number,
   ): Taon.Response<TaonECommerceCartEntity> {
     //#region @websqlFunc
-    return async req => {
+    return async (req, res, { t }) => {
       const userId = Number(req.userId);
-      return this.customerRepository.setItemQuantity(userId, itemId, quantity);
+      return this.customerRepository.setItemQuantity(userId, itemId, quantity, t);
     };
     //#endregion
   }
@@ -164,9 +164,9 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     @Body('itemId') itemId: number,
   ): Taon.Response<TaonECommerceCartEntity> {
     //#region @websqlFunc
-    return async req => {
+    return async (req, res, { t }) => {
       const userId = Number(req.userId);
-      return this.customerRepository.removeItem(userId, itemId);
+      return this.customerRepository.removeItem(userId, itemId, t);
     };
     //#endregion
   }
@@ -227,13 +227,13 @@ export class TaonECommerceCustomerController extends TaonBaseController<
     checkoutUrl: string;
   }> {
     //#region @websqlFunc
-    return async req => {
+    return async (req, res, { t }) => {
       const userId = Number(req?.userId);
       const origin = this.ctx.frontendHostUri.origin;
       return this.customerRepository.createCheckoutSession(userId, {
         successUrl: `${origin}/#/app?${TaonCartCheckoutSuccessParam}=true&session_id={CHECKOUT_SESSION_ID}`,
         cancelUrl: `${origin}/#/app?${TaonCartCheckoutCancelParam}=true`,
-      });
+      }, t);
     };
     //#endregion
   }

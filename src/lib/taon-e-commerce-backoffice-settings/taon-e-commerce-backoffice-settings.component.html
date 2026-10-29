@@ -1,19 +1,19 @@
-<h1>E-commerce Settings</h1>
+<h1>{{ t.gettext('E-commerce Settings') }}</h1>
 
 <section
   class="setting"
   aria-labelledby="selling-setting">
   <div>
-    <h2 id="selling-setting">Selling enabled</h2>
+    <h2 id="selling-setting">{{ t.gettext('Selling enabled') }}</h2>
     @if (sellingEnabled() === false) {
-      <p>Checkout and purchasing are paused.</p>
+      <p>{{ t.gettext('Checkout and purchasing are paused.') }}</p>
     } @else if (sellingEnabled() === true) {
-      <p>Customers can purchase products.</p>
+      <p>{{ t.gettext('Customers can purchase products.') }}</p>
     }
   </div>
 
   @if (loading()) {
-    <p role="status">Loading setting...</p>
+    <p role="status">{{ t.gettext('Loading setting...') }}</p>
   } @else if (sellingEnabled() !== null) {
     <button
       mat-flat-button
@@ -21,11 +21,11 @@
       [disabled]="saving()"
       (click)="toggleSelling()">
       @if (saving()) {
-        Saving...
+        {{ t.gettext('Saving...') }}
       } @else if (sellingEnabled()) {
-        Disable selling
+        {{ t.gettext('Disable selling') }}
       } @else {
-        Enable selling
+        {{ t.gettext('Enable selling') }}
       }
     </button>
   }

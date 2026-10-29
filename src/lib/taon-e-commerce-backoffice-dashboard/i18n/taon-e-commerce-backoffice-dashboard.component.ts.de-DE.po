@@ -1,0 +1,18 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.ts:62
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.ts:109
+msgid "Unable to load e-commerce summary data."
+msgstr "Die E-Commerce-Übersicht kann nicht geladen werden."
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.ts:69
+msgid "The e-commerce summary response was invalid."
+msgstr "Die Antwort mit der E-Commerce-Übersicht ist ungültig."
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.ts:85
+msgid "Order [[ id ]] has an invalid total."
+msgstr "Die Bestellung [[ id ]] hat einen ungültigen Gesamtbetrag."

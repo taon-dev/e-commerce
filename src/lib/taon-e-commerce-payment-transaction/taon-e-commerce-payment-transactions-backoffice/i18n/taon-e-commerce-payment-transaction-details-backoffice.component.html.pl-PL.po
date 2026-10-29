@@ -1,0 +1,60 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:2
+msgid "Transaction details"
+msgstr "Szczegóły transakcji"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:5
+msgid "Loading transaction..."
+msgstr "Ładowanie transakcji..."
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:8
+msgid "Transaction ID"
+msgstr "ID transakcji"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:10
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:27
+msgid "Order ID"
+msgstr "ID zamówienia"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:12
+msgid "Provider"
+msgstr "Dostawca"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:14
+msgid "Provider transaction ID"
+msgstr "ID transakcji u dostawcy"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:16
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:31
+msgid "Status"
+msgstr "Status"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:18
+msgid "Amount"
+msgstr "Kwota"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:20
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:35
+msgid "Created"
+msgstr "Utworzono"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:25
+msgid "Related order"
+msgstr "Powiązane zamówienie"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:29
+msgid "User"
+msgstr "Użytkownik"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:33
+msgid "Total"
+msgstr "Razem"
+
+#: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transaction-details-backoffice.component.html:50
+msgid "Try again"
+msgstr "Spróbuj ponownie"

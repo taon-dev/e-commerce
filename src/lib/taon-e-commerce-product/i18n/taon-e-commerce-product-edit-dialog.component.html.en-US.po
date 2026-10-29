@@ -1,0 +1,150 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:2
+msgid "Edit product"
+msgstr "Edit product"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:2
+msgid "Add product"
+msgstr "Add product"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:193
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:205
+msgid "Saving..."
+msgstr "Saving..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:205
+msgid "Save"
+msgstr "Save"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:4
+msgid "Loading product options..."
+msgstr "Loading product options..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:8
+msgid "Name"
+msgstr "Name"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:18
+msgid "Description"
+msgstr "Description"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:30
+msgid "Active"
+msgstr "Active"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:34
+msgid "Product type"
+msgstr "Product type"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:46
+msgid "Price"
+msgstr "Price"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:57
+msgid "Currency"
+msgstr "Currency"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:71
+msgid "Maximum quantity per user"
+msgstr "Maximum quantity per user"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:79
+msgid "Leave empty for no per-user limit."
+msgstr "Leave empty for no per-user limit."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:82
+msgid "Overall stock limit"
+msgstr "Overall stock limit"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:90
+msgid "Leave empty for unlimited stock."
+msgstr "Leave empty for unlimited stock."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:98
+msgid "Subscription interval value"
+msgstr "Subscription interval value"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:108
+msgid "Subscription interval unit"
+msgstr "Subscription interval unit"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:118
+msgid "Stripe recurring prices are used for day-based intervals. Shorter Taon intervals expire locally."
+msgstr "Stripe recurring prices are used for day-based intervals. Shorter Taon intervals expire locally."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:122
+msgid "Attached permissions"
+msgstr "Attached permissions"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:135
+msgid "Inherited permissions are configured on the linked post."
+msgstr "Inherited permissions are configured on the linked post."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:142
+msgid "Attach permission from post"
+msgstr "Attach permission from post"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:146
+msgid "Suggest product only for groups of users"
+msgstr "Suggest product only for groups of users"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:155
+msgid "No groups means default product visibility."
+msgstr "No groups means default product visibility."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:159
+msgid "Link to post"
+msgstr "Link to post"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:163
+msgid "No linked post"
+msgstr "No linked post"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:170
+msgid "No post is linked, so no post permissions can be inherited."
+msgstr "No post is linked, so no post permissions can be inherited."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:175
+msgid "Stripe synchronization"
+msgstr "Stripe synchronization"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:176
+msgid "Stripe Product ID: [[ id ]]"
+msgstr "Stripe Product ID: [[ id ]]"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:176
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:177
+msgid "Not synchronized"
+msgstr "Not synchronized"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:177
+msgid "Stripe Price ID: [[ id ]]"
+msgstr "Stripe Price ID: [[ id ]]"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:178
+msgid "Last synchronized: [[ date ]]"
+msgstr "Last synchronized: [[ date ]]"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:178
+msgid "Never"
+msgstr "Never"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:187
+msgid "Retry loading options"
+msgstr "Retry loading options"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:197
+msgid "Duplicating..."
+msgstr "Duplicating..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:197
+msgid "Duplicate"
+msgstr "Duplicate"

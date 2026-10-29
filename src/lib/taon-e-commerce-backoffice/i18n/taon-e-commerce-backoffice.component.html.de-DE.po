@@ -1,0 +1,9 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-backoffice/taon-e-commerce-backoffice.component.html:3
+msgid "In E-commerce section you can manager everything about your e-business."
+msgstr "Im E-Commerce-Bereich können Sie Ihren Onlinehandel verwalten."

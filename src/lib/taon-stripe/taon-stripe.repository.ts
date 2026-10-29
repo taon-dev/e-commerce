@@ -1,11 +1,17 @@
 //#region imports
+import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
+
+import type { Translation } from '@taon-dev/i18n/src';
 import {
   TaonRepository,
   TaonBaseRepository,
   TaonBaseCustomRepository,
 } from 'taon/src';
+import { Not } from 'taon-typeorm/src';
 
-import type { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon-e-commerce-product.entity';
+import { TaonECommerceCartProvider } from '../taon-e-commerce-cart/taon-e-commerce-cart.provider';
+import { TaonECommerceProductEntity } from '../taon-e-commerce-product/taon-e-commerce-product.entity';
+
 import {
   StripeApiError,
   StripeCharge,
@@ -14,8 +20,6 @@ import {
   StripeCheckoutSessionEvent,
   TaonStripeSubscription,
 } from './taon-stripe.models';
-import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
-import { TaonECommerceCartProvider } from '../taon-e-commerce-cart/taon-e-commerce-cart.provider';
 //#endregion
 
 @TaonRepository({
@@ -31,7 +35,10 @@ export class TaonECommerceStripeRepository extends TaonBaseCustomRepository {
     //#region @backendFunc
     try {
       await this.request('/v1/account');
-      return { connected: true, message: 'Connected to Stripe' };
+      return {
+        connected: true,
+        message: 'Connected to Stripe',
+      };
     } catch (error) {
       return {
         connected: false,
@@ -86,7 +93,16 @@ export class TaonECommerceStripeRepository extends TaonBaseCustomRepository {
       `taon-price-${this.idempotencyToken(version)}`,
     );
 
-    if (product.stripePriceId && product.stripePriceId !== createdPrice.id) {
+    const products = this.ctx.connection.getRepository(
+      TaonECommerceProductEntity,
+    );
+    if (
+      product.stripePriceId &&
+      product.stripePriceId !== createdPrice.id &&
+      !(await products.count({
+        where: { stripePriceId: product.stripePriceId, id: Not(product.id) },
+      }))
+    ) {
       await this.request(
         `/v1/prices/${encodeURIComponent(product.stripePriceId)}`,
         'POST',
@@ -95,7 +111,13 @@ export class TaonECommerceStripeRepository extends TaonBaseCustomRepository {
     }
     if (
       product.stripeProductId &&
-      product.stripeProductId !== createdProduct.id
+      product.stripeProductId !== createdProduct.id &&
+      !(await products.count({
+        where: {
+          stripeProductId: product.stripeProductId,
+          id: Not(product.id),
+        },
+      }))
     ) {
       await this.request(
         `/v1/products/${encodeURIComponent(product.stripeProductId)}`,

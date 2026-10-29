@@ -1,0 +1,150 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:2
+msgid "Edit product"
+msgstr "Produkt bearbeiten"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:2
+msgid "Add product"
+msgstr "Produkt hinzufügen"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:193
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:205
+msgid "Saving..."
+msgstr "Wird gespeichert..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:205
+msgid "Save"
+msgstr "Speichern"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:4
+msgid "Loading product options..."
+msgstr "Produktoptionen werden geladen..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:8
+msgid "Name"
+msgstr "Name"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:18
+msgid "Description"
+msgstr "Beschreibung"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:30
+msgid "Active"
+msgstr "Aktiv"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:34
+msgid "Product type"
+msgstr "Produkttyp"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:46
+msgid "Price"
+msgstr "Preis"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:57
+msgid "Currency"
+msgstr "Währung"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:71
+msgid "Maximum quantity per user"
+msgstr "Maximale Menge pro Benutzer"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:79
+msgid "Leave empty for no per-user limit."
+msgstr "Leer lassen, um kein Limit pro Benutzer festzulegen."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:82
+msgid "Overall stock limit"
+msgstr "Allgemeiner Lagerbestand"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:90
+msgid "Leave empty for unlimited stock."
+msgstr "Leer lassen, um einen unbegrenzten Lagerbestand festzulegen."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:98
+msgid "Subscription interval value"
+msgstr "Wert des Abonnementintervalls"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:108
+msgid "Subscription interval unit"
+msgstr "Einheit des Abonnementintervalls"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:118
+msgid "Stripe recurring prices are used for day-based intervals. Shorter Taon intervals expire locally."
+msgstr "Für Intervalle in Tagen werden wiederkehrende Stripe-Preise verwendet. Kürzere Taon-Intervalle laufen lokal ab."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:122
+msgid "Attached permissions"
+msgstr "Zugewiesene Berechtigungen"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:135
+msgid "Inherited permissions are configured on the linked post."
+msgstr "Geerbte Berechtigungen werden im verknüpften Beitrag konfiguriert."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:142
+msgid "Attach permission from post"
+msgstr "Berechtigung aus dem Beitrag übernehmen"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:146
+msgid "Suggest product only for groups of users"
+msgstr "Produkt nur bestimmten Benutzergruppen vorschlagen"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:155
+msgid "No groups means default product visibility."
+msgstr "Ohne Gruppen gilt die standardmäßige Produktsichtbarkeit."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:159
+msgid "Link to post"
+msgstr "Link zum Beitrag"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:163
+msgid "No linked post"
+msgstr "Kein verknüpfter Beitrag"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:170
+msgid "No post is linked, so no post permissions can be inherited."
+msgstr "Es ist kein Beitrag verknüpft, daher können keine Beitragsberechtigungen geerbt werden."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:175
+msgid "Stripe synchronization"
+msgstr "Stripe-Synchronisierung"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:176
+msgid "Stripe Product ID: [[ id ]]"
+msgstr "Stripe-Produkt-ID: [[ id ]]"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:176
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:177
+msgid "Not synchronized"
+msgstr "Nicht synchronisiert"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:177
+msgid "Stripe Price ID: [[ id ]]"
+msgstr "Stripe-Preis-ID: [[ id ]]"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:178
+msgid "Last synchronized: [[ date ]]"
+msgstr "Zuletzt synchronisiert: [[ date ]]"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:178
+msgid "Never"
+msgstr "Nie"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:187
+msgid "Retry loading options"
+msgstr "Optionen erneut laden"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:197
+msgid "Duplicating..."
+msgstr "Wird dupliziert..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:197
+msgid "Duplicate"
+msgstr "Duplizieren"

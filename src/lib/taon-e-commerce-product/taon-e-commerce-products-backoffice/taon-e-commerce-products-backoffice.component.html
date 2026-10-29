@@ -1,19 +1,23 @@
 <header class="page-header pb-2">
-  <h1>Products</h1>
+  <h1>{{ t.gettext('Products') }}</h1>
   <div class="actions">
     <button
       mat-stroked-button
       type="button"
       [disabled]="syncDialogOpen()"
       (click)="syncWithStripe()">
-      Sync with Stripe
+      {{ t.gettext('Sync with Stripe') }}
     </button>
   </div>
 </header>
 
+@if (error()) {
+  <p role="alert">{{ error() }}</p>
+}
+
 <taon-datatable
   [entityCrudController]="crud"
-  [columns]="columns"
+  [columns]="columns()"
   [allowedColumns]="[
     'id',
     'name',

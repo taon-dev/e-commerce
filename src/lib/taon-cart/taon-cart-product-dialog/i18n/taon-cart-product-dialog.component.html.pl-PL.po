@@ -1,0 +1,21 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.html:48
+msgid "Close"
+msgstr "Zamknij"
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.html:30
+msgid "Lifetime purchase"
+msgstr "Zakup bezterminowy"
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.html:55
+msgid "Go To Cart"
+msgstr "Przejdź do koszyka"
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.html:63
+msgid "Add to cart"
+msgstr "Dodaj do koszyka"

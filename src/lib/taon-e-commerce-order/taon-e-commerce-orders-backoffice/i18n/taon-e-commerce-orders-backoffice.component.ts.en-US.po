@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:43
+msgid "Order ID"
+msgstr ""
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:44
+msgid "User"
+msgstr ""
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:45
+msgid "Status"
+msgstr ""
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:46
+msgid "Total"
+msgstr ""
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:47
+msgid "Currency"
+msgstr ""
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:48
+msgid "Created"
+msgstr ""
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:49
+msgid "Actions"
+msgstr ""
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:50
+msgid "View order"
+msgstr ""

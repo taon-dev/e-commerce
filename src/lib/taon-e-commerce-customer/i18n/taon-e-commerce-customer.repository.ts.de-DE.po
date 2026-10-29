@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:98
+msgid "Unable to load the current user cart."
+msgstr "Der Warenkorb des aktuellen Benutzers kann nicht geladen werden."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:131
+msgid "Unable to refresh the current user cart."
+msgstr "Der Warenkorb des aktuellen Benutzers kann nicht aktualisiert werden."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:200
+msgid "Product and quantity must be positive whole numbers."
+msgstr "Produkt und Menge müssen positive ganze Zahlen sein."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:212
+msgid "The selected product is not available."
+msgstr "Das ausgewählte Produkt ist nicht verfügbar."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:224
+msgid "The cart was not found."
+msgstr "Der Warenkorb wurde nicht gefunden."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:271
+msgid "Item and quantity must be positive whole numbers."
+msgstr "Artikel und Menge müssen positive ganze Zahlen sein."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:288
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:331
+msgid "The cart item was not found."
+msgstr "Der Warenkorbartikel wurde nicht gefunden."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:320
+msgid "The cart item ID is invalid."
+msgstr "Die Warenkorb-Artikel-ID ist ungültig."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:435
+msgid "Your cart has no active products to check out."
+msgstr "Ihr Warenkorb enthält keine aktiven Produkte, die bezahlt werden können."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:453
+msgid "A product in your cart is no longer available."
+msgstr "Ein Produkt in Ihrem Warenkorb ist nicht mehr verfügbar."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:484
+msgid "All products in one checkout must use the same currency."
+msgstr "Alle Produkte in einem Bezahlvorgang müssen dieselbe Währung verwenden."
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:520
+msgid "A recurring subscription must be checked out by itself."
+msgstr "Ein wiederkehrendes Abonnement muss separat bezahlt werden."

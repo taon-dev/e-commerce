@@ -6,18 +6,18 @@
   <div
     header
     class="flex h-16 items-center px-6">
-    <strong>{{ title }}</strong>
+    <strong>{{ title() }}</strong>
   </div>
 
   <div
     asideFooter
     class="text-xs text-gray-500">
-    Taon Admin v1.0
+    {{ t.gettext('Taon Admin [[ version ]]', { version: 'v1.0' }) }}
   </div>
 
   <div
     contentFooter
     class="text-xs text-gray-500">
-    fixed content here
+    {{ t.gettext('fixed content here') }}
   </div>
 </taon-admin-layout>

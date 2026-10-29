@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:43
+msgid "Order ID"
+msgstr "ID zamówienia"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:44
+msgid "User"
+msgstr "Użytkownik"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:45
+msgid "Status"
+msgstr "Status"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:46
+msgid "Total"
+msgstr "Razem"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:47
+msgid "Currency"
+msgstr "Waluta"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:48
+msgid "Created"
+msgstr "Utworzono"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:49
+msgid "Actions"
+msgstr "Akcje"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component.ts:50
+msgid "View order"
+msgstr "Wyświetl zamówienie"

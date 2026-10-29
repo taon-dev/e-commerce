@@ -1,0 +1,33 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-cart/taon-cart.models.ts:10
+msgid "Active"
+msgstr "Aktywne"
+
+#: src/lib/taon-cart/taon-cart.models.ts:11
+msgid "Canceled"
+msgstr "Anulowano"
+
+#: src/lib/taon-cart/taon-cart.models.ts:12
+msgid "Past due"
+msgstr "Zaległe"
+
+#: src/lib/taon-cart/taon-cart.models.ts:13
+msgid "Unpaid"
+msgstr "Nieopłacono"
+
+#: src/lib/taon-cart/taon-cart.models.ts:14
+msgid "Incomplete"
+msgstr "Nieukończono"
+
+#: src/lib/taon-cart/taon-cart.models.ts:15
+msgid "Paused"
+msgstr "Wstrzymano"
+
+#: src/lib/taon-cart/taon-cart.models.ts:16
+msgid "Expired"
+msgstr "Wygasło"

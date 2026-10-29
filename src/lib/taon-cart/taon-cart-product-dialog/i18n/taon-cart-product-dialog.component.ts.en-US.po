@@ -1,0 +1,29 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.ts:60
+msgid "Subscription: [[ value ]] seconds"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.ts:62
+msgid "Subscription: [[ value ]] minutes"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.ts:64
+msgid "Subscription: [[ value ]] hours"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.ts:66
+msgid "Subscription: [[ value ]] days"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.ts:68
+msgid "Subscription: [[ value ]]"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.ts:83
+msgid "Unable to add this product. Close the dialog for details or try again."
+msgstr ""

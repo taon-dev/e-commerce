@@ -1,7 +1,11 @@
 //#region imports
 import { Routes } from '@angular/router';
 import { adminLazyRoute } from '@taon-dev/ui/src';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 //#endregion
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 export const TaonECommerceBackofficeRoutes: Routes = [
   {
@@ -14,7 +18,7 @@ export const TaonECommerceBackofficeRoutes: Routes = [
     children: [
       adminLazyRoute({
         path: 'dashboard',
-        menuItem: 'Dashboard',
+        menuItem: t.signal.gettext('Dashboard'),
         icon: 'dashboard',
         loader: () =>
           import('../taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.routes').then(
@@ -23,7 +27,7 @@ export const TaonECommerceBackofficeRoutes: Routes = [
       }),
       adminLazyRoute({
         path: 'products',
-        menuItem: 'Products',
+        menuItem: t.signal.gettext('Products'),
         icon: 'inventory',
         expandable: false,
         loader: () =>
@@ -34,7 +38,7 @@ export const TaonECommerceBackofficeRoutes: Routes = [
 
       adminLazyRoute({
         path: 'orders',
-        menuItem: 'Orders',
+        menuItem: t.signal.gettext('Orders'),
         icon: 'receipt_long',
         expandable: false,
         loader: () =>
@@ -45,7 +49,7 @@ export const TaonECommerceBackofficeRoutes: Routes = [
 
       adminLazyRoute({
         path: 'payment-transactions',
-        menuItem: 'Transactions',
+        menuItem: t.signal.gettext('Transactions'),
         icon: 'payments',
         expandable: false,
         loader: () =>
@@ -56,7 +60,7 @@ export const TaonECommerceBackofficeRoutes: Routes = [
 
       adminLazyRoute({
         path: 'settings',
-        menuItem: 'Settings',
+        menuItem: t.signal.gettext('Settings'),
         icon: 'settings',
         expandable: false,
         loader: () =>

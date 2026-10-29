@@ -5,6 +5,8 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import type { TaonStripeSyncResult } from '../taon-stripe/taon-stripe.models';
 
@@ -12,13 +14,15 @@ import { TaonECommerceProductApiService } from './taon-e-commerce-product.api.se
 import type { TaonECommerceStripeConfiguration } from './taon-e-commerce-product.api.service';
 //#endregion
 
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
+
 @Component({
   selector: 'taon-e-commerce-stripe-sync-dialog',
   template: `
-    <h2 mat-dialog-title>Sync products with Stripe</h2>
+    <h2 mat-dialog-title>{{ t.gettext('Sync products with Stripe') }}</h2>
     <mat-dialog-content>
       @if (loadingConfiguration()) {
-        <p role="status">Checking Stripe connection...</p>
+        <p role="status">{{ t.gettext('Checking Stripe connection...') }}</p>
       } @else {
         <p [class.connected]="configuration()?.connected" [class.disconnected]="!configuration()?.connected">
           <span aria-hidden="true">{{ configuration()?.connected ? '●' : '●' }}</span>
@@ -26,25 +30,25 @@ import type { TaonECommerceStripeConfiguration } from './taon-e-commerce-product
         </p>
         @if (configuration()?.webhookUrl) {
           <div class="webhook-url">
-            <strong>Stripe webhook URL:</strong>
+            <strong>{{ t.gettext('Stripe webhook URL:') }}</strong>
             <code>{{ configuration()?.webhookUrl }}</code>
-            <button mat-button type="button" (click)="copyWebhookUrl()">Copy</button>
+            <button mat-button type="button" (click)="copyWebhookUrl()">{{ t.gettext('Copy') }}</button>
           </div>
         }
       }
       @if (syncing()) {
-        <p role="status">Synchronizing products with Stripe...</p>
+        <p role="status">{{ t.gettext('Synchronizing products with Stripe...') }}</p>
       }
       @if (results().length) {
         <p role="status">
-          Synchronization finished: {{ successfulCount() }} succeeded,
-          {{ results().length - successfulCount() }} failed.
+          {{ t.gettext('Synchronization finished: [[ succeeded ]] succeeded, [[ failed ]] failed.', { succeeded: successfulCount(), failed: results().length - successfulCount() }) }}
         </p>
         <ul>
           @for (result of results(); track result.productId) {
             <li [class.sync-failed]="!result.success">
-              {{ result.productName }}:
-              {{ result.success ? 'synchronized' : result.error }}
+              {{ result.success
+                ? t.gettext('[[ productName ]]: synchronized', { productName: result.productName })
+                : t.gettext('[[ productName ]]: [[ error ]]', { productName: result.productName, error: result.error }) }}
             </li>
           }
         </ul>
@@ -54,13 +58,13 @@ import type { TaonECommerceStripeConfiguration } from './taon-e-commerce-product
       }
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button type="button" [disabled]="syncing()" (click)="close()">Cancel / Close</button>
+      <button mat-button type="button" [disabled]="syncing()" (click)="close()">{{ t.gettext('Cancel / Close') }}</button>
       <button
         mat-flat-button
         type="button"
         [disabled]="loadingConfiguration() || !configuration()?.connected || syncing()"
         (click)="start()">
-        {{ syncing() ? 'Syncing...' : 'Start' }}
+        {{ syncing() ? t.gettext('Syncing...') : t.gettext('Start') }}
       </button>
     </mat-dialog-actions>
   `,
@@ -79,6 +83,8 @@ import type { TaonECommerceStripeConfiguration } from './taon-e-commerce-product
   providers: [TaonECommerceProductApiService],
 })
 export class TaonECommerceStripeSyncDialogComponent {
+  readonly t = t.for(this);
+
   private readonly api = inject(TaonECommerceProductApiService);
 
   private readonly dialogRef = inject(
@@ -116,7 +122,7 @@ export class TaonECommerceStripeSyncDialogComponent {
       await navigator.clipboard.writeText(url);
     } catch (error) {
       console.error('[taon-e-commerce-stripe-sync] Unable to copy webhook URL', error);
-      this.error.set('Unable to copy the webhook URL. Select and copy it manually.');
+      this.error.set(this.t.gettext('Unable to copy the webhook URL. Select and copy it manually.'));
     }
   }
 
@@ -132,7 +138,7 @@ export class TaonECommerceStripeSyncDialogComponent {
     } catch (error) {
       console.error('[taon-e-commerce-stripe-sync] Synchronization failed', error);
       this.error.set(
-        error instanceof Error ? error.message : 'Stripe synchronization failed.',
+        error instanceof Error ? error.message : this.t.gettext('Stripe synchronization failed.'),
       );
     } finally {
       this.syncing.set(false);
@@ -148,7 +154,7 @@ export class TaonECommerceStripeSyncDialogComponent {
       console.error('[taon-e-commerce-stripe-sync] Unable to check Stripe', error);
       this.configuration.set({
         connected: false,
-        message: error instanceof Error ? error.message : 'Unable to connect to Stripe.',
+        message: error instanceof Error ? error.message : this.t.gettext('Unable to connect to Stripe.'),
         webhookUrl: '',
       });
     } finally {

@@ -1,0 +1,25 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:55
+msgid "Unable to load products."
+msgstr "Unable to load products."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:59
+msgid "The available products response was invalid."
+msgstr "The available products response was invalid."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:72
+msgid "Unable to check Stripe status."
+msgstr "Unable to check Stripe status."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:86
+msgid "Stripe synchronization could not be completed."
+msgstr "Stripe synchronization could not be completed."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:104
+msgid "Unable to duplicate the product."
+msgstr "Unable to duplicate the product."

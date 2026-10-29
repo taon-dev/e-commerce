@@ -19,6 +19,8 @@ import type { TaonPermissionEntity } from '@taon-dev/session/src';
 import type { TaonGroupEntity } from '@taon-dev/session/src';
 import { TaonPermissionApiService } from '@taon-dev/session/src';
 import { firstValueFrom } from 'rxjs';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import { TaonECommerceProductPermissionApiService } from '../taon-e-commerce-product-permission/taon-e-commerce-product-permission.api.service';
 import { TaonECommerceProductPermissionEntity } from '../taon-e-commerce-product-permission/taon-e-commerce-product-permission.entity';
@@ -26,6 +28,8 @@ import { TaonECommerceProductPermissionEntity } from '../taon-e-commerce-product
 import { TaonECommerceProductApiService } from './taon-e-commerce-product.api.service';
 import { TaonECommerceProductEntity } from './taon-e-commerce-product.entity';
 //#endregion
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 //#region models
 export interface TaonECommerceProductEditDialogData {
@@ -73,6 +77,8 @@ interface ProductDraft {
 })
 export class TaonECommerceProductEditDialogComponent {
   //#region fields & getters
+  readonly t = t.for(this);
+
   readonly data =
     inject<TaonECommerceProductEditDialogData>(MAT_DIALOG_DATA, {
       optional: true,
@@ -107,6 +113,19 @@ export class TaonECommerceProductEditDialogComponent {
   ];
 
   readonly currencies: ProductCurrency[] = ['PLN', 'EUR', 'USD'];
+
+  readonly productTypeLabels = {
+    lifetime: this.t.signal.gettext('Lifetime'),
+    item: this.t.signal.gettext('Item'),
+    subscription: this.t.signal.gettext('Subscription'),
+  };
+
+  readonly intervalUnitLabels = {
+    seconds: this.t.signal.gettext('Seconds'),
+    minutes: this.t.signal.gettext('Minutes'),
+    hours: this.t.signal.gettext('Hours'),
+    days: this.t.signal.gettext('Days'),
+  };
 
   private readonly initialCurrency =
     this.currencies.find(
@@ -147,6 +166,8 @@ export class TaonECommerceProductEditDialogComponent {
 
   readonly saving = signal(false);
 
+  readonly duplicating = signal(false);
+
   readonly error = signal('');
   //#endregion
 
@@ -168,7 +189,7 @@ export class TaonECommerceProductEditDialogComponent {
         this.route.snapshot.paramMap.has('id') &&
         (!Number.isSafeInteger(productId) || productId <= 0)
       ) {
-        throw new Error('The product ID in the route is invalid.');
+        throw new Error(this.t.gettext('The product ID in the route is invalid.'));
       }
       if (
         !this.data.product &&
@@ -180,7 +201,7 @@ export class TaonECommerceProductEditDialogComponent {
         );
         if (productResponse.statusCode >= 400 || !productResponse.body?.json) {
           throw new Error(
-            productResponse.responseText || 'Unable to load the product.',
+            productResponse.responseText || this.t.gettext('Unable to load the product.'),
           );
         }
         this.data.product = productResponse.body.json;
@@ -213,7 +234,7 @@ export class TaonECommerceProductEditDialogComponent {
             linksResponse.responseText ||
             groupsResponse.responseText ||
             postsResponse.responseText ||
-            'Unable to load product editor options.',
+            this.t.gettext('Unable to load product editor options.'),
         );
       }
 
@@ -227,7 +248,7 @@ export class TaonECommerceProductEditDialogComponent {
         !Array.isArray(groupRows) ||
         !Array.isArray(postRows)
       ) {
-        throw new Error('The product editor options response was invalid.');
+        throw new Error(this.t.gettext('The product editor options response was invalid.'));
       }
 
       this.permissions.set(permissionRows);
@@ -253,7 +274,7 @@ export class TaonECommerceProductEditDialogComponent {
       this.error.set(
         error instanceof Error
           ? error.message
-          : 'Unable to load product permissions.',
+          : this.t.gettext('Unable to load product permissions.'),
       );
     } finally {
       this.loading.set(false);
@@ -354,7 +375,7 @@ export class TaonECommerceProductEditDialogComponent {
 
   //#region methods / save
   async save(): Promise<void> {
-    if (this.saving() || this.loading() || !this.permissionsLoaded()) {
+    if (this.saving() || this.duplicating() || this.loading() || !this.permissionsLoaded()) {
       return;
     }
 
@@ -376,7 +397,7 @@ export class TaonECommerceProductEditDialogComponent {
           draft.subscriptionIntervalValue < 1))
     ) {
       this.error.set(
-        'Enter a valid name, currency, price, quantity limit, stock limit, and subscription interval.',
+        this.t.gettext('Enter a valid name, currency, price, quantity limit, stock limit, and subscription interval.'),
       );
       return;
     }
@@ -425,12 +446,12 @@ export class TaonECommerceProductEditDialogComponent {
 
       if (productResponse.statusCode >= 400) {
         throw new Error(
-          productResponse.responseText || 'Unable to save the product.',
+          productResponse.responseText || this.t.gettext('Unable to save the product.'),
         );
       }
       const savedProduct = productResponse.body?.json;
       if (!savedProduct || typeof savedProduct.id !== 'number') {
-        throw new Error('The saved product response was invalid.');
+        throw new Error(this.t.gettext('The saved product response was invalid.'));
       }
       this.data.product = savedProduct;
 
@@ -443,7 +464,7 @@ export class TaonECommerceProductEditDialogComponent {
       ) {
         throw new Error(
           linksResponse.responseText ||
-            'Unable to update the product permissions.',
+            this.t.gettext('Unable to update the product permissions.'),
         );
       }
 
@@ -462,7 +483,7 @@ export class TaonECommerceProductEditDialogComponent {
           if (deleteResponse.statusCode >= 400) {
             throw new Error(
               deleteResponse.responseText ||
-                'Unable to remove a product permission.',
+                this.t.gettext('Unable to remove a product permission.'),
             );
           }
         }
@@ -485,7 +506,7 @@ export class TaonECommerceProductEditDialogComponent {
           if (saveResponse.statusCode >= 400) {
             throw new Error(
               saveResponse.responseText ||
-                'Unable to attach a permission to the product.',
+                this.t.gettext('Unable to attach a permission to the product.'),
             );
           }
         }
@@ -506,13 +527,39 @@ export class TaonECommerceProductEditDialogComponent {
         error,
       );
       this.error.set(
-        error instanceof Error ? error.message : 'Unable to save the product.',
+        error instanceof Error ? error.message : this.t.gettext('Unable to save the product.'),
       );
     } finally {
       this.saving.set(false);
     }
   }
   //#endregion
+
+  async duplicate(): Promise<void> {
+    if (!this.data.product || this.loading() || this.saving() || this.duplicating()) {
+      return;
+    }
+    this.duplicating.set(true);
+    this.error.set('');
+    try {
+      const product = await this.taonECommerceProductApiService.duplicate(this.data.product.id);
+      if (this.dialogRef) {
+        this.dialogRef.close(product);
+      } else {
+        await this.router.navigate(['../', product.id], { relativeTo: this.route });
+        this.data.product = product;
+        this.draft.set(this.draftFromProduct(product));
+        await this.load();
+      }
+    } catch (error) {
+      console.error('[taon-e-commerce-product-edit] Unable to duplicate product', error);
+      this.error.set(error instanceof Error
+        ? error.message
+        : this.t.gettext('Unable to duplicate the product.'));
+    } finally {
+      this.duplicating.set(false);
+    }
+  }
 
   //#region methods / normalize product type
   private normalizeProductType(

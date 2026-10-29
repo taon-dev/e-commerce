@@ -1,10 +1,10 @@
 <section class="cart-shell">
   <header class="cart-header">
-    <h2>Shopping</h2>
+    <h2>{{ t.gettext('Shopping') }}</h2>
     <button
       mat-icon-button
       type="button"
-      aria-label="Close cart"
+      [attr.aria-label]="t.gettext('Close cart')"
       (click)="close()">
       <mat-icon>close</mat-icon>
     </button>
@@ -15,11 +15,11 @@
   <mat-tab-group
     [selectedIndex]="mainTabIndex()"
     (selectedIndexChange)="onMainTabChange($event)">
-    <mat-tab label="Buy">
+    <mat-tab [label]="t.gettext('Buy')">
       @if (!productsLoaded()) {
-        <p role="status">Loading products...</p>
+        <p role="status">{{ t.gettext('Loading products...') }}</p>
       } @else if (!suggestedProducts.length) {
-        <p>No products are currently available to you.</p>
+        <p>{{ t.gettext('No products are currently available to you.') }}</p>
       } @else {
         <div class="products">
           @for (product of suggestedProducts; track product.id) {
@@ -42,21 +42,21 @@
                 type="button"
                 [disabled]="changingCart() || !eligibility(product)?.canAdd"
                 (click)="addProduct(product)">
-                Add to cart
+                {{ t.gettext('Add to cart') }}
               </button>
             </article>
           }
           <button mat-stroked-button type="button" (click)="onMainTabChange(1)">
-            Go To Cart
+            {{ t.gettext('Go To Cart') }}
           </button>
         </div>
       }
     </mat-tab>
-    <mat-tab label="Cart">
+    <mat-tab [label]="t.gettext('Cart')">
       @if (loadingCart()) {
-        <p role="status">Loading cart...</p>
+        <p role="status">{{ t.gettext('Loading cart...') }}</p>
       } @else if (!validCartItems.length) {
-        <p>Your cart is empty.</p>
+        <p>{{ t.gettext('Your cart is empty.') }}</p>
       } @else {
         <div class="cart-items">
           @for (item of validCartItems; track item.id) {
@@ -66,14 +66,14 @@
                 (click)="openProduct(item.product)">
                 <taon-cart-product-thumbnail [product]="item.product" />
                 <strong>{{ item.product.name }}</strong>
-                <span>{{ item.product.price | currency: item.product.currency }} each</span>
+                <span>{{ t.gettext('[[ price ]] each', { price: (item.product.price | currency: item.product.currency) }) }}</span>
               </button>
               <div class="quantity">
                 @if (isQuantityProduct(item.product)) {
                 <button
                   mat-icon-button
                   type="button"
-                  aria-label="Decrease quantity"
+                  [attr.aria-label]="t.gettext('Decrease quantity')"
                   [disabled]="changingCart()"
                   (click)="updateQuantity(item.id!, item.quantity - 1)">
                   <mat-icon>remove</mat-icon>
@@ -84,7 +84,7 @@
                 <button
                   mat-icon-button
                   type="button"
-                  aria-label="Increase quantity"
+                  [attr.aria-label]="t.gettext('Increase quantity')"
                   [disabled]="changingCart()"
                   (click)="updateQuantity(item.id!, item.quantity + 1)">
                   <mat-icon>add</mat-icon>
@@ -95,23 +95,23 @@
                 {{ item.product.price * item.quantity | currency: item.product.currency }}
               </strong>
               <button mat-button type="button" [disabled]="changingCart()" (click)="removeItem(item.id!)">
-                Remove
+                {{ t.gettext('Remove') }}
               </button>
             </article>
           }
         </div>
         <button mat-flat-button type="button" (click)="goToCheckout()">
-          Go to Checkout
+          {{ t.gettext('Go to Checkout') }}
         </button>
       }
     </mat-tab>
-    <mat-tab label="Checkout" [disabled]="!validCartItems.length">
+    <mat-tab [label]="t.gettext('Checkout')" [disabled]="!validCartItems.length">
       @if (!validCartItems.length) {
-        <p>Add an active product to your cart to continue.</p>
+        <p>{{ t.gettext('Add an active product to your cart to continue.') }}</p>
       } @else {
         <div class="checkout-items">
           <div class="checkout-item checkout-heading" aria-hidden="true">
-            <span>Product</span><span>Qty</span><span>Unit price</span><span>Total</span>
+            <span>{{ t.gettext('Product') }}</span><span>{{ t.gettext('Qty') }}</span><span>{{ t.gettext('Unit price') }}</span><span>{{ t.gettext('Total') }}</span>
           </div>
           @for (item of validCartItems; track item.id) {
             <article class="checkout-item">
@@ -121,7 +121,7 @@
                 <taon-cart-product-thumbnail [product]="item.product" [maxHeight]="50" />
                 <span>{{ item.product.name }}</span>
               </button>
-              <span aria-label="Quantity">{{ item.quantity }}</span>
+              <span [attr.aria-label]="t.gettext('Quantity')">{{ item.quantity }}</span>
               <span>{{ item.product.price | currency: item.product.currency }}</span>
               <strong>
                 {{ item.product.price * item.quantity | currency: item.product.currency }}
@@ -130,50 +130,48 @@
           }
         </div>
         <p>
-          Subtotal:
-          {{ cartSubtotal | currency: validCartItems[0].product.currency }}
+          {{ t.gettext('Subtotal: [[ subtotal ]]', { subtotal: (cartSubtotal | currency: validCartItems[0].product.currency) }) }}
         </p>
         <p>
-          Total:
-          {{ cartSubtotal | currency: validCartItems[0].product.currency }}
+          {{ t.gettext('Total: [[ total ]]', { total: (cartSubtotal | currency: validCartItems[0].product.currency) }) }}
         </p>
-        <p>Final prices and availability are revalidated by the server.</p>
+        <p>{{ t.gettext('Final prices and availability are revalidated by the server.') }}</p>
         <button
           mat-flat-button
           type="button"
           [disabled]="creatingCheckout() || changingCart()"
           (click)="checkout()">
-          {{ creatingCheckout() ? 'Preparing checkout...' : 'Buy' }}
+          {{ creatingCheckout() ? t.gettext('Preparing checkout...') : t.gettext('Buy') }}
         </button>
       }
     </mat-tab>
-    <mat-tab label="Purchased">
+    <mat-tab [label]="t.gettext('Purchased')">
       <mat-tab-group
         [selectedIndex]="purchasedTabIndex()"
         (selectedIndexChange)="onSettingsTabChange($event)">
-        <mat-tab label="Active">
+        <mat-tab [label]="t.gettext('Active')">
           @if (loadingEntitlements()) {
-            <p role="status">Loading purchases...</p>
+            <p role="status">{{ t.gettext('Loading purchases...') }}</p>
           } @else {
-            <h3>Active subscriptions</h3>
+            <h3>{{ t.gettext('Active subscriptions') }}</h3>
             @if (!activeSubscriptionEntitlements.length) {
-              <p>No active subscriptions.</p>
+              <p>{{ t.gettext('No active subscriptions.') }}</p>
             } @else {
               <div class="table-scroll">
                 <table>
                   <thead>
                     <tr>
-                      <th>Subscription</th>
-                      <th>Status</th>
-                      <th>Started</th>
-                      <th>Current period end</th>
+                      <th>{{ t.gettext('Subscription') }}</th>
+                      <th>{{ t.gettext('Status') }}</th>
+                      <th>{{ t.gettext('Started') }}</th>
+                      <th>{{ t.gettext('Current period end') }}</th>
                     </tr>
                   </thead>
                   <tbody>
                     @for (entitlement of activeSubscriptionEntitlements; track entitlement.id) {
                       <tr>
                         <td>{{ entitlement.product.name }}</td>
-                        <td>{{ entitlement.status }}</td>
+                        <td>{{ statusLabels[entitlement.status]?.() ?? entitlement.status }}</td>
                         <td>{{ entitlement.startedAt | date }}</td>
                         <td>
                           {{ entitlement.currentPeriodEnd ? (entitlement.currentPeriodEnd | date) : '—' }}
@@ -184,18 +182,18 @@
                 </table>
               </div>
             }
-            <h3>Purchased product history</h3>
+            <h3>{{ t.gettext('Purchased product history') }}</h3>
             @if (!purchasedProductHistory.length) {
-              <p>No purchased products.</p>
+              <p>{{ t.gettext('No purchased products.') }}</p>
             } @else {
               <div class="table-scroll">
                 <table>
                   <thead>
                     <tr>
-                      <th>Product</th>
-                      <th>Status</th>
-                      <th>Purchased</th>
-                      <th>Access expires</th>
+                      <th>{{ t.gettext('Product') }}</th>
+                      <th>{{ t.gettext('Status') }}</th>
+                      <th>{{ t.gettext('Purchased') }}</th>
+                      <th>{{ t.gettext('Access expires') }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -204,13 +202,13 @@
                         <td>
                           {{ entitlement.product.name }}
                           @if (entitlement.product.type === 'lifetime') {
-                            <strong>(Lifetime)</strong>
+                            <strong>{{ t.gettext('(Lifetime)') }}</strong>
                           }
                         </td>
-                        <td>{{ entitlement.status }}</td>
+                        <td>{{ statusLabels[entitlement.status]?.() ?? entitlement.status }}</td>
                         <td>{{ entitlement.startedAt | date }}</td>
                         <td>
-                          {{ entitlement.currentPeriodEnd ? (entitlement.currentPeriodEnd | date) : 'No expiration' }}
+                          {{ entitlement.currentPeriodEnd ? (entitlement.currentPeriodEnd | date) : t.gettext('No expiration') }}
                         </td>
                       </tr>
                     }
@@ -220,20 +218,20 @@
             }
           }
         </mat-tab>
-        <mat-tab label="Orders">
+        <mat-tab [label]="t.gettext('Orders')">
           <button
             mat-stroked-button
             type="button"
             [disabled]="loadingOrders()"
             (click)="loadOrders()">
-            {{ loadingOrders() ? 'Refreshing...' : 'Refresh orders' }}
+            {{ loadingOrders() ? t.gettext('Refreshing...') : t.gettext('Refresh orders') }}
           </button>
           @if (loadingOrders()) {
-            <p role="status">Loading orders...</p>
+            <p role="status">{{ t.gettext('Loading orders...') }}</p>
           } @else {
             <taon-datatable
               [data]="orders()"
-              [columns]="orderColumns"
+              [columns]="orderColumns()"
               [hideAddButton]="true"
               [hideSearch]="true" />
           }

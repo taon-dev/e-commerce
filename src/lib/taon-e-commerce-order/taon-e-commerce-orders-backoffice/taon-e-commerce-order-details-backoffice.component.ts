@@ -5,6 +5,8 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import { TaonECommerceOrderItemApiService } from '../../taon-e-commerce-order-item/taon-e-commerce-order-item.api.service';
 import { TaonECommerceOrderApiService } from '../taon-e-commerce-order.api.service';
@@ -12,6 +14,10 @@ import { TaonECommercePaymentTransactionApiService } from '../../taon-e-commerce
 import type { TaonECommerceOrderEntity } from '../taon-e-commerce-order.entity';
 import type { TaonECommerceOrderItemEntity } from '../../taon-e-commerce-order-item/taon-e-commerce-order-item.entity';
 import type { TaonECommercePaymentTransactionEntity } from '../../taon-e-commerce-payment-transaction/taon-e-commerce-payment-transaction.entity';
+import { TaonECommerceOrdersBackofficeModels } from './taon-e-commerce-orders-backoffice.models';
+import { TaonECommercePaymentTransactionsBackofficeModels } from '../../taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transactions-backoffice.models';
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 @Component({
   selector: 'taon-e-commerce-order-details-backoffice',
@@ -26,6 +32,14 @@ import type { TaonECommercePaymentTransactionEntity } from '../../taon-e-commerc
   ],
 })
 export class TaonECommerceOrderDetailsBackofficeComponent {
+  t = t.for(this);
+
+  readonly statusLabels = TaonECommerceOrdersBackofficeModels.statusLabels(this);
+
+  readonly transactionStatusLabels = TaonECommercePaymentTransactionsBackofficeModels.statusLabels(this);
+
+  readonly providerLabels = TaonECommercePaymentTransactionsBackofficeModels.providerLabels(this);
+
   private readonly route = inject(ActivatedRoute);
 
   private readonly orderApi = inject(TaonECommerceOrderApiService);
@@ -54,7 +68,7 @@ export class TaonECommerceOrderDetailsBackofficeComponent {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!Number.isInteger(id) || id < 1) {
       this.loading.set(false);
-      this.error.set('The order ID is invalid.');
+      this.error.set(this.t.gettext('The order ID is invalid.'));
       return;
     }
 
@@ -77,7 +91,7 @@ export class TaonECommerceOrderDetailsBackofficeComponent {
           orderResponse.responseText ||
             itemsResponse.responseText ||
             transactionsResponse.responseText ||
-            'Unable to load order details.',
+            this.t.gettext('Unable to load order details.'),
         );
       }
 
@@ -85,7 +99,7 @@ export class TaonECommerceOrderDetailsBackofficeComponent {
       const items = itemsResponse.body?.json;
       const transactions = transactionsResponse.body?.json;
       if (!order || !Array.isArray(items) || !Array.isArray(transactions)) {
-        throw new Error('The order details response was invalid.');
+        throw new Error(this.t.gettext('The order details response was invalid.'));
       }
 
       this.order.set(order);
@@ -107,7 +121,7 @@ export class TaonECommerceOrderDetailsBackofficeComponent {
       this.error.set(
         error instanceof Error
           ? error.message
-          : 'Unable to load order details.',
+          : this.t.gettext('Unable to load order details.'),
       );
     } finally {
       this.loading.set(false);

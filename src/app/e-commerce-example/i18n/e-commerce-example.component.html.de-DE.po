@@ -1,0 +1,9 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app/e-commerce-example/e-commerce-example.component.html:2
+msgid "e-commerce-example works!"
+msgstr "Das E-Commerce-Beispiel funktioniert!"

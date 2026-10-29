@@ -1,0 +1,37 @@
+// THIS FILE IS GENERATED - DO NOT MODIFY
+import { CoreModels } from 'tnp-core/src';
+
+// join interface type here
+import { EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentHtml } from './taon-e-commerce-order-details-backoffice.component.html.en-US.i18n.data';
+import { PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentHtml } from './taon-e-commerce-order-details-backoffice.component.html.pl-PL.i18n.data';
+import { DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentHtml } from './taon-e-commerce-order-details-backoffice.component.html.de-DE.i18n.data';
+import { EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentTs } from './taon-e-commerce-order-details-backoffice.component.ts.en-US.i18n.data';
+import { PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentTs } from './taon-e-commerce-order-details-backoffice.component.ts.pl-PL.i18n.data';
+import { DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentTs } from './taon-e-commerce-order-details-backoffice.component.ts.de-DE.i18n.data';
+import { EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentHtml } from './taon-e-commerce-orders-backoffice.component.html.en-US.i18n.data';
+import { PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentHtml } from './taon-e-commerce-orders-backoffice.component.html.pl-PL.i18n.data';
+import { DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentHtml } from './taon-e-commerce-orders-backoffice.component.html.de-DE.i18n.data';
+import { EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentTs } from './taon-e-commerce-orders-backoffice.component.ts.en-US.i18n.data';
+import { PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentTs } from './taon-e-commerce-orders-backoffice.component.ts.pl-PL.i18n.data';
+import { DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentTs } from './taon-e-commerce-orders-backoffice.component.ts.de-DE.i18n.data';
+import { EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeModelsTs } from './taon-e-commerce-orders-backoffice.models.ts.en-US.i18n.data';
+import { PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeModelsTs } from './taon-e-commerce-orders-backoffice.models.ts.pl-PL.i18n.data';
+import { DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeModelsTs } from './taon-e-commerce-orders-backoffice.models.ts.de-DE.i18n.data';;
+export type TaonECommerceOrdersBackofficeOverride = CoreModels.DeepPartial<EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentHtml 
+| PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentHtml 
+| DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentHtml 
+| EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentTs 
+| PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentTs 
+| DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrderDetailsBackofficeComponentTs 
+| EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentHtml 
+| PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentHtml 
+| DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentHtml 
+| EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentTs 
+| PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentTs 
+| DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeComponentTs 
+| EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeModelsTs 
+| PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeModelsTs 
+| DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrdersBackofficeTaonECommerceOrdersBackofficeModelsTs>;
+
+ // THIS FILE IS GENERATED - DO NOT MODIFY
+        

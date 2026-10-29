@@ -1,0 +1,29 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.html:1
+msgid "E-commerce Dashboard"
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.html:4
+msgid "Loading e-commerce summary..."
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.html:10
+msgid "Paid orders"
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.html:14
+msgid "Products sold"
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.html:18
+msgid "Total earnings"
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.html:37
+msgid "Try again"
+msgstr ""

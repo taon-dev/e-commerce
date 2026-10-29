@@ -1,4 +1,5 @@
 //#region imports
+import type { Translation } from '@taon-dev/i18n/src';
 import { TaonSessionUserGroupEntity } from '@taon-dev/session/src';
 import { TaonCmsContentRepository } from '@taon-dev/cms/src';
 import { TaonBaseRepository, TaonRepository } from 'taon/src';
@@ -74,7 +75,10 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   }
 
   //#region methods / get cart
-  async getCart(userId: number): Promise<TaonECommerceCartEntity> {
+  async getCart(
+    userId: number,
+    t?: Pick<Translation, 'gettext'>,
+  ): Promise<TaonECommerceCartEntity> {
     //#region @websqlFunc
     let cart = await this.repo.findOne({
       where: { userId },
@@ -90,7 +94,10 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       });
     }
     if (!cart) {
-      throw new Error('Unable to load the current user cart.');
+      throw new Error(
+        t?.gettext('Unable to load the current user cart.') ??
+          'Unable to load the current user cart.',
+      );
     }
     const singletonItems = cart.items.filter(
       item =>
@@ -120,7 +127,10 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         },
       });
       if (!refreshedCart) {
-        throw new Error('Unable to refresh the current user cart.');
+        throw new Error(
+          t?.gettext('Unable to refresh the current user cart.') ??
+            'Unable to refresh the current user cart.',
+        );
       }
       await this.prepareProductPosts(
         refreshedCart.items.map(item => item.product),
@@ -136,6 +146,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   //#region methods / get suggested products
   async getSuggestedProducts(
     userId: number,
+    t?: Pick<Translation, 'gettext'>,
   ): Promise<TaonECommerceProductEntity[]> {
     //#region @websqlFunc
     const [memberships, products] = await Promise.all([
@@ -154,7 +165,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         !product.suggestedGroups.length ||
         product.suggestedGroups.some(group => groupIds.has(group.id)),
     );
-    const cart = await this.getCart(userId);
+    const cart = await this.getCart(userId, t);
     for (const product of suggested) {
       product.purchaseEligibility = await this.getPurchaseEligibility(
         userId,
@@ -162,6 +173,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         (cart.items.find(item => item.productId === product.id)?.quantity ??
           0) + 1,
         cart,
+        t,
       );
     }
     await this.prepareProductPosts(suggested);
@@ -175,6 +187,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     userId: number,
     productId: number,
     quantity: number,
+    t?: Pick<Translation, 'gettext'>,
   ): Promise<TaonECommerceCartEntity> {
     //#region @websqlFunc
     if (
@@ -183,16 +196,22 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       !Number.isSafeInteger(quantity) ||
       quantity <= 0
     ) {
-      throw new Error('Product and quantity must be positive whole numbers.');
+      throw new Error(
+        t?.gettext('Product and quantity must be positive whole numbers.') ??
+          'Product and quantity must be positive whole numbers.',
+      );
     }
 
-    const cart = await this.getCart(userId);
+    const cart = await this.getCart(userId, t);
     await this.connection.transaction('SERIALIZABLE', async manager => {
       const product = await manager
         .getRepository(TaonECommerceProductEntity)
         .findOne({ where: { id: productId, active: true } });
       if (!product) {
-        throw new Error('The selected product is not available.');
+        throw new Error(
+          t?.gettext('The selected product is not available.') ??
+            'The selected product is not available.',
+        );
       }
       const currentCart = await manager
         .getRepository(TaonECommerceCartEntity)
@@ -201,7 +220,9 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
           relations: { items: { product: true } },
         });
       if (!currentCart) {
-        throw new Error('The cart was not found.');
+        throw new Error(
+          t?.gettext('The cart was not found.') ?? 'The cart was not found.',
+        );
       }
       const items = manager.getRepository(TaonECommerceCartItemEntity);
       const existing = await items.findOne({
@@ -212,6 +233,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         product,
         (existing?.quantity ?? 0) + quantity,
         currentCart,
+        t,
         manager,
       );
       if (!eligibility.canAdd) {
@@ -226,7 +248,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         );
       }
     });
-    return this.getCart(userId);
+    return this.getCart(userId, t);
     //#endregion
   }
   //#endregion
@@ -236,6 +258,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     userId: number,
     itemId: number,
     quantity: number,
+    t?: Pick<Translation, 'gettext'>,
   ): Promise<TaonECommerceCartEntity> {
     //#region @websqlFunc
     if (
@@ -244,9 +267,12 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       !Number.isSafeInteger(quantity) ||
       quantity <= 0
     ) {
-      throw new Error('Item and quantity must be positive whole numbers.');
+      throw new Error(
+        t?.gettext('Item and quantity must be positive whole numbers.') ??
+          'Item and quantity must be positive whole numbers.',
+      );
     }
-    const cart = await this.getCart(userId);
+    const cart = await this.getCart(userId, t);
     await this.connection.transaction('SERIALIZABLE', async manager => {
       const currentCart = await manager
         .getRepository(TaonECommerceCartEntity)
@@ -258,13 +284,17 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         candidate => candidate.id === itemId,
       );
       if (!item) {
-        throw new Error('The cart item was not found.');
+        throw new Error(
+          t?.gettext('The cart item was not found.') ??
+            'The cart item was not found.',
+        );
       }
       const eligibility = await this.getPurchaseEligibility(
         userId,
         item.product,
         quantity,
         currentCart,
+        t,
         manager,
       );
       if (!eligibility.canAdd) {
@@ -273,7 +303,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       item.quantity = quantity;
       await manager.getRepository(TaonECommerceCartItemEntity).save(item);
     });
-    return this.getCart(userId);
+    return this.getCart(userId, t);
     //#endregion
   }
   //#endregion
@@ -282,21 +312,28 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   async removeItem(
     userId: number,
     itemId: number,
+    t?: Pick<Translation, 'gettext'>,
   ): Promise<TaonECommerceCartEntity> {
     //#region @websqlFunc
     if (!Number.isSafeInteger(itemId) || itemId <= 0) {
-      throw new Error('The cart item ID is invalid.');
+      throw new Error(
+        t?.gettext('The cart item ID is invalid.') ??
+          'The cart item ID is invalid.',
+      );
     }
-    const cart = await this.getCart(userId);
+    const cart = await this.getCart(userId, t);
     const items = this.connection.getRepository(TaonECommerceCartItemEntity);
     const item = await items.findOne({
       where: { id: itemId, cartId: cart.id },
     });
     if (!item) {
-      throw new Error('The cart item was not found.');
+      throw new Error(
+        t?.gettext('The cart item was not found.') ??
+          'The cart item was not found.',
+      );
     }
     await items.remove(item);
-    return this.getCart(userId);
+    return this.getCart(userId, t);
     //#endregion
   }
   //#endregion
@@ -335,6 +372,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     product: TaonECommerceProductEntity,
     quantity: number,
     cart: TaonECommerceCartEntity,
+    t?: Pick<Translation, 'gettext'>,
     manager: Pick<EntityManager, 'getRepository'> = this.connection,
   ): Promise<TaonProductEligibility> {
     //#region @websqlFunc
@@ -380,6 +418,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       cart.items
         .filter(item => item.productId !== product.id)
         .map(item => item.product),
+      t,
     );
     //#endregion
   }
@@ -387,11 +426,15 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   async createCheckoutSession(
     userId: number,
     urls: { successUrl: string; cancelUrl: string },
+    t?: Pick<Translation, 'gettext'>,
   ): Promise<{ orderId: number; checkoutUrl: string }> {
     //#region @websqlFunc
-    const cart = await this.getCart(userId);
+    const cart = await this.getCart(userId, t);
     if (!cart.items.length) {
-      throw new Error('Your cart has no active products to check out.');
+      throw new Error(
+        t?.gettext('Your cart has no active products to check out.') ??
+          'Your cart has no active products to check out.',
+      );
     }
 
     const productRepository = this.connection.getRepository(
@@ -406,7 +449,10 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         where: { id: item.productId, active: true },
       });
       if (!product || product.active !== true) {
-        throw new Error('A product in your cart is no longer available.');
+        throw new Error(
+          t?.gettext('A product in your cart is no longer available.') ??
+            'A product in your cart is no longer available.',
+        );
       }
       if (!product.stripeProductId || !product.stripePriceId) {
         throw new Error(
@@ -435,7 +481,8 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       }
       if (currency !== null && product.currency.toUpperCase() !== currency) {
         throw new Error(
-          'All products in one checkout must use the same currency.',
+          t?.gettext('All products in one checkout must use the same currency.') ??
+            'All products in one checkout must use the same currency.',
         );
       }
       currency = product.currency.toUpperCase();
@@ -457,6 +504,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         product,
         item.quantity,
         cart,
+        t,
       );
       if (!eligibility.canAdd) {
         throw new Error(eligibility.reason!);
@@ -469,7 +517,8 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       (recurringCount !== cart.items.length || cart.items.length > 1)
     ) {
       throw new Error(
-        'A recurring subscription must be checked out by itself.',
+        t?.gettext('A recurring subscription must be checked out by itself.') ??
+          'A recurring subscription must be checked out by itself.',
       );
     }
 
@@ -486,6 +535,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
             products.get(item.productId)!,
             item.quantity,
             cart,
+            t,
             manager,
           );
           if (!eligibility.canAdd) {

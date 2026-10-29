@@ -1,0 +1,18 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-cart-button/taon-cart-button.component.ts:51
+msgid "Unable to load suggested products."
+msgstr ""
+
+#: src/lib/taon-cart-button/taon-cart-button.component.ts:84
+#: src/lib/taon-cart-button/taon-cart-button.component.ts:100
+msgid "Unable to load your cart."
+msgstr ""
+
+#: src/lib/taon-cart-button/taon-cart-button.component.ts:88
+msgid "The cart response was invalid."
+msgstr ""

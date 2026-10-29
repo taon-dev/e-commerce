@@ -1,32 +1,32 @@
 <section class="order-details">
-  <h2>Order details</h2>
+  <h2>{{ t.gettext('Order details') }}</h2>
 
   @if (loading()) {
-    <p role="status">Loading order...</p>
+    <p role="status">{{ t.gettext('Loading order...') }}</p>
   } @else if (order(); as currentOrder) {
     <dl class="order-info">
-      <dt>Order ID</dt>
+      <dt>{{ t.gettext('Order ID') }}</dt>
       <dd>{{ currentOrder.id }}</dd>
-      <dt>User</dt>
+      <dt>{{ t.gettext('User') }}</dt>
       <dd>#{{ currentOrder.userId }}</dd>
-      <dt>Status</dt>
-      <dd>{{ currentOrder.status }}</dd>
-      <dt>Created</dt>
+      <dt>{{ t.gettext('Status') }}</dt>
+      <dd>{{ statusLabels[currentOrder.status]?.() ?? currentOrder.status }}</dd>
+      <dt>{{ t.gettext('Created') }}</dt>
       <dd>{{ currentOrder.createdAt }}</dd>
-      <dt>Subtotal</dt>
+      <dt>{{ t.gettext('Subtotal') }}</dt>
       <dd>{{ currentOrder.subtotal }} {{ currentOrder.currency }}</dd>
-      <dt>Total</dt>
+      <dt>{{ t.gettext('Total') }}</dt>
       <dd>{{ currentOrder.total }} {{ currentOrder.currency }}</dd>
     </dl>
 
-    <h3>Items</h3>
+    <h3>{{ t.gettext('Items') }}</h3>
     <table>
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Quantity</th>
-          <th>Unit price</th>
-          <th>Total</th>
+          <th>{{ t.gettext('Product') }}</th>
+          <th>{{ t.gettext('Quantity') }}</th>
+          <th>{{ t.gettext('Unit price') }}</th>
+          <th>{{ t.gettext('Total') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -39,35 +39,35 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="4">No items in this order.</td>
+            <td colspan="4">{{ t.gettext('No items in this order.') }}</td>
           </tr>
         }
       </tbody>
     </table>
 
-    <h3>Payment transactions</h3>
+    <h3>{{ t.gettext('Payment transactions') }}</h3>
     <table>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Provider</th>
-          <th>Provider transaction</th>
-          <th>Status</th>
-          <th>Amount</th>
+          <th>{{ t.gettext('ID') }}</th>
+          <th>{{ t.gettext('Provider') }}</th>
+          <th>{{ t.gettext('Provider transaction') }}</th>
+          <th>{{ t.gettext('Status') }}</th>
+          <th>{{ t.gettext('Amount') }}</th>
         </tr>
       </thead>
       <tbody>
         @for (transaction of transactions(); track transaction.id) {
           <tr>
             <td>{{ transaction.id }}</td>
-            <td>{{ transaction.provider }}</td>
+            <td>{{ providerLabels[transaction.provider]?.() ?? transaction.provider }}</td>
             <td>{{ transaction.providerTransactionId }}</td>
-            <td>{{ transaction.status }}</td>
+            <td>{{ transactionStatusLabels[transaction.status]?.() ?? transaction.status }}</td>
             <td>{{ transaction.amount }} {{ transaction.currency }}</td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="5">No payment transactions.</td>
+            <td colspan="5">{{ t.gettext('No payment transactions.') }}</td>
           </tr>
         }
       </tbody>
@@ -83,7 +83,7 @@
     <button
       type="button"
       (click)="load()">
-      Try again
+      {{ t.gettext('Try again') }}
     </button>
   }
 </section>

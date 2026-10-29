@@ -1,0 +1,61 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:125
+msgid "Unable to copy the webhook URL. Select and copy it manually."
+msgstr "Nie można skopiować adresu URL webhooka. Zaznacz go i skopiuj ręcznie."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:141
+msgid "Stripe synchronization failed."
+msgstr "Synchronizacja Stripe nie powiodła się."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:157
+msgid "Unable to connect to Stripe."
+msgstr "Nie można połączyć się ze Stripe."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:22
+msgid "Sync products with Stripe"
+msgstr "Synchronizuj produkty ze Stripe"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:25
+msgid "Checking Stripe connection..."
+msgstr "Sprawdzanie połączenia ze Stripe..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:33
+msgid "Stripe webhook URL:"
+msgstr "Adres URL webhooka Stripe:"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:35
+msgid "Copy"
+msgstr "Kopiuj"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:40
+msgid "Synchronizing products with Stripe..."
+msgstr "Synchronizowanie produktów ze Stripe..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:44
+msgid "Synchronization finished: [[ succeeded ]] succeeded, [[ failed ]] failed."
+msgstr "Synchronizacja zakończona: [[ succeeded ]] zakończonych powodzeniem, [[ failed ]] nieudanych."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:50
+msgid "[[ productName ]]: synchronized"
+msgstr "[[ productName ]]: zsynchronizowano"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:51
+msgid "[[ productName ]]: [[ error ]]"
+msgstr "[[ productName ]]: [[ error ]]"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:61
+msgid "Cancel / Close"
+msgstr "Anuluj / Zamknij"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:67
+msgid "Syncing..."
+msgstr "Synchronizowanie..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:67
+msgid "Start"
+msgstr "Rozpocznij"

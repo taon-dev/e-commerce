@@ -1,7 +1,7 @@
 <button
   mat-icon-button
   type="button"
-  aria-label="Open shopping cart"
+  [attr.aria-label]="t.gettext('Open shopping cart')"
   [matBadge]="badgeText"
   [matBadgeHidden]="badgeHidden"
   (click)="openCart()">

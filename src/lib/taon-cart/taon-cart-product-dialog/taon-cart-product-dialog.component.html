@@ -27,11 +27,10 @@
   }
   <p>{{ data.product.price | currency: data.product.currency }}</p>
   @if (data.product.type === 'lifetime') {
-    <p>Lifetime purchase</p>
+    <p>{{ t.gettext('Lifetime purchase') }}</p>
   } @else if (data.product.type === 'subscription') {
     <p>
-      Subscription: {{ data.product.subscriptionIntervalValue }}
-      {{ data.product.subscriptionIntervalUnit }}
+      {{ subscriptionLabel }}
     </p>
   }
   @if (!data.inCart() && data.eligibility()?.reason) {
@@ -46,14 +45,14 @@
     mat-button
     type="button"
     mat-dialog-close>
-    Close
+    {{ t.gettext('Close') }}
   </button>
   @if (data.inCart()) {
     <button
       mat-flat-button
       type="button"
       (click)="goToCart()">
-      Go To Cart
+      {{ t.gettext('Go To Cart') }}
     </button>
   } @else {
     <button
@@ -61,7 +60,7 @@
       type="button"
       [disabled]="busy() || !data.eligibility()?.canAdd"
       (click)="addToCart()">
-      Add to cart
+      {{ t.gettext('Add to cart') }}
     </button>
   }
 </mat-dialog-actions>

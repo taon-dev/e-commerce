@@ -44,6 +44,7 @@ import { TaonECommerceProductRepository } from './taon-e-commerce-product.reposi
     'syncWithStripe',
     'stripeWebhook',
     'getProductForEditing',
+    'duplicate',
   ],
 })
 export class TaonECommerceProductController extends TaonBaseCrudController<
@@ -111,12 +112,12 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
     @Body('options') options?: TaonUpdateOptions<TaonECommerceProductEntity>,
   ): Models.Http.Response<TaonECommerceProductEntity> {
     //#region @websqlFunc
-    return async () => {
+    return async (req, res, { t }) => {
       const existing = await this.taonECommerceProductRepository.findOne({
         where: { id: Number(id) },
       });
       if (!existing) {
-        throw new Error('The product was not found.');
+        throw new Error(t.gettext('The product was not found.'));
       }
       item.stripeProductId = existing.stripeProductId;
       item.stripePriceId = existing.stripePriceId;
@@ -141,13 +142,13 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
     @Query('productId') productId: number,
   ): Taon.Response<TaonECommerceProductEntity> {
     //#region @websqlFunc
-    return async () => {
+    return async (req, res, { t }) => {
       const product = await this.taonECommerceProductRepository.findOne({
         where: { id: Number(productId) },
         relations: { cmsContent: true, suggestedGroups: true },
       });
       if (!product) {
-        throw new Error('The product was not found.');
+        throw new Error(t.gettext('The product was not found.'));
       }
       return product;
     };
@@ -155,11 +156,26 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
   }
   //#endregion
 
+  @POST()
+  duplicate(
+    @Body('productId') productId: number,
+  ): Taon.Response<TaonECommerceProductEntity> {
+    //#region @websqlFunc
+    return async (req, res, { t }) => {
+      if (!Number.isSafeInteger(productId) || productId <= 0) {
+        throw new Error(t.gettext('The product ID is invalid.'));
+      }
+      return this.taonECommerceProductRepository.duplicate(productId, t);
+    };
+    //#endregion
+  }
+
   //#region methods / before each request
   protected async beforeEachRequest({
     req,
     res,
     methodConfig,
+    t,
   }: Models.TaonCtrlBeforeEachRequestParams<TaonECommerceProductController>): Promise<void> {
     //#region @websqlFunc
     if (methodConfig.methodName === 'stripeWebhook') {
@@ -175,7 +191,7 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
       !context?.isInGroup(TaonSessionCoreGroups.Administrator)
     ) {
       Taon.error({
-        message: 'Administrator access is required for product management.',
+        message: t.gettext('Administrator access is required for product management.'),
         status: getStatusCode(HttpStatusEnum.FORBIDDEN),
       });
     }
@@ -191,7 +207,7 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
     webhookUrl: string;
   }> {
     //#region @websqlFunc
-    return async () => ({
+    return async (req, res) => ({
       ...(await this.taonECommerceStripeRepository.checkConnection()),
       webhookUrl: this.getThisControllerMethodFullUrl('stripeWebhook'),
     });
@@ -205,15 +221,15 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
     @Body('syncId') syncId: string,
   ): Taon.Response<TaonStripeSyncResult[]> {
     //#region @websqlFunc
-    return async () => {
+    return async (req, res, { t }) => {
       if (!/^[\da-f-]{36}$/i.test(syncId)) {
-        throw new Error('A valid synchronization request ID is required.');
+        throw new Error(t.gettext('A valid synchronization request ID is required.'));
       }
       if (
         !(await this.taonECommerceStripeRepository.checkConnection()).connected
       ) {
         throw new Error(
-          'Stripe is not connected. Check the server configuration.',
+          t.gettext('Stripe is not connected. Check the server configuration.'),
         );
       }
       const products = await this.taonECommerceProductRepository.find();
@@ -257,7 +273,7 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
             error:
               error instanceof Error
                 ? error.message
-                : 'Stripe synchronization failed.',
+                : t.gettext('Stripe synchronization failed.'),
           });
         }
       }
@@ -271,7 +287,7 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
   @POST()
   stripeWebhook(): Taon.Response<{ received: boolean }> {
     //#region @websqlFunc
-    return async (req, res) => {
+    return async (req, res, { t }) => {
       try {
         const event =
           await this.taonECommerceStripeRepository.verifyWebhookSignature(
@@ -291,7 +307,7 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
           !event.data.object ||
           typeof event.data.object !== 'object'
         ) {
-          throw new Error('The Stripe webhook payload is invalid.');
+          throw new Error(t.gettext('The Stripe webhook payload is invalid.'));
         }
         if (isHandledStripeEvent(event)) {
           await this.taonECommerceCustomerRepository.processStripeEvent(event);
@@ -301,7 +317,7 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
         console.error(error);
         Taon.error({
           status: 400,
-          message: '[taon-e-commerce] Stripe webhook rejected',
+          message: t.gettext('Stripe webhook rejected.'),
         });
         return {
           // TODO not needed

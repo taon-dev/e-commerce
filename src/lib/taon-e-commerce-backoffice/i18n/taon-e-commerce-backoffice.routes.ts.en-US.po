@@ -1,0 +1,25 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-backoffice/taon-e-commerce-backoffice.routes.ts:21
+msgid "Dashboard"
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice/taon-e-commerce-backoffice.routes.ts:30
+msgid "Products"
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice/taon-e-commerce-backoffice.routes.ts:41
+msgid "Orders"
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice/taon-e-commerce-backoffice.routes.ts:52
+msgid "Transactions"
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice/taon-e-commerce-backoffice.routes.ts:63
+msgid "Settings"
+msgstr ""

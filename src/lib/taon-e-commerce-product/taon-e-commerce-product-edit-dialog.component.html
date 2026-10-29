@@ -1,11 +1,11 @@
 <section class="product-editor">
-  <h1>{{ data.product ? 'Edit product' : 'Add product' }}</h1>
+  <h1>{{ data.product ? t.gettext('Edit product') : t.gettext('Add product') }}</h1>
   @if (loading()) {
-    <p role="status">Loading product options...</p>
+    <p role="status">{{ t.gettext('Loading product options...') }}</p>
   } @else {
     <form class="product-form">
       <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
+        <mat-label>{{ t.gettext('Name') }}</mat-label>
         <input
           matInput
           required
@@ -15,7 +15,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Description</mat-label>
+        <mat-label>{{ t.gettext('Description') }}</mat-label>
         <textarea
           matInput
           rows="4"
@@ -27,23 +27,23 @@
       <mat-checkbox
         [checked]="draft().active"
         (change)="updateActive($event.checked)">
-        Active
+        {{ t.gettext('Active') }}
       </mat-checkbox>
 
       <mat-form-field appearance="outline">
-        <mat-label>Product type</mat-label>
+        <mat-label>{{ t.gettext('Product type') }}</mat-label>
         <mat-select
           [value]="draft().type"
           (selectionChange)="updateType($event.value)">
           @for (type of productTypes; track type) {
-            <mat-option [value]="type">{{ type }}</mat-option>
+            <mat-option [value]="type">{{ productTypeLabels[type]() }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
 
       <div class="price-fields">
         <mat-form-field appearance="outline">
-          <mat-label>Price</mat-label>
+          <mat-label>{{ t.gettext('Price') }}</mat-label>
           <input
             matInput
             type="number"
@@ -54,7 +54,7 @@
             name="price" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Currency</mat-label>
+          <mat-label>{{ t.gettext('Currency') }}</mat-label>
           <mat-select
             [value]="draft().currency"
             (selectionChange)="updateCurrency($event.value)">
@@ -68,7 +68,7 @@
       @if (draft().type === 'item') {
         <div class="price-fields">
           <mat-form-field appearance="outline">
-            <mat-label>Maximum quantity per user</mat-label>
+            <mat-label>{{ t.gettext('Maximum quantity per user') }}</mat-label>
             <input
               matInput
               type="number"
@@ -76,10 +76,10 @@
               [ngModel]="draft().maxQuantityPerUser"
               (ngModelChange)="updateMaxQuantityPerUser($event)"
               name="maxQuantityPerUser" />
-            <mat-hint>Leave empty for no per-user limit.</mat-hint>
+            <mat-hint>{{ t.gettext('Leave empty for no per-user limit.') }}</mat-hint>
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Overall stock limit</mat-label>
+            <mat-label>{{ t.gettext('Overall stock limit') }}</mat-label>
             <input
               matInput
               type="number"
@@ -87,7 +87,7 @@
               [ngModel]="draft().stockLimit"
               (ngModelChange)="updateStockLimit($event)"
               name="stockLimit" />
-            <mat-hint>Leave empty for unlimited stock.</mat-hint>
+            <mat-hint>{{ t.gettext('Leave empty for unlimited stock.') }}</mat-hint>
           </mat-form-field>
         </div>
       }
@@ -95,7 +95,7 @@
       @if (draft().type === 'subscription') {
         <div class="price-fields">
           <mat-form-field appearance="outline">
-            <mat-label>Subscription interval value</mat-label>
+            <mat-label>{{ t.gettext('Subscription interval value') }}</mat-label>
             <input
               matInput
               type="number"
@@ -105,21 +105,21 @@
               name="subscriptionIntervalValue" />
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Subscription interval unit</mat-label>
+            <mat-label>{{ t.gettext('Subscription interval unit') }}</mat-label>
             <mat-select
               [value]="draft().subscriptionIntervalUnit"
               (selectionChange)="updateSubscriptionIntervalUnit($event.value)">
               @for (unit of intervalUnits; track unit) {
-                <mat-option [value]="unit">{{ unit }}</mat-option>
+                <mat-option [value]="unit">{{ intervalUnitLabels[unit]() }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
         </div>
-        <p>Stripe recurring prices are used for day-based intervals. Shorter Taon intervals expire locally.</p>
+        <p>{{ t.gettext('Stripe recurring prices are used for day-based intervals. Shorter Taon intervals expire locally.') }}</p>
       }
 
       <mat-form-field appearance="outline">
-        <mat-label>Attached permissions</mat-label>
+        <mat-label>{{ t.gettext('Attached permissions') }}</mat-label>
         <mat-select
           multiple
           [disabled]="draft().inheritPermissionsFromPost"
@@ -132,18 +132,18 @@
           }
         </mat-select>
         @if (draft().inheritPermissionsFromPost) {
-          <mat-hint>Inherited permissions are configured on the linked post.</mat-hint>
+          <mat-hint>{{ t.gettext('Inherited permissions are configured on the linked post.') }}</mat-hint>
         }
       </mat-form-field>
 
       <mat-checkbox
         [checked]="draft().inheritPermissionsFromPost"
         (change)="updatePermissionInheritance($event.checked)">
-        Attach permission from post
+        {{ t.gettext('Attach permission from post') }}
       </mat-checkbox>
 
       <mat-form-field appearance="outline">
-        <mat-label>Suggest product only for groups of users</mat-label>
+        <mat-label>{{ t.gettext('Suggest product only for groups of users') }}</mat-label>
         <mat-select
           multiple
           [value]="selectedGroupIds()"
@@ -152,30 +152,30 @@
             <mat-option [value]="group.id">{{ group.name }}</mat-option>
           }
         </mat-select>
-        <mat-hint>No groups means default product visibility.</mat-hint>
+        <mat-hint>{{ t.gettext('No groups means default product visibility.') }}</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Link to post</mat-label>
+        <mat-label>{{ t.gettext('Link to post') }}</mat-label>
         <mat-select
           [value]="draft().cmsContentId"
           (selectionChange)="updateCmsContentId($event.value || null)">
-          <mat-option [value]="null">No linked post</mat-option>
+          <mat-option [value]="null">{{ t.gettext('No linked post') }}</mat-option>
           @for (post of posts(); track post.id) {
             <mat-option [value]="post.id">{{ post.title }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
       @if (draft().inheritPermissionsFromPost && !draft().cmsContentId) {
-        <p role="status">No post is linked, so no post permissions can be inherited.</p>
+        <p role="status">{{ t.gettext('No post is linked, so no post permissions can be inherited.') }}</p>
       }
 
       @if (data.product) {
-        <section class="stripe-info" aria-label="Stripe synchronization information">
-          <h2>Stripe synchronization</h2>
-          <p>Stripe Product ID: {{ data.product.stripeProductId || 'Not synchronized' }}</p>
-          <p>Stripe Price ID: {{ data.product.stripePriceId || 'Not synchronized' }}</p>
-          <p>Last synchronized: {{ data.product.stripeLastSyncedAt || 'Never' }}</p>
+        <section class="stripe-info" [attr.aria-label]="t.gettext('Stripe synchronization information')">
+          <h2>{{ t.gettext('Stripe synchronization') }}</h2>
+          <p>{{ t.gettext('Stripe Product ID: [[ id ]]', { id: data.product.stripeProductId || t.gettext('Not synchronized') }) }}</p>
+          <p>{{ t.gettext('Stripe Price ID: [[ id ]]', { id: data.product.stripePriceId || t.gettext('Not synchronized') }) }}</p>
+          <p>{{ t.gettext('Last synchronized: [[ date ]]', { date: data.product.stripeLastSyncedAt || t.gettext('Never') }) }}</p>
         </section>
       }
     </form>
@@ -184,20 +184,25 @@
   @if (error()) {
     <p class="error" role="alert">{{ error() }}</p>
     @if (!permissionsLoaded() && !loading()) {
-      <button mat-button type="button" (click)="load()">Retry loading options</button>
+      <button mat-button type="button" (click)="load()">{{ t.gettext('Retry loading options') }}</button>
     }
   }
 
   <div class="editor-actions">
-    <button mat-button type="button" [disabled]="saving()" (click)="cancel()">
-      Cancel
+    <button mat-button type="button" [disabled]="saving() || duplicating()" (click)="cancel()">
+      {{ t.gettext('Cancel') }}
     </button>
+    @if (data.product) {
+      <button mat-button type="button" [disabled]="loading() || saving() || duplicating()" (click)="duplicate()">
+        {{ duplicating() ? t.gettext('Duplicating...') : t.gettext('Duplicate') }}
+      </button>
+    }
     <button
       mat-flat-button
       type="button"
-      [disabled]="loading() || saving() || !permissionsLoaded()"
+      [disabled]="loading() || saving() || duplicating() || !permissionsLoaded()"
       (click)="save()">
-      {{ saving() ? 'Saving...' : 'Save' }}
+      {{ saving() ? t.gettext('Saving...') : t.gettext('Save') }}
     </button>
   </div>
 </section>

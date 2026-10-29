@@ -1,7 +1,7 @@
-<h1>Transactions</h1>
+<h1>{{ t.gettext('Transactions') }}</h1>
 <taon-datatable
   [entityCrudController]="crud"
-  [columns]="columns"
+  [columns]="columns()"
   [hideAddButton]="true"
   [allowedColumns]="[
     'id',

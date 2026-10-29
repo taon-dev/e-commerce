@@ -1,0 +1,13 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.repository.ts:31
+msgid "The product was not found."
+msgstr "The product was not found."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.repository.ts:47
+msgid "The duplicated product name exceeds 500 characters."
+msgstr "The duplicated product name exceeds 500 characters."

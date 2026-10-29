@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { TaonBaseAngularService } from 'taon/src';
+import { Taon, TaonBaseAngularService } from 'taon/src';
+import { Translation } from '@taon-dev/i18n/src';
 
 import { TaonECommerceBackofficeSettingsController } from './taon-e-commerce-backoffice-settings.controller';
 
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
+
 @Injectable()
 export class TaonECommerceBackofficeSettingsApiService extends TaonBaseAngularService {
+  t = t.for(this);
+
   private readonly controller = this.injectController(
     TaonECommerceBackofficeSettingsController,
   );
@@ -15,7 +20,7 @@ export class TaonECommerceBackofficeSettingsApiService extends TaonBaseAngularSe
 
     if (response.statusCode >= 400 || typeof enabled !== 'boolean') {
       throw new Error(
-        response.responseText || 'Unable to load the selling setting.',
+        response.responseText || this.t.gettext('Unable to load the selling setting.'),
       );
     }
 
@@ -29,7 +34,7 @@ export class TaonECommerceBackofficeSettingsApiService extends TaonBaseAngularSe
 
     if (response.statusCode >= 400 || typeof saved !== 'boolean') {
       throw new Error(
-        response.responseText || 'Unable to update the selling setting.',
+        response.responseText || this.t.gettext('Unable to update the selling setting.'),
       );
     }
 

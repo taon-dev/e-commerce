@@ -1,5 +1,6 @@
 {
   "type": "isomorphic-lib",
+  "resources": [],
   "overrideNpmName": "@taon-dev/e-commerce",
   "packageJsonOverride": {
     "author": "Dfilipiak",
@@ -10,7 +11,7 @@
   "version": "v21",
   "storeGeneratedAssetsInRepository": true,
   "shouldGenerateAutogenIndexFile": true,
-  "generateTranslationsFor": ["en-US", "pl-PL"],
+  "generateTranslationsFor": ["en-US", "pl-PL", "de-DE"],
   "shouldGenerateTranslationFiles": true,
   "shouldGenerateAutogenAppRoutesFile": true,
   "isomorphicDependenciesForNpmLib": ["@taon-dev/session"],

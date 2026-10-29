@@ -1,0 +1,19 @@
+// THIS FILE IS GENERATED - DO NOT MODIFY
+import { CoreModels } from 'tnp-core/src';
+
+// join interface type here
+import { EnUsTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentHtml } from './taon-e-commerce-products-backoffice.component.html.en-US.i18n.data';
+import { PlPlTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentHtml } from './taon-e-commerce-products-backoffice.component.html.pl-PL.i18n.data';
+import { DeDeTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentHtml } from './taon-e-commerce-products-backoffice.component.html.de-DE.i18n.data';
+import { EnUsTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentTs } from './taon-e-commerce-products-backoffice.component.ts.en-US.i18n.data';
+import { PlPlTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentTs } from './taon-e-commerce-products-backoffice.component.ts.pl-PL.i18n.data';
+import { DeDeTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentTs } from './taon-e-commerce-products-backoffice.component.ts.de-DE.i18n.data';;
+export type TaonECommerceProductsBackofficeOverride = CoreModels.DeepPartial<EnUsTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentHtml 
+| PlPlTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentHtml 
+| DeDeTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentHtml 
+| EnUsTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentTs 
+| PlPlTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentTs 
+| DeDeTraslationOverrideSrcLibTaonECommerceProductTaonECommerceProductsBackofficeTaonECommerceProductsBackofficeComponentTs>;
+
+ // THIS FILE IS GENERATED - DO NOT MODIFY
+        

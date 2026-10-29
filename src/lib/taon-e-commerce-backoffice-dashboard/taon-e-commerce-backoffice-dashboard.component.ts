@@ -4,11 +4,15 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { Translation } from '@taon-dev/i18n/src';
+import { Taon } from 'taon/src';
 
 import { TaonECommerceOrderItemApiService } from '../taon-e-commerce-order-item/taon-e-commerce-order-item.api.service';
 import { TaonECommerceOrderApiService } from '../taon-e-commerce-order/taon-e-commerce-order.api.service';
 import { TaonECommerceOrderEntity } from '../taon-e-commerce-order/taon-e-commerce-order.entity';
 import { TaonECommerceOrderItemEntity } from '../taon-e-commerce-order-item/taon-e-commerce-order-item.entity';
+
+const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 
 interface DashboardSummary {
   paidOrders: number;
@@ -25,6 +29,8 @@ interface DashboardSummary {
   providers: [TaonECommerceOrderApiService, TaonECommerceOrderItemApiService],
 })
 export class TaonECommerceBackofficeDashboardComponent {
+  t = t.for(this);
+
   private readonly orderApi = inject(TaonECommerceOrderApiService);
 
   private readonly orderItemApi = inject(TaonECommerceOrderItemApiService);
@@ -53,14 +59,14 @@ export class TaonECommerceBackofficeDashboardComponent {
         throw new Error(
           ordersResponse.responseText ||
             itemsResponse.responseText ||
-            'Unable to load e-commerce summary data.',
+            this.t.gettext('Unable to load e-commerce summary data.'),
         );
       }
 
       const orders = ordersResponse.body?.json;
       const items = itemsResponse.body?.json;
       if (!Array.isArray(orders) || !Array.isArray(items)) {
-        throw new Error('The e-commerce summary response was invalid.');
+        throw new Error(this.t.gettext('The e-commerce summary response was invalid.'));
       }
 
       const paidOrders = (orders as TaonECommerceOrderEntity[]).filter(
@@ -76,7 +82,7 @@ export class TaonECommerceBackofficeDashboardComponent {
         const currency = order.currency.toUpperCase();
         const total = Number(order.total);
         if (!Number.isFinite(total)) {
-          throw new Error(`Order ${order.id} has an invalid total.`);
+          throw new Error(this.t.gettext('Order [[ id ]] has an invalid total.', { id: order.id }));
         }
         earningsByCurrency.set(
           currency,
@@ -100,7 +106,7 @@ export class TaonECommerceBackofficeDashboardComponent {
       this.error.set(
         error instanceof Error
           ? error.message
-          : 'Unable to load e-commerce summary data.',
+          : this.t.gettext('Unable to load e-commerce summary data.'),
       );
     } finally {
       this.loading.set(false);

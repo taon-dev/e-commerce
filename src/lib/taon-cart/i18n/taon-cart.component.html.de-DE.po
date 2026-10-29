@@ -1,0 +1,173 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-cart/taon-cart.component.html:3
+msgid "Shopping"
+msgstr "Einkaufen"
+
+#: src/lib/taon-cart/taon-cart.component.html:7
+msgid "Close cart"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:18
+#: src/lib/taon-cart/taon-cart.component.html:144
+msgid "Buy"
+msgstr "Kaufen"
+
+#: src/lib/taon-cart/taon-cart.component.html:55
+msgid "Cart"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:108
+msgid "Checkout"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:148
+#: src/lib/taon-cart/taon-cart.component.html:195
+msgid "Purchased"
+msgstr "Gekauft"
+
+#: src/lib/taon-cart/taon-cart.component.html:152
+msgid "Active"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:221
+msgid "Orders"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:227
+msgid "Refreshing..."
+msgstr "Wird aktualisiert..."
+
+#: src/lib/taon-cart/taon-cart.component.html:227
+msgid "Refresh orders"
+msgstr "Bestellungen aktualisieren"
+
+#: src/lib/taon-cart/taon-cart.component.html:20
+msgid "Loading products..."
+msgstr "Produkte werden geladen..."
+
+#: src/lib/taon-cart/taon-cart.component.html:22
+msgid "No products are currently available to you."
+msgstr "Derzeit sind keine Produkte für Sie verfügbar."
+
+#: src/lib/taon-cart/taon-cart.component.html:45
+msgid "Add to cart"
+msgstr "In den Warenkorb"
+
+#: src/lib/taon-cart/taon-cart.component.html:50
+msgid "Go To Cart"
+msgstr "Zum Warenkorb"
+
+#: src/lib/taon-cart/taon-cart.component.html:57
+msgid "Loading cart..."
+msgstr "Warenkorb wird geladen..."
+
+#: src/lib/taon-cart/taon-cart.component.html:59
+msgid "Your cart is empty."
+msgstr "Ihr Warenkorb ist leer."
+
+#: src/lib/taon-cart/taon-cart.component.html:69
+msgid "[[ price ]] each"
+msgstr "[[ price ]] pro Stück"
+
+#: src/lib/taon-cart/taon-cart.component.html:98
+msgid "Remove"
+msgstr "Entfernen"
+
+#: src/lib/taon-cart/taon-cart.component.html:104
+msgid "Go to Checkout"
+msgstr "Weiter zur Kasse"
+
+#: src/lib/taon-cart/taon-cart.component.html:110
+msgid "Add an active product to your cart to continue."
+msgstr "Fügen Sie ein aktives Produkt zum Warenkorb hinzu, um fortzufahren."
+
+#: src/lib/taon-cart/taon-cart.component.html:114
+#: src/lib/taon-cart/taon-cart.component.html:193
+msgid "Product"
+msgstr "Produkt"
+
+#: src/lib/taon-cart/taon-cart.component.html:114
+msgid "Qty"
+msgstr "Menge"
+
+#: src/lib/taon-cart/taon-cart.component.html:114
+msgid "Unit price"
+msgstr "Stückpreis"
+
+#: src/lib/taon-cart/taon-cart.component.html:114
+msgid "Total"
+msgstr "Gesamt"
+
+#: src/lib/taon-cart/taon-cart.component.html:133
+msgid "Subtotal: [[ subtotal ]]"
+msgstr "Zwischensumme: [[ subtotal ]]"
+
+#: src/lib/taon-cart/taon-cart.component.html:136
+msgid "Total: [[ total ]]"
+msgstr "Gesamt: [[ total ]]"
+
+#: src/lib/taon-cart/taon-cart.component.html:138
+msgid "Final prices and availability are revalidated by the server."
+msgstr "Endgültige Preise und Verfügbarkeit werden vom Server erneut geprüft."
+
+#: src/lib/taon-cart/taon-cart.component.html:144
+msgid "Preparing checkout..."
+msgstr "Bezahlvorgang wird vorbereitet..."
+
+#: src/lib/taon-cart/taon-cart.component.html:154
+msgid "Loading purchases..."
+msgstr "Käufe werden geladen..."
+
+#: src/lib/taon-cart/taon-cart.component.html:156
+msgid "Active subscriptions"
+msgstr "Aktive Abonnements"
+
+#: src/lib/taon-cart/taon-cart.component.html:158
+msgid "No active subscriptions."
+msgstr "Keine aktiven Abonnements."
+
+#: src/lib/taon-cart/taon-cart.component.html:164
+msgid "Subscription"
+msgstr "Abonnement"
+
+#: src/lib/taon-cart/taon-cart.component.html:165
+#: src/lib/taon-cart/taon-cart.component.html:194
+msgid "Status"
+msgstr "Status"
+
+#: src/lib/taon-cart/taon-cart.component.html:166
+msgid "Started"
+msgstr "Gestartet"
+
+#: src/lib/taon-cart/taon-cart.component.html:167
+msgid "Current period end"
+msgstr "Ende des aktuellen Zeitraums"
+
+#: src/lib/taon-cart/taon-cart.component.html:185
+msgid "Purchased product history"
+msgstr "Kaufhistorie der Produkte"
+
+#: src/lib/taon-cart/taon-cart.component.html:187
+msgid "No purchased products."
+msgstr "Keine gekauften Produkte."
+
+#: src/lib/taon-cart/taon-cart.component.html:196
+msgid "Access expires"
+msgstr "Zugriff läuft ab"
+
+#: src/lib/taon-cart/taon-cart.component.html:205
+msgid "(Lifetime)"
+msgstr "(Unbefristet)"
+
+#: src/lib/taon-cart/taon-cart.component.html:211
+msgid "No expiration"
+msgstr "Kein Ablaufdatum"
+
+#: src/lib/taon-cart/taon-cart.component.html:230
+msgid "Loading orders..."
+msgstr "Bestellungen werden geladen..."

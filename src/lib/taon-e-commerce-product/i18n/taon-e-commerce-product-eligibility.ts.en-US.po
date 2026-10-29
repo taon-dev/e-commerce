@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:45
+msgid "This product is not available."
+msgstr "This product is not available."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:48
+msgid "Quantity must be a positive whole number."
+msgstr "Quantity must be a positive whole number."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:51
+msgid "This product can only be added once."
+msgstr "This product can only be added once."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:54
+msgid "This lifetime product is already owned or awaiting payment."
+msgstr "This lifetime product is already owned or awaiting payment."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:57
+msgid "This subscription is already active or awaiting payment."
+msgstr "This subscription is already active or awaiting payment."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:63
+msgid "The per-user purchase limit has been reached."
+msgstr "The per-user purchase limit has been reached."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:69
+msgid "This product is out of stock."
+msgstr "This product is out of stock."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:76
+msgid "A recurring subscription must be checked out by itself."
+msgstr "A recurring subscription must be checked out by itself."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-eligibility.ts:83
+msgid "All products in one checkout must use the same currency."
+msgstr "All products in one checkout must use the same currency."

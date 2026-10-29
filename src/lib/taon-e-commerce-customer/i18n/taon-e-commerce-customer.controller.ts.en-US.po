@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.controller.ts:64
+msgid "The product ID is invalid."
+msgstr ""
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.controller.ts:74
+msgid "The product thumbnail was not found."
+msgstr ""
+
+#: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.controller.ts:78
+msgid "The product thumbnail is unavailable."
+msgstr ""

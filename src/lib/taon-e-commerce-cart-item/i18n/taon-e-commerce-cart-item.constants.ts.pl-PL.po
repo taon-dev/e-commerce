@@ -6,4 +6,4 @@ msgstr ""
 
 #: src/lib/taon-e-commerce-cart-item/taon-e-commerce-cart-item.constants.ts:18
 msgid "Invalid Password"
-msgstr ""
+msgstr "Nieprawidłowe hasło"

@@ -3,9 +3,11 @@ import { CoreModels } from 'tnp-core/src';
 
 // join interface type here
 import { EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrderConstantsTs } from './taon-e-commerce-order.constants.ts.en-US.i18n.data';
-import { PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrderConstantsTs } from './taon-e-commerce-order.constants.ts.pl-PL.i18n.data';;
+import { PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrderConstantsTs } from './taon-e-commerce-order.constants.ts.pl-PL.i18n.data';
+import { DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrderConstantsTs } from './taon-e-commerce-order.constants.ts.de-DE.i18n.data';;
 export type TaonECommerceOrderOverride = CoreModels.DeepPartial<EnUsTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrderConstantsTs 
-| PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrderConstantsTs>;
+| PlPlTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrderConstantsTs 
+| DeDeTraslationOverrideSrcLibTaonECommerceOrderTaonECommerceOrderConstantsTs>;
 
  // THIS FILE IS GENERATED - DO NOT MODIFY
         

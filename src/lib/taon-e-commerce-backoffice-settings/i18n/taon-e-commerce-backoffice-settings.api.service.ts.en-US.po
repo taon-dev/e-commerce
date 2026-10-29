@@ -1,0 +1,13 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.api.service.ts:23
+msgid "Unable to load the selling setting."
+msgstr ""
+
+#: src/lib/taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.api.service.ts:37
+msgid "Unable to update the selling setting."
+msgstr ""

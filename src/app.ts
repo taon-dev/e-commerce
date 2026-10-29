@@ -173,11 +173,25 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
     @if (itemsLoaded()) {
       <mat-card class="m-2">
         <mat-card-content>
-          <h3>Basic app info</h3>
-          Name: taon-jwt-cookie-header-session<br />
-          Angular version: {{ angularVersion }}<br />
-          Taon backend: {{ taonMode }}<br />
+          <h3>{{ t.gettext('Basic app info') }}</h3>
+          {{
+            t.gettext('Name: [[ name ]]', {
+              name: 'taon-jwt-cookie-header-session',
+            })
+          }}<br />
+          {{
+            t.gettext('Angular version: [[ version ]]', {
+              version: angularVersion,
+            })
+          }}<br />
+          {{ t.gettext('Taon backend: [[ mode ]]', { mode: taonMode }) }}<br />
           <div class="flex  flex-row items-center justify-center">
+            <button
+              mat-icon-button
+              (click)="openDialog(200, 200)">
+              <mat-icon>settings</mat-icon>
+            </button>
+
             <taon-session-button
               [config]="config"
               (context)="context = $event" />
@@ -209,10 +223,16 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
                     {{ t.gettext('Please login to use Taon Admin') }}</a
                   >
                 }
+                <button
+                  class="ml-2"
+                  mat-icon-button
+                  (click)="openDialog(200, 200)">
+                  <mat-icon>settings</mat-icon>
+                </button>
               </ng-template>
 
               <taon-draggable-button-panel
-                title="Taon Admin"
+                [title]="t.gettext('Taon Admin')"
                 [headerCenterTemplate]="headerCenterTemplate"
                 [autoHideIcon]="false"
                 [outlet]="outlet"
@@ -228,7 +248,7 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
       <mat-card class="m-2">
         <mat-card-content>
           @if (context?.user) {
-            Test
+            {{ t.gettext('Test') }}
             <!-- <taon-session [config]="config" /> -->
             <taon-cart [config]="cartConfig$ | async" />
           } @else {
@@ -370,6 +390,12 @@ export const ECommerceClientRoutes: Routes = [
       import('./app/e-commerce-example/e-commerce-example.routes').then(
         m => m.ECommerceExampleRoutes,
       ),
+    providers: [
+      {
+        provide: TAON_CONTEXT,
+        useFactory: () => ECommerceContext,
+      },
+    ],
   },
   {
     path: 'backoffice',
@@ -553,6 +579,7 @@ export const ECommerceStartFunction = async (
   // await TranslationManager.Instance.changeGlobalLang('en-US');
 
   // await TranslationManager.Instance.setOneLanguagePernament('en-US')
+  await TranslationManager.Instance.setOneLanguagePernament('pl-PL');
 
   //#region @browser
   TaonAdmin.init();

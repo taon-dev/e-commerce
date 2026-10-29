@@ -1,0 +1,81 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-cart/taon-cart.component.ts:116
+msgid "Order ID"
+msgstr "ID zamówienia"
+
+#: src/lib/taon-cart/taon-cart.component.ts:117
+msgid "Status"
+msgstr "Status"
+
+#: src/lib/taon-cart/taon-cart.component.ts:118
+msgid "Total"
+msgstr "Razem"
+
+#: src/lib/taon-cart/taon-cart.component.ts:119
+msgid "Currency"
+msgstr "Waluta"
+
+#: src/lib/taon-cart/taon-cart.component.ts:120
+msgid "Created"
+msgstr "Utworzono"
+
+#: src/lib/taon-cart/taon-cart.component.ts:186
+msgid "Checkout completed. Your purchase will appear after Stripe confirms payment."
+msgstr "Płatność zakończona. Zakup pojawi się po potwierdzeniu płatności przez Stripe."
+
+#: src/lib/taon-cart/taon-cart.component.ts:196
+msgid "You left checkout. Your order will be updated when Stripe confirms its status."
+msgstr "Opuszczono proces płatności. Zamówienie zostanie zaktualizowane po potwierdzeniu jego statusu przez Stripe."
+
+#: src/lib/taon-cart/taon-cart.component.ts:281
+msgid "Unable to load your cart."
+msgstr "Nie można załadować koszyka."
+
+#: src/lib/taon-cart/taon-cart.component.ts:297
+msgid "Unable to load available products."
+msgstr "Nie można załadować dostępnych produktów."
+
+#: src/lib/taon-cart/taon-cart.component.ts:310
+msgid "This product is not available."
+msgstr "Ten produkt jest niedostępny."
+
+#: src/lib/taon-cart/taon-cart.component.ts:315
+msgid "This suggested product does not have a saved product ID."
+msgstr "Ten sugerowany produkt nie ma zapisanego identyfikatora."
+
+#: src/lib/taon-cart/taon-cart.component.ts:329
+msgid "Unable to add this product to your cart."
+msgstr "Nie można dodać tego produktu do koszyka."
+
+#: src/lib/taon-cart/taon-cart.component.ts:355
+msgid "Unable to update the cart item."
+msgstr "Nie można zaktualizować pozycji koszyka."
+
+#: src/lib/taon-cart/taon-cart.component.ts:376
+msgid "Unable to remove the cart item."
+msgstr "Nie można usunąć pozycji z koszyka."
+
+#: src/lib/taon-cart/taon-cart.component.ts:394
+msgid "Unable to load your orders."
+msgstr "Nie można załadować zamówień."
+
+#: src/lib/taon-cart/taon-cart.component.ts:412
+msgid "Unable to load your purchases."
+msgstr "Nie można załadować zakupów."
+
+#: src/lib/taon-cart/taon-cart.component.ts:441
+msgid "Unable to start Stripe Checkout."
+msgstr "Nie można rozpocząć płatności Stripe."
+
+#: src/lib/taon-cart/taon-cart.component.ts:458
+msgid "The request failed."
+msgstr "Żądanie nie powiodło się."
+
+#: src/lib/taon-cart/taon-cart.component.ts:462
+msgid "The server returned an empty response."
+msgstr "Serwer zwrócił pustą odpowiedź."

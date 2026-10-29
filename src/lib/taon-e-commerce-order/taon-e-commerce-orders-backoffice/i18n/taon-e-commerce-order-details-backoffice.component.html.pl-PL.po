@@ -1,0 +1,87 @@
+msgid ""
+msgstr ""
+"Language: pl-PL\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:2
+msgid "Order details"
+msgstr "Szczegóły zamówienia"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:5
+msgid "Loading order..."
+msgstr "Ładowanie zamówienia..."
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:8
+msgid "Order ID"
+msgstr "ID zamówienia"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:10
+msgid "User"
+msgstr "Użytkownik"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:12
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:55
+msgid "Status"
+msgstr "Status"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:14
+msgid "Created"
+msgstr "Utworzono"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:16
+msgid "Subtotal"
+msgstr "Suma częściowa"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:18
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:29
+msgid "Total"
+msgstr "Razem"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:22
+msgid "Items"
+msgstr "Pozycje"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:26
+msgid "Product"
+msgstr "Produkt"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:27
+msgid "Quantity"
+msgstr "Ilość"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:28
+msgid "Unit price"
+msgstr "Cena jednostkowa"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:42
+msgid "No items in this order."
+msgstr "Brak pozycji w tym zamówieniu."
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:48
+msgid "Payment transactions"
+msgstr "Transakcje płatnicze"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:52
+msgid "ID"
+msgstr "ID"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:53
+msgid "Provider"
+msgstr "Dostawca"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:54
+msgid "Provider transaction"
+msgstr "Transakcja u dostawcy"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:56
+msgid "Amount"
+msgstr "Kwota"
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:70
+msgid "No payment transactions."
+msgstr "Brak transakcji płatniczych."
+
+#: src/lib/taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component.html:86
+msgid "Try again"
+msgstr "Spróbuj ponownie"

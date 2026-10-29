@@ -67,10 +67,10 @@ export class TaonCartButtonComponent {
 
   openCart(): void {
     const dialog = this.dialog.open(TaonCartComponent, {
-      width: '100vw',
-      height: '100dvh',
-      maxWidth: '100vw',
-      maxHeight: '100dvh',
+      // width: '100vw',
+      height: '80dvh',
+      // maxWidth: '100vw',
+      maxHeight: '80dvh',
       panelClass: 'taon-cart-fullscreen-dialog',
     });
     dialog.componentRef?.setInput('config', this.config);

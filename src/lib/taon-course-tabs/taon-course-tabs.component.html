@@ -1,0 +1,30 @@
+<ng-content />
+<mat-tab-group animationDuration="0ms">
+  @for (course of courses(); track course) {
+    <mat-tab [aria-label]="course.selectedPost()?.title || t.gettext('Course')">
+      <ng-template mat-tab-label>
+        @if (course.selectedPost(); as post) {
+          @if (post.thumbnailKey) {
+            <taon-course-thumbnail
+              class="tab-thumbnail"
+              [post]="post" />
+          } @else {
+            {{ post.title }}
+          }
+        } @else {
+          {{
+            course.state()?.error
+              ? t.gettext('Course unavailable')
+              : t.gettext('Loading course...')
+          }}
+        }
+      </ng-template>
+      <ng-template matTabContent>
+        <ng-container [ngTemplateOutlet]="course.content()" />
+      </ng-template>
+    </mat-tab>
+  }
+</mat-tab-group>
+@if (!courses().length) {
+  <p role="status">{{ t.gettext('No courses are available yet.') }}</p>
+}

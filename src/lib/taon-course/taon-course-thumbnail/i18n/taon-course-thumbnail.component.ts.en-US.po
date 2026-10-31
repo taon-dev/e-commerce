@@ -1,0 +1,10 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-course/taon-course-thumbnail/taon-course-thumbnail.component.ts:65
+#: src/lib/taon-course/taon-course-thumbnail/taon-course-thumbnail.component.ts:74
+msgid "Thumbnail unavailable."
+msgstr ""

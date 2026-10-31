@@ -1,0 +1,36 @@
+<ng-template #courseContent>
+  <section class="taon-course-content" [attr.aria-busy]="!state()">
+    @if (!state()) {
+      <p role="status">{{ t.gettext('Loading course...') }}</p>
+    } @else if (state()?.error; as error) {
+      <p role="alert">{{ error }}</p>
+      <button mat-button type="button" (click)="refresh()">{{ t.gettext('Try again') }}</button>
+    } @else if (selectedPost(); as post) {
+      @if (state()?.data?.privatePostMissing) {
+        <p role="status">{{ t.gettext('The full course post is unavailable. Showing the preview course.') }}</p>
+      }
+      @if (inTabs) {
+        <taon-course-row [post]="post" />
+      } @else {
+        <div class="taon-course-hero" [class.taon-course-hero-video]="post.type === 'video' && !!post.videoKey">
+          <taon-cms-post taonCourseMedia (mediaFailed)="mediaError.set(true)" [post]="post" mode="view-clean" />
+          @if (mediaError()) {
+            <p role="alert">{{ t.gettext('The media could not be loaded. Please try again.') }}</p>
+            <button mat-button type="button" (click)="refresh()">{{ t.gettext('Try again') }}</button>
+          }
+        </div>
+      }
+      @for (lesson of post.relatedPosts; track lesson.id) {
+        <taon-course-row [post]="lesson" />
+      } @empty {
+        <p role="status">{{ t.gettext('No lessons are available yet.') }}</p>
+      }
+      @if (state()?.data?.unavailableItems) {
+        <p role="status">{{ t.gettext('Some lessons are not accessible with your current permissions.') }}</p>
+      }
+    }
+  </section>
+</ng-template>
+@if (!inTabs) {
+  <ng-container [ngTemplateOutlet]="courseContent" />
+}

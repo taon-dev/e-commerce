@@ -1,10 +1,9 @@
 //#region imports
 import * as os from 'os'; // @backend
 
-import { AsyncPipe, JsonPipe, NgFor } from '@angular/common'; // @browser
+import { AsyncPipe, JsonPipe } from '@angular/common'; // @browser
 import {
   inject,
-  Injectable,
   APP_INITIALIZER,
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -16,7 +15,6 @@ import {
 } from '@angular/core'; // @browser
 import { Component } from '@angular/core'; // @browser
 import { VERSION, OnInit } from '@angular/core'; // @browser
-import { toSignal } from '@angular/core/rxjs-interop'; // @browser
 import { MatButtonModule } from '@angular/material/button'; // @browser
 import { MatCardModule } from '@angular/material/card'; // @browser
 import { MatDialog } from '@angular/material/dialog'; // @browser
@@ -31,12 +29,9 @@ import {
 import {
   provideRouter,
   Router,
-  RouterLinkActive,
   RouterModule,
-  RouterOutlet,
   ActivatedRoute,
   Routes,
-  Route,
   withHashLocation,
   withComponentInputBinding,
 } from '@angular/router';
@@ -45,12 +40,19 @@ import { provideServerRendering, withRoutes } from '@angular/ssr';
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import Aura from '@primeng/themes/aura'; // @browser
 import {
-  EcommerceContext_1791132517217_initial,
+  CmsContext_1792506757808_applicaitonHooks,
+  TaonCmsContentProvider,
+} from '@taon-dev/cms/src';
+import {
   TaonAuthContextEntity,
   TaonAuthContextRepository,
   TaonECommerceAbstractContext,
   TaonECommerceCartProvider,
 } from '@taon-dev/e-commerce/src';
+import {
+  TaonCourseComponent,
+  TaonCourseTabsComponent,
+} from '@taon-dev/e-commerce/src'; // @browser
 import {
   TaonCartButtonComponent,
   TaonCartComponent,
@@ -59,11 +61,11 @@ import {
 } from '@taon-dev/e-commerce/src'; // @browser
 import { Translation, TranslationManager } from '@taon-dev/i18n/src';
 // TranslationManager.globalDefautlLanguageOverride = 'pl-PL';
-import { TranslateDirective } from '@taon-dev/i18n/src'; // @browser
 import {
   TaonSessionButtonComponent,
   TaonSessionComponent,
 } from '@taon-dev/session/src'; // @browser
+import { SessionContext_1791132517216_initial } from '@taon-dev/session/src';
 import {
   DEFAULT_SESSION_EMAIL,
   DEFAULT_SESSION_PASSWORD,
@@ -81,46 +83,22 @@ import {
   TaonDraggableButtonPanelComponent,
 } from '@taon-dev/ui/src'; // @browser
 import { providePrimeNG } from 'primeng/config'; // @browser
-import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
-import {
-  Taon,
-  TaonBaseContext,
-  TAON_CONTEXT,
-  EndpointContext,
-  TaonBaseAngularService,
-  TaonEntity,
-  StringColumn,
-  TaonBaseAbstractEntity,
-  TaonBaseCrudController,
-  TaonController,
-  GET,
-  TaonMigration,
-  TaonBaseMigration,
-  TaonContext,
-  ClassHelpers,
-  TaonProvider,
-} from 'taon/src';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Taon, TaonBaseContext, TAON_CONTEXT, ClassHelpers } from 'taon/src';
 import { TaonAdminService, TaonAdmin } from 'taon/src'; // @browser
 import { TaonStor } from 'taon-storage/src';
-import {
-  TaonNotFoundComponent,
-  TaonSettingsComponent,
-  TaonThemeComponent,
-  TaonThemeService,
-} from 'taon-ui/src'; // @browser
-import { Utils, UtilsOs } from 'tnp-core/src';
+import { TaonSettingsComponent, TaonThemeService } from 'taon-ui/src'; // @browser
+import { UtilsOs } from 'tnp-core/src';
 
-import { HOST_CONFIG } from './app.hosts';
 import {
-  ENV_ANGULAR_NODE_APP_BUILD_PWA_DISABLE_SERVICE_WORKER,
-  ENV_ANGULAR_NODE_APP_CONFIG_ACCESS_TOKEN_SECRET,
-  ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID,
-  ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_SECRET,
-  ENV_ANGULAR_NODE_APP_CONFIG_REFRESH_TOKEN_SECRET,
-  ENV_ANGULAR_NODE_APP_CONFIG_STRIPE_SECRET_KEY,
-  ENV_ANGULAR_NODE_APP_CONFIG_STRIPE_WEBHOOK_KEY,
-  ENV_ANGULAR_NODE_APP_CONFIG_SUPER_USERS,
-} from './lib/env/env.angular-node-app';
+  CmsContext_1792506757808_applicaitonHooks_decorator,
+  SessionContext_1791132517217_initial_decorator,
+  TaonCmsContentProviderDecorator,
+  TaonECommerceCartProviderDecorator,
+  TaonSessionProviderDecorator,
+} from './app.decorators';
+import { HOST_CONFIG } from './app.hosts';
+import { ENV_ANGULAR_NODE_APP_BUILD_PWA_DISABLE_SERVICE_WORKER } from './lib/env/env.angular-node-app';
 import { MIGRATIONS_CLASSES_FOR_ECommerce } from './lib/migrations';
 // @placeholder-for-imports
 
@@ -167,6 +145,8 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
     TaonCartButtonComponent,
     TaonCartComponent,
     JsonPipe,
+    TaonCourseComponent,
+    TaonCourseTabsComponent,
   ],
   providers: [TaonECommerceProductApiService],
   template: `
@@ -256,6 +236,19 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
           }
         </mat-card-content>
       </mat-card>
+
+      <taon-course-tabs>
+        <!--      privateCoursePostSlug="bachata-p1-priv" -->
+        <taon-course
+          publicCoursePostSlug="bachata-p1-public"
+          privateCoursePostSlug="bachata-p1-priv"
+          [context]="context" />
+        <taon-course
+          publicCoursePostSlug="bachata-p2-public"
+          privateCoursePostSlug="bachata-p2-priv"
+          [context]="context" />
+      </taon-course-tabs>
+
       <router-outlet></router-outlet>
     }
   `,
@@ -469,75 +462,6 @@ export const ECommerceConfig = mergeApplicationConfig(
 //#endregion
 //#endregion
 
-//#region taon sesssion providers decorator
-@TaonProvider({
-  className: 'TaonSessionProvider',
-})
-class TaonSessionProviderOverride extends TaonSessionProvider {
-  constructor() {
-    super();
-    this.socialLogin.google.enabled = true;
-    this.socialLogin.google.googleClientId =
-      ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_CLIENT_ID;
-
-    this.login.defaultEmail = DEFAULT_EMAIL;
-    this.linkSocialAccountEmail = true;
-  }
-
-  async _() {
-    console.log('helo world!!!!!!!!!!!');
-
-    //#region @backend
-    const googleSecret = await ENV_ANGULAR_NODE_APP_CONFIG_GOOGLE_SECRET();
-    this.socialLogin.google.googleSecret = googleSecret;
-
-    this.superUsersEmails = [
-      DEFAULT_EMAIL,
-      ...(await ENV_ANGULAR_NODE_APP_CONFIG_SUPER_USERS()).split(','),
-    ];
-
-    console.log('active super users', this.superUsersEmails);
-
-    this.cookies.ACCESS_TOKEN_SECRET =
-      await ENV_ANGULAR_NODE_APP_CONFIG_ACCESS_TOKEN_SECRET();
-
-    this.cookies.REFRESH_TOKEN_SECRET =
-      await ENV_ANGULAR_NODE_APP_CONFIG_REFRESH_TOKEN_SECRET();
-    //#endregion
-
-    console.log('is localhost ', this.isLocalhost);
-
-    if (this.isLocalhost) {
-      this.login.diableLoginByEmail = false;
-    } else {
-      this.login.diableLoginByEmail = true;
-    }
-
-    await super._();
-  }
-}
-//#endregion
-
-//#region taon e-commerce cart providers decorator
-@TaonProvider({
-  className: 'TaonECommerceCartProvider',
-})
-class TaonECommerceCartProviderOverride extends TaonECommerceCartProvider {
-  constructor() {
-    super();
-  }
-
-  //#region @backend
-  async _() {
-    this.STRIPE_SECRET_KEY =
-      await ENV_ANGULAR_NODE_APP_CONFIG_STRIPE_SECRET_KEY();
-    this.STRIPE_WEBHOOK_SECRET_KEY =
-      await ENV_ANGULAR_NODE_APP_CONFIG_STRIPE_WEBHOOK_KEY();
-  }
-  //#endregion
-}
-//#endregion
-
 //#region  e-commerce context
 var ECommerceContext = Taon.createContext(() => ({
   ...HOST_CONFIG['ECommerceContext'],
@@ -547,13 +471,18 @@ var ECommerceContext = Taon.createContext(() => ({
     TaonBaseContext,
   },
   migrations: {
-    EcommerceContext_1791132517217_initial,
+    [ClassHelpers.getName(SessionContext_1791132517216_initial)]:
+      SessionContext_1791132517217_initial_decorator,
+    [ClassHelpers.getName(CmsContext_1792506757808_applicaitonHooks)]:
+      CmsContext_1792506757808_applicaitonHooks_decorator,
     ...MIGRATIONS_CLASSES_FOR_ECommerce,
   },
   providers: {
-    [ClassHelpers.getName(TaonSessionProvider)]: TaonSessionProviderOverride,
+    [ClassHelpers.getName(TaonSessionProvider)]: TaonSessionProviderDecorator,
+    [ClassHelpers.getName(TaonCmsContentProvider)]:
+      TaonCmsContentProviderDecorator,
     [ClassHelpers.getName(TaonECommerceCartProvider)]:
-      TaonECommerceCartProviderOverride,
+      TaonECommerceCartProviderDecorator,
   },
   entities: {
     [ClassHelpers.getName(TaonAuthContextEntity)]: TaonAuthContextEntity,
@@ -579,7 +508,7 @@ export const ECommerceStartFunction = async (
   // await TranslationManager.Instance.changeGlobalLang('en-US');
 
   // await TranslationManager.Instance.setOneLanguagePernament('en-US')
-  await TranslationManager.Instance.setOneLanguagePernament('pl-PL');
+  await TranslationManager.Instance.setOneLanguagePernament('en-US');
 
   //#region @browser
   TaonAdmin.init();
@@ -587,7 +516,6 @@ export const ECommerceStartFunction = async (
   //#endregion
 
   const ref = await ECommerceContext.initialize(startParams);
-  console.log('I AM AFTER INIT');
 
   //#region add default email
   //#region @backend

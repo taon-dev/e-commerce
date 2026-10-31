@@ -1,6 +1,7 @@
 import { TaonCmsAbstractContext } from '@taon-dev/cms/src';
 import { createContext, TaonBaseContext } from 'taon/src';
 
+import { TaonCourseController } from './taon-course/taon-course.controller';
 import { TaonECommerceBackofficeSettingsContext } from './taon-e-commerce-backoffice-settings/taon-e-commerce-backoffice-settings.context';
 import { TaonECommerceCartAbstractContext } from './taon-e-commerce-cart/taon-e-commerce-cart.abstract.context';
 import { TaonECommerceCartItemAbstractContext } from './taon-e-commerce-cart-item/taon-e-commerce-cart-item.abstract.context';
@@ -17,6 +18,7 @@ import { TaonECommerceStripeRepository } from './taon-stripe/taon-stripe.reposit
 export const TaonECommerceAbstractContext = createContext(() => ({
   contextName: 'TaonECommerceAbstractContext',
   abstract: true,
+  controllers: { TaonCourseController },
   repositories: { TaonECommerceStripeRepository },
   contexts: {
     TaonCmsAbstractContext,

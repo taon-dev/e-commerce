@@ -1,0 +1,13 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-course/taon-course-row/taon-course-row.component.html:16
+msgid "Loading media..."
+msgstr ""
+
+#: src/lib/taon-course/taon-course-row/taon-course-row.component.html:26
+msgid "Close player"
+msgstr ""

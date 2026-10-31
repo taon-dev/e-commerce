@@ -1,0 +1,12 @@
+<mat-dialog-content>
+  <taon-cms-post
+    [post]="post"
+    mode="view-clean" />
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    mat-dialog-close>
+    {{ t.gettext('Close') }}
+  </button>
+</mat-dialog-actions>

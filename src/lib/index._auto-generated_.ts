@@ -13,6 +13,12 @@ export * from './taon-cart/taon-cart.models';
 export * from './taon-cart-button/taon-cart-button.component'; // @browser
 export * from './taon-cart-button/taon-cart-button.models'; 
 export * from './taon-cart-button/taon-cart-button.routes'; // @browser
+export * from './taon-course/taon-course-api.service'; // @browser
+export * from './taon-course/taon-course-media.directive'; // @browser
+export * from './taon-course/taon-course-tabs.token'; 
+export * from './taon-course/taon-course.component'; // @browser
+export * from './taon-course/taon-course.controller'; 
+export * from './taon-course-tabs/taon-course-tabs.component'; // @browser
 export * from './taon-e-commerce-backoffice/taon-e-commerce-backoffice.component'; // @browser
 export * from './taon-e-commerce-backoffice/taon-e-commerce-backoffice.models'; 
 export * from './taon-e-commerce-backoffice/taon-e-commerce-backoffice.routes'; // @browser
@@ -153,6 +159,9 @@ export * from './taon-stripe/taon-stripe.models';
 export * from './taon-stripe/taon-stripe.repository'; 
 export * from './taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component'; // @browser
 export * from './taon-cart/taon-cart-product-thumbnail/taon-cart-product-thumbnail.component'; // @browser
+export * from './taon-course/taon-course-post-dialog/taon-course-post-dialog.component'; // @browser
+export * from './taon-course/taon-course-row/taon-course-row.component'; // @browser
+export * from './taon-course/taon-course-thumbnail/taon-course-thumbnail.component'; // @browser
 export * from './taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-order-details-backoffice.component'; // @browser
 export * from './taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.component'; // @browser
 export * from './taon-e-commerce-order/taon-e-commerce-orders-backoffice/taon-e-commerce-orders-backoffice.models'; 

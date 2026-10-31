@@ -1,0 +1,33 @@
+<button
+  class="course-row"
+  type="button"
+  [disabled]="busy()"
+  [attr.aria-expanded]="expanded()"
+  (click)="open()">
+  <taon-course-thumbnail [post]="post()" />
+  <span class="information">
+    <strong>{{ post().title }}</strong>
+    @if (post().excerpt) {
+      <span>{{ post().excerpt }}</span>
+    }
+  </span>
+</button>
+@if (busy()) {
+  <p role="status">{{ t.gettext('Loading media...') }}</p>
+}
+@if (error()) {
+  <p role="alert">{{ error() }}</p>
+}
+@if (expanded()) {
+  <button
+    mat-button
+    type="button"
+    (click)="expanded.set(false)">
+    {{ t.gettext('Close player') }}
+  </button>
+  <taon-cms-post
+    taonCourseMedia
+    (mediaFailed)="mediaFailed()"
+    [post]="post()"
+    mode="view-clean" />
+}

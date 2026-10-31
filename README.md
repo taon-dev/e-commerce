@@ -87,3 +87,57 @@ repositories and Stripe API doubles. They cover eligibility, webhook replays,
 out-of-order invoices/refunds, cancellation timing, retrying payments, refund
 access revocation and transactional rollback. They do not replace live Stripe or
 database integration testing.
+
+## Courses from CMS posts
+
+Import `TaonCourseComponent` and `TaonCourseTabsComponent` into the consuming
+Angular component. Both are standalone components exported by this package:
+
+```html
+<taon-course-tabs>
+  <taon-course
+    publicCoursePostSlug="bachatap1public"
+    privateCoursePostSlug="bachatap1private"
+    [context]="context" />
+  <taon-course
+    publicCoursePostSlug="bachatap2public"
+    privateCoursePostSlug="bachatap2private"
+    [context]="context" />
+</taon-course-tabs>
+```
+
+Use the same `taon-course` without the tabs wrapper for a large parent hero.
+Inside tabs the parent is the first clickable row. Tab labels follow the
+authorized parent, using its thumbnail when present and title otherwise.
+Material handles tab-header pagination on narrow screens.
+
+Each root is an ordinary CMS post. Add lessons through its existing related-post
+editor; the components keep the order returned by CMS. Enable **Apply permissions
+to related posts** on the protected root so lessons inherit its permissions.
+Link the existing product to the protected root and configure its effective
+permissions as usual. No course table, special content types, or additional
+purchase rules are involved. A private slug is optional.
+
+Bind `context` to the latest authorization context emitted by the session button
+or session state service. Every replacement reloads access from the server,
+including login, logout and `refreshContext()` after authorization changes.
+The browser context is a refresh trigger, never an authorization credential.
+The server uses the session and entitlement-aware auth repository; it never
+trusts permissions supplied by a caller. Applications must use this package's
+`TaonAuthContextRepository` override in their concrete Taon context, as for
+protected purchased CMS media. After a purchase is finalized, refresh the
+session context through the existing session API/state flow.
+
+`TaonCourseController` is registered by `TaonECommerceAbstractContext`. It bridges
+the CMS's manager-only post/related-post endpoints to read-only course
+presentation using CMS effective permission inheritance and the CMS media read
+policy (published and unprotected, superuser, or a matching permission). Each
+lesson is checked separately, and unchecked nested relations are not returned.
+Missing/inaccessible previews produce a retryable error; a missing private root
+falls back to the preview with a notice. Inaccessible lessons are omitted with
+a notice.
+
+Rows fetch only thumbnails initially. Video/audio rows instantiate the existing
+clean CMS renderer on demand (`preload="none"`); attachments use CMS download
+links; text posts open the clean CMS renderer in a Material dialog. Context
+changes discard stale loads, close course dialogs, and remove old players.

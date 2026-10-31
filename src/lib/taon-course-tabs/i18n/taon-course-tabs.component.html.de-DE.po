@@ -1,0 +1,21 @@
+msgid ""
+msgstr ""
+"Language: de-DE\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-course-tabs/taon-course-tabs.component.html:4
+msgid "Course"
+msgstr ""
+
+#: src/lib/taon-course-tabs/taon-course-tabs.component.html:17
+msgid "Course unavailable"
+msgstr ""
+
+#: src/lib/taon-course-tabs/taon-course-tabs.component.html:18
+msgid "Loading course..."
+msgstr ""
+
+#: src/lib/taon-course-tabs/taon-course-tabs.component.html:29
+msgid "No courses are available yet."
+msgstr ""

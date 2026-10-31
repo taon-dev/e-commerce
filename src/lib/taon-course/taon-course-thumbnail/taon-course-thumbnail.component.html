@@ -1,0 +1,8 @@
+@if (url()) {
+  <img
+    [src]="url()"
+    [alt]="post().title"
+    (error)="imageFailed()" />
+} @else {
+  <span>{{ error() || post().title }}</span>
+}

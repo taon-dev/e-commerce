@@ -1,0 +1,28 @@
+taon-course {
+  display: block;
+}
+
+.taon-course-content {
+  min-width: 0;
+  padding: clamp(.5rem, 2vw, 1.5rem);
+
+  .taon-course-hero > taon-cms-post > .post-article {
+    display: flex;
+    flex-direction: column;
+    max-width: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+
+    .post-title { order: -3; }
+    .thumbnail-preview, video { order: -2; width: 100%; height: auto; max-height: none; object-fit: contain; }
+    .post-excerpt { order: -1; margin-top: 1rem; }
+  }
+
+  .taon-course-hero-video > taon-cms-post > .post-article > .thumbnail-preview {
+    display: none;
+  }
+
+  taon-cms-post video, taon-cms-post audio {
+    max-width: 100%;
+  }
+}

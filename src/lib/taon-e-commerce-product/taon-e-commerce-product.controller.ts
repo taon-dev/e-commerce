@@ -44,6 +44,7 @@ import { TaonECommerceProductRepository } from './taon-e-commerce-product.reposi
     'syncWithStripe',
     'stripeWebhook',
     'getProductForEditing',
+    'getPublicProductName',
     'duplicate',
   ],
 })
@@ -178,7 +179,10 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
     t,
   }: Models.TaonCtrlBeforeEachRequestParams<TaonECommerceProductController>): Promise<void> {
     //#region @websqlFunc
-    if (methodConfig.methodName === 'stripeWebhook') {
+    if (
+      methodConfig.methodName === 'stripeWebhook' ||
+      methodConfig.methodName === 'getPublicProductName'
+    ) {
       return;
     }
     await this.taonSessionRepository.throwIfNotAuthenticated({ req, res });
@@ -195,6 +199,27 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
         status: getStatusCode(HttpStatusEnum.FORBIDDEN),
       });
     }
+    //#endregion
+  }
+  //#endregion
+
+  @GET()
+  getPublicProductName(
+    @Query('productId') productId: number,
+  ): Taon.Response<{ id: number; name: string }> {
+    //#region @websqlFunc
+    return async (_req, _res, { t }) => {
+      if (!Number.isSafeInteger(Number(productId)) || Number(productId) <= 0) {
+        throw new Error(t.gettext('The product ID is invalid.'));
+      }
+      const product = await this.taonECommerceProductRepository.findOne({
+        where: { id: Number(productId), active: true },
+      });
+      if (!product) {
+        throw new Error(t.gettext('The product was not found.'));
+      }
+      return { id: product.id, name: product.name };
+    };
     //#endregion
   }
   //#endregion

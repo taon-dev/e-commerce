@@ -8,11 +8,11 @@ msgstr ""
 msgid "Unable to load suggested products."
 msgstr ""
 
-#: src/lib/taon-cart-button/taon-cart-button.component.ts:84
-#: src/lib/taon-cart-button/taon-cart-button.component.ts:100
+#: src/lib/taon-cart-button/taon-cart-button.component.ts:85
+#: src/lib/taon-cart-button/taon-cart-button.component.ts:101
 msgid "Unable to load your cart."
 msgstr ""
 
-#: src/lib/taon-cart-button/taon-cart-button.component.ts:88
+#: src/lib/taon-cart-button/taon-cart-button.component.ts:89
 msgid "The cart response was invalid."
 msgstr ""

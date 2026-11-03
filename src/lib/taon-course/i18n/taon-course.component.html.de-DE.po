@@ -4,27 +4,35 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-course/taon-course.component.html:4
+#: src/lib/taon-course/taon-course.component.html:6
 msgid "Loading course..."
 msgstr "Kurs wird geladen..."
 
-#: src/lib/taon-course/taon-course.component.html:7
-#: src/lib/taon-course/taon-course.component.html:19
+#: src/lib/taon-course/taon-course.component.html:13
+#: src/lib/taon-course/taon-course.component.html:46
 msgid "Try again"
 msgstr "Erneut versuchen"
 
-#: src/lib/taon-course/taon-course.component.html:10
+#: src/lib/taon-course/taon-course.component.html:19
 msgid "The full course post is unavailable. Showing the preview course."
 msgstr "Der vollständige Kursbeitrag ist nicht verfügbar. Die Vorschauversion des Kurses wird angezeigt."
 
-#: src/lib/taon-course/taon-course.component.html:18
+#: src/lib/taon-course/taon-course.component.html:40
 msgid "The media could not be loaded. Please try again."
 msgstr "Die Medien konnten nicht geladen werden. Bitte versuchen Sie es erneut."
 
-#: src/lib/taon-course/taon-course.component.html:26
+#: src/lib/taon-course/taon-course.component.html:56
 msgid "No lessons are available yet."
 msgstr "Es sind noch keine Lektionen verfügbar."
 
-#: src/lib/taon-course/taon-course.component.html:29
+#: src/lib/taon-course/taon-course.component.html:61
 msgid "Some lessons are not accessible with your current permissions."
 msgstr "Einige Lektionen sind mit Ihren aktuellen Berechtigungen nicht zugänglich."
+
+#: src/lib/taon-course/taon-course.component.html:70
+msgid "Buy [[ productName ]] to see full course"
+msgstr "Kaufen Sie [[ productName ]], um den vollständigen Kurs zu sehen"
+
+#: src/lib/taon-course/taon-course.component.html:73
+msgid "Buy"
+msgstr "Kaufen"

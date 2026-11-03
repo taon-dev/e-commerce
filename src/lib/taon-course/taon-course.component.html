@@ -64,6 +64,21 @@
           }}
         </p>
       }
+      @if (productId() && state()?.data?.isPublicVersion && productName()) {
+        <section class="taon-course-purchase">
+          <p>
+            {{ t.gettext('Buy [[ productName ]] to see full course', { productName: productName() }) }}
+          </p>
+          <button mat-button type="button" [disabled]="buying()" (click)="buyProduct()">
+            {{ t.gettext('Buy') }}
+          </button>
+          @if (purchaseError()) {
+            <p role="alert">{{ purchaseError() }}</p>
+          }
+        </section>
+      } @else if (purchaseError()) {
+        <p role="alert">{{ purchaseError() }}</p>
+      }
     }
   </section>
 </ng-template>

@@ -15,6 +15,7 @@ export * from './taon-cart-button/taon-cart-button.models';
 export * from './taon-cart-button/taon-cart-button.routes'; // @browser
 export * from './taon-course/taon-course-api.service'; // @browser
 export * from './taon-course/taon-course-media.directive'; // @browser
+export * from './taon-course/taon-course-public-post.component'; // @browser
 export * from './taon-course/taon-course-tabs.token'; 
 export * from './taon-course/taon-course.component'; // @browser
 export * from './taon-course/taon-course.controller'; 

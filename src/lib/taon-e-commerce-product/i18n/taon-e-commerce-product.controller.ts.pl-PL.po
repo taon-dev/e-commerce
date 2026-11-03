@@ -4,35 +4,37 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:120
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:151
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:121
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:152
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:219
 msgid "The product was not found."
 msgstr "Nie znaleziono produktu."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:166
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:167
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:213
 msgid "The product ID is invalid."
 msgstr "ID produktu jest nieprawidłowe."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:194
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:198
 msgid "Administrator access is required for product management."
 msgstr "Zarządzanie produktami wymaga uprawnień administratora."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:226
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:251
 msgid "A valid synchronization request ID is required."
 msgstr "Wymagany jest prawidłowy identyfikator żądania synchronizacji."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:232
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:257
 msgid "Stripe is not connected. Check the server configuration."
 msgstr "Stripe nie jest połączone. Sprawdź konfigurację serwera."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:276
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:301
 msgid "Stripe synchronization failed."
 msgstr "Synchronizacja Stripe nie powiodła się."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:310
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:335
 msgid "The Stripe webhook payload is invalid."
 msgstr "Dane webhooka Stripe są nieprawidłowe."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:320
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.controller.ts:345
 msgid "Stripe webhook rejected."
 msgstr "Webhook Stripe został odrzucony."

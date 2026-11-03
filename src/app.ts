@@ -150,7 +150,7 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
   ],
   providers: [TaonECommerceProductApiService],
   template: `
-    @if (itemsLoaded()) {
+    @if (itemsLoaded() && !isPublicPostRoute) {
       <mat-card class="m-2">
         <mat-card-content>
           <h3>{{ t.gettext('Basic app info') }}</h3>
@@ -242,13 +242,23 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP, {
         <taon-course
           publicCoursePostSlug="bachata-p1-public"
           privateCoursePostSlug="bachata-p1-priv"
-          [context]="context" />
+          [context]="context"
+          (cartOpenRequested)="openCourseCart()" />
         <taon-course
           publicCoursePostSlug="bachata-p2-public"
           privateCoursePostSlug="bachata-p2-priv"
-          [context]="context" />
+          [context]="context"
+          (cartOpenRequested)="openCourseCart()" />
       </taon-course-tabs>
-
+    }
+    @if (itemsLoaded()) {
+      @if (isPublicPostRoute) {
+        <header class="flex justify-end p-2">
+          <taon-session-button
+            [config]="config"
+            (context)="context = $event" />
+        </header>
+      }
       <router-outlet></router-outlet>
     }
   `,
@@ -258,6 +268,9 @@ export class ECommerceApp implements OnInit {
 
   @ViewChild(TaonSessionButtonComponent)
   taonSessionButtonComponent!: TaonSessionButtonComponent;
+
+  @ViewChild(TaonCartButtonComponent)
+  cartButton?: TaonCartButtonComponent;
 
   taonECommerceProductApiService = inject(TaonECommerceProductApiService);
 
@@ -284,6 +297,10 @@ export class ECommerceApp implements OnInit {
   activatedRoute = inject(ActivatedRoute);
 
   router = inject(Router);
+
+  get isPublicPostRoute(): boolean {
+    return /^\/posts\/[^/]+\/?$/.test(this.router.url.split('?')[0]);
+  }
 
   itemsLoaded = signal(false);
 
@@ -321,6 +338,10 @@ export class ECommerceApp implements OnInit {
     } else {
       this.taonSessionButtonComponent?.open();
     }
+  }
+
+  openCourseCart(): void {
+    this.cartButton?.openCart(1);
   }
 
   openDialog(
@@ -371,6 +392,13 @@ export const ECommerceServerRoutes: ServerRoute[] = [
   },
 ];
 export const ECommerceClientRoutes: Routes = [
+  {
+    path: 'posts/:slug',
+    loadComponent: () =>
+      import('./lib/taon-course/taon-course-public-post.component').then(
+        m => m.TaonCoursePublicPostComponent,
+      ),
+  },
   {
     path: '',
     pathMatch: 'full',

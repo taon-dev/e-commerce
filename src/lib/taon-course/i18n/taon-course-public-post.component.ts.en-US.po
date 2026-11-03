@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/lib/taon-course/taon-course-public-post.component.ts:64
+msgid "The post could not be loaded."
+msgstr ""
+
+#: src/lib/taon-course/taon-course-public-post.component.ts:18
+msgid "Loading post..."
+msgstr ""
+
+#: src/lib/taon-course/taon-course-public-post.component.ts:24
+msgid "The post was not found."
+msgstr ""

@@ -15,6 +15,7 @@ import {
 
 export interface TaonCourseResponse {
   post: TaonCmsContentEntity;
+  isPublicVersion: boolean;
   privatePostMissing: boolean;
   unavailableItems: number;
 }
@@ -51,12 +52,16 @@ export class TaonCourseController extends TaonBaseController {
       }
       let context: TaonAuthContextEntity | undefined;
       if (this.tokens.getTokenFromRequest(req)) {
-        await this.sessions.throwIfNotAuthenticated({ req, res });
+        await this.sessions.throwIfNotAuthenticated(
+          { req, res },
+          { skipRequireActiveSession: true },
+        );
         context = await this.authorization.getContext(
           req.userId,
           req.sessionId,
         );
       }
+
       const userPermissions = new Set<string>(context?.permissions ?? []);
       // CMS currently exposes post bodies/relations only to managers. Resolve
       // effective permissions here, using the same read policy as CMS media.
@@ -74,10 +79,10 @@ export class TaonCourseController extends TaonBaseController {
       const privatePost = privateSlug.trim()
         ? await this.posts.getContentBySlugForMedia(privateSlug.trim())
         : null;
-      const selected =
-        privatePost && (await canRead(privatePost))
-          ? privatePost
-          : await this.posts.getContentBySlugForMedia(publicSlug.trim());
+      const usePrivateVersion = !!privatePost && (await canRead(privatePost));
+      const selected = usePrivateVersion
+        ? privatePost
+        : await this.posts.getContentBySlugForMedia(publicSlug.trim());
       if (!selected || !(await canRead(selected))) {
         Taon.error({
           message: t.gettext(
@@ -102,7 +107,8 @@ export class TaonCourseController extends TaonBaseController {
         .map(cleanPost);
       return {
         post,
-        privatePostMissing: !!privateSlug.trim() && !privatePost,
+        isPublicVersion: !usePrivateVersion,
+        privatePostMissing: !!privateSlug.trim() && !usePrivateVersion,
         unavailableItems: related.length - post.relatedPosts.length,
       };
     };

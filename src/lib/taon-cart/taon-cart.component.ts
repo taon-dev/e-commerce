@@ -69,6 +69,11 @@ export class TaonCartComponent implements OnInit, OnDestroy {
 
   @Input() config: TaonCartConfig = {};
 
+  @Input()
+  set initialTabIndex(value: number) {
+    this.mainTabIndex.set(Math.max(0, Math.min(2, Number(value) || 0)));
+  }
+
   private readonly api = inject(TaonECommerceCustomerApiService);
 
   private readonly dialogRef = inject(MatDialogRef, { optional: true });

@@ -65,7 +65,7 @@ export class TaonCartButtonComponent {
     return this.cartItemCount() === 0 && this.suggestedProductCount() === 0;
   }
 
-  openCart(): void {
+  openCart(initialTabIndex = 0): void {
     const dialog = this.dialog.open(TaonCartComponent, {
       // width: '100vw',
       height: '80dvh',
@@ -74,6 +74,7 @@ export class TaonCartButtonComponent {
       panelClass: 'taon-cart-fullscreen-dialog',
     });
     dialog.componentRef?.setInput('config', this.config);
+    dialog.componentRef?.setInput('initialTabIndex', initialTabIndex);
     dialog.afterClosed().subscribe(() => void this.loadCartCount());
   }
 

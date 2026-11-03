@@ -12,14 +12,18 @@ msgstr "Nie można załadować produktów."
 msgid "The available products response was invalid."
 msgstr "Odpowiedź dotycząca dostępnych produktów jest nieprawidłowa."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:72
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:73
+msgid "The product was not found."
+msgstr "Nie znaleziono produktu."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:84
 msgid "Unable to check Stripe status."
 msgstr "Nie można sprawdzić statusu Stripe."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:86
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:98
 msgid "Stripe synchronization could not be completed."
 msgstr "Nie udało się ukończyć synchronizacji Stripe."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:104
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product.api.service.ts:116
 msgid "Unable to duplicate the product."
 msgstr "Nie można zduplikować produktu."

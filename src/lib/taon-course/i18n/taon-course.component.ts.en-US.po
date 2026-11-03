@@ -4,6 +4,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-course/taon-course.component.ts:91
+#: src/lib/taon-course/taon-course.component.ts:121
+msgid "The purchase option could not be loaded."
+msgstr ""
+
+#: src/lib/taon-course/taon-course.component.ts:128
 msgid "The course could not be loaded. Check its post slugs and your connection, then try again."
+msgstr ""
+
+#: src/lib/taon-course/taon-course.component.ts:145
+msgid "Please sign in before adding this course to your cart."
+msgstr ""
+
+#: src/lib/taon-course/taon-course.component.ts:156
+#: src/lib/taon-course/taon-course.component.ts:164
+msgid "The product could not be added to your cart."
 msgstr ""

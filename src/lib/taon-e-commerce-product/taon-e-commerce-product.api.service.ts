@@ -63,6 +63,18 @@ export class TaonECommerceProductApiService extends TaonBaseAngularService {
     );
   }
 
+  public async getPublicProductName(
+    productId: number,
+  ): Promise<{ id: number; name: string }> {
+    const response = await this.taonECommerceProductController
+      .getPublicProductName(productId)
+      .request!();
+    if (response.statusCode >= 400 || !response.body?.json?.name) {
+      throw new Error(response.responseText || this.t.gettext('The product was not found.'));
+    }
+    return response.body.json;
+  }
+
   public async getStripeConfiguration(): Promise<TaonECommerceStripeConfiguration> {
     const response =
       await this.taonECommerceProductController.getStripeConfiguration()

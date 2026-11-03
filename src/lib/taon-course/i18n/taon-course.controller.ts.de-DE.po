@@ -4,10 +4,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-course/taon-course.controller.ts:47
+#: src/lib/taon-course/taon-course.controller.ts:49
 msgid "A public course post slug is required."
-msgstr ""
+msgstr "Der Slug des öffentlichen Kursbeitrags ist erforderlich."
 
-#: src/lib/taon-course/taon-course.controller.ts:83
+#: src/lib/taon-course/taon-course.controller.ts:89
 msgid "The course post was not found or is not accessible."
-msgstr ""
+msgstr "Der Kursbeitrag wurde nicht gefunden oder ist nicht zugänglich."

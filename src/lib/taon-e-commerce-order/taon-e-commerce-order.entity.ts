@@ -27,6 +27,9 @@ export class TaonECommerceOrderEntity extends TaonBaseAbstractEntity<TaonECommer
   @Column({ type: 'varchar', nullable: true, unique: true })
   stripeCheckoutSessionId!: string | null;
 
+  @Column({ type: 'datetime', nullable: true })
+  stripeCheckoutSessionExpiresAt!: Date | null;
+
   @Column({ type: 'varchar', length: 3 })
   currency!: string;
 

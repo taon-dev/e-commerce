@@ -4,6 +4,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-course/taon-course.component.ts:89
+#: src/lib/taon-course/taon-course.component.ts:91
 msgid "The course could not be loaded. Check its post slugs and your connection, then try again."
 msgstr ""

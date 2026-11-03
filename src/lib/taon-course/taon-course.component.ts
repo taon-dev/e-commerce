@@ -40,6 +40,8 @@ export class TaonCourseComponent {
 
   readonly privateCoursePostSlug = input('');
 
+  readonly selectedBehavior = input<'accordion' | 'dialog'>('dialog');
+
   readonly context = input<TaonAuthContextEntity | null | undefined>(undefined);
 
   readonly inTabs = inject(TAON_COURSE_IN_TABS, { optional: true }) ?? false;

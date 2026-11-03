@@ -142,12 +142,14 @@ export class TaonECommerceStripeRepository extends TaonBaseCustomRepository {
     subscription: boolean;
     successUrl: string;
     cancelUrl: string;
-  }): Promise<{ id: string; url: string }> {
+  }): Promise<{ id: string; url: string; expires_at: number }> {
     //#region @backendFunc
+    const expiresAt = Math.floor(Date.now() / 1000) + 30 * 60;
     const parameters: Record<string, string | number> = {
       mode: options.subscription ? 'subscription' : 'payment',
       success_url: options.successUrl,
       cancel_url: options.cancelUrl,
+      expires_at: expiresAt,
       client_reference_id: String(options.orderId),
       'metadata[taonOrderId]': String(options.orderId),
       'metadata[taonUserId]': String(options.userId),
@@ -165,7 +167,11 @@ export class TaonECommerceStripeRepository extends TaonBaseCustomRepository {
       );
     }
 
-    const session = await this.request<{ id: string; url: string }>(
+    const session = await this.request<{
+      id: string;
+      url: string;
+      expires_at: number;
+    }>(
       '/v1/checkout/sessions',
       'POST',
       parameters,
@@ -177,6 +183,17 @@ export class TaonECommerceStripeRepository extends TaonBaseCustomRepository {
     //#endregion
   }
   //#endregion
+
+  async expireCheckoutSession(
+    sessionId: string,
+  ): Promise<StripeCheckoutSessionEvent> {
+    //#region @backendFunc
+    return this.request<StripeCheckoutSessionEvent>(
+      `/v1/checkout/sessions/${encodeURIComponent(sessionId)}/expire`,
+      'POST',
+    );
+    //#endregion
+  }
 
   //#region methods / get subscription
   async getSubscription(

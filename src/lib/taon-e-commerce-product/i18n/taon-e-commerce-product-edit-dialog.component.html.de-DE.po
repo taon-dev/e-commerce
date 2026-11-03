@@ -12,15 +12,15 @@ msgstr "Produkt bearbeiten"
 msgid "Add product"
 msgstr "Produkt hinzufügen"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:193
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:202
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:205
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
 msgid "Saving..."
 msgstr "Wird gespeichert..."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:205
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
 msgid "Save"
 msgstr "Speichern"
 
@@ -108,43 +108,47 @@ msgstr "Link zum Beitrag"
 msgid "No linked post"
 msgstr "Kein verknüpfter Beitrag"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:170
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:174
+msgid "Edit linked post: [[ title ]]"
+msgstr "Verknüpften Beitrag bearbeiten: [[ title ]]"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:179
 msgid "No post is linked, so no post permissions can be inherited."
 msgstr "Es ist kein Beitrag verknüpft, daher können keine Beitragsberechtigungen geerbt werden."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:175
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:184
 msgid "Stripe synchronization"
 msgstr "Stripe-Synchronisierung"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:176
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:185
 msgid "Stripe Product ID: [[ id ]]"
 msgstr "Stripe-Produkt-ID: [[ id ]]"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:176
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:177
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:185
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:186
 msgid "Not synchronized"
 msgstr "Nicht synchronisiert"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:177
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:186
 msgid "Stripe Price ID: [[ id ]]"
 msgstr "Stripe-Preis-ID: [[ id ]]"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:178
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:187
 msgid "Last synchronized: [[ date ]]"
 msgstr "Zuletzt synchronisiert: [[ date ]]"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:178
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:187
 msgid "Never"
 msgstr "Nie"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:187
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:196
 msgid "Retry loading options"
 msgstr "Optionen erneut laden"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:197
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:206
 msgid "Duplicating..."
 msgstr "Wird dupliziert..."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:197
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:206
 msgid "Duplicate"
 msgstr "Duplizieren"

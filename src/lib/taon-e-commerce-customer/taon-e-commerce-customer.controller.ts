@@ -220,6 +220,21 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   }
   //#endregion
 
+  //#region methods / cancel my checkout session
+  @POST()
+  cancelMyCheckoutSession(
+    @Body('orderId') orderId: number,
+  ): Taon.Response<TaonECommerceOrderEntity> {
+    //#region @websqlFunc
+    return async req =>
+      this.customerRepository.cancelCheckoutSession(
+        Number(req.userId),
+        orderId,
+      );
+    //#endregion
+  }
+  //#endregion
+
   //#region methods / create my checkout session
   @POST()
   createMyCheckoutSession(): Taon.Response<{

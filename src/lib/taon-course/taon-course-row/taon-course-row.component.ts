@@ -43,6 +43,8 @@ export class TaonCourseRowComponent {
 
   readonly post = input.required<TaonCmsContentEntity>();
 
+  readonly selectedBehavior = input<'accordion' | 'dialog'>('accordion');
+
   readonly expanded = signal(false);
 
   readonly busy = signal(false);
@@ -76,6 +78,19 @@ export class TaonCourseRowComponent {
 
   async open(): Promise<void> {
     const post = this.post();
+    if (this.selectedBehavior() === 'dialog') {
+      this.postDialog?.close();
+      this.postDialog = this.dialog.open(TaonCoursePostDialogComponent, {
+        data: post,
+        width: '100vw',
+        height: '100dvh',
+        maxWidth: '100vw',
+        maxHeight: '100dvh',
+        panelClass: 'taon-course-post-dialog-panel',
+        ariaLabel: post.title,
+      });
+      return;
+    }
     if (post.type === TaonCmsContentType.Normal) {
       this.postDialog?.close();
       this.postDialog = this.dialog.open(TaonCoursePostDialogComponent, {

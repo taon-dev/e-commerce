@@ -1,12 +1,26 @@
-<mat-dialog-content>
-  <taon-cms-post
-    [post]="post"
-    mode="view-clean" />
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button
-    mat-button
-    mat-dialog-close>
-    {{ t.gettext('Close') }}
-  </button>
-</mat-dialog-actions>
+<section class="taon-course-post-dialog">
+  <header class="taon-course-post-dialog__header">
+    <button
+      mat-button
+      type="button"
+      mat-dialog-close
+      [attr.aria-label]="t.gettext('Close post')">
+      <mat-icon aria-hidden="true">close</mat-icon>
+      {{ t.gettext('Close') }}
+    </button>
+  </header>
+  <mat-dialog-content class="taon-course-post-dialog__content">
+    <taon-cms-post
+      taonCourseMedia
+      [class.has-media]="hasMedia"
+      [class.has-video]="hasVideo"
+      (mediaFailed)="mediaFailed.set(true)"
+      [post]="post"
+      mode="view-clean" />
+    @if (mediaFailed()) {
+      <p role="alert">
+        {{ t.gettext('The media could not be loaded. Please try again.') }}
+      </p>
+    }
+  </mat-dialog-content>
+</section>

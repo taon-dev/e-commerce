@@ -4,78 +4,91 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-cart/taon-cart.component.ts:116
+#: src/lib/taon-cart/taon-cart.component.ts:117
 msgid "Order ID"
 msgstr "ID zamówienia"
 
-#: src/lib/taon-cart/taon-cart.component.ts:117
+#: src/lib/taon-cart/taon-cart.component.ts:118
 msgid "Status"
 msgstr "Status"
 
-#: src/lib/taon-cart/taon-cart.component.ts:118
+#: src/lib/taon-cart/taon-cart.component.ts:119
 msgid "Total"
 msgstr "Razem"
 
-#: src/lib/taon-cart/taon-cart.component.ts:119
+#: src/lib/taon-cart/taon-cart.component.ts:120
 msgid "Currency"
 msgstr "Waluta"
 
-#: src/lib/taon-cart/taon-cart.component.ts:120
+#: src/lib/taon-cart/taon-cart.component.ts:121
 msgid "Created"
 msgstr "Utworzono"
 
-#: src/lib/taon-cart/taon-cart.component.ts:186
+#: src/lib/taon-cart/taon-cart.component.ts:187
 msgid "Checkout completed. Your purchase will appear after Stripe confirms payment."
 msgstr "Płatność zakończona. Zakup pojawi się po potwierdzeniu płatności przez Stripe."
 
-#: src/lib/taon-cart/taon-cart.component.ts:196
+#: src/lib/taon-cart/taon-cart.component.ts:202
 msgid "You left checkout. Your order will be updated when Stripe confirms its status."
 msgstr "Opuszczono proces płatności. Zamówienie zostanie zaktualizowane po potwierdzeniu jego statusu przez Stripe."
 
-#: src/lib/taon-cart/taon-cart.component.ts:281
+#: src/lib/taon-cart/taon-cart.component.ts:286
 msgid "Unable to load your cart."
 msgstr "Nie można załadować koszyka."
 
-#: src/lib/taon-cart/taon-cart.component.ts:297
+#: src/lib/taon-cart/taon-cart.component.ts:302
 msgid "Unable to load available products."
 msgstr "Nie można załadować dostępnych produktów."
 
-#: src/lib/taon-cart/taon-cart.component.ts:310
+#: src/lib/taon-cart/taon-cart.component.ts:315
 msgid "This product is not available."
 msgstr "Ten produkt jest niedostępny."
 
-#: src/lib/taon-cart/taon-cart.component.ts:315
+#: src/lib/taon-cart/taon-cart.component.ts:320
 msgid "This suggested product does not have a saved product ID."
 msgstr "Ten sugerowany produkt nie ma zapisanego identyfikatora."
 
-#: src/lib/taon-cart/taon-cart.component.ts:329
+#: src/lib/taon-cart/taon-cart.component.ts:334
 msgid "Unable to add this product to your cart."
 msgstr "Nie można dodać tego produktu do koszyka."
 
-#: src/lib/taon-cart/taon-cart.component.ts:355
+#: src/lib/taon-cart/taon-cart.component.ts:360
 msgid "Unable to update the cart item."
 msgstr "Nie można zaktualizować pozycji koszyka."
 
-#: src/lib/taon-cart/taon-cart.component.ts:376
+#: src/lib/taon-cart/taon-cart.component.ts:381
 msgid "Unable to remove the cart item."
 msgstr "Nie można usunąć pozycji z koszyka."
 
-#: src/lib/taon-cart/taon-cart.component.ts:394
+#: src/lib/taon-cart/taon-cart.component.ts:399
 msgid "Unable to load your orders."
 msgstr "Nie można załadować zamówień."
 
-#: src/lib/taon-cart/taon-cart.component.ts:412
+#: src/lib/taon-cart/taon-cart.component.ts:417
 msgid "Unable to load your purchases."
 msgstr "Nie można załadować zakupów."
 
-#: src/lib/taon-cart/taon-cart.component.ts:441
+#: src/lib/taon-cart/taon-cart.component.ts:446
 msgid "Unable to start Stripe Checkout."
 msgstr "Nie można rozpocząć płatności Stripe."
 
-#: src/lib/taon-cart/taon-cart.component.ts:458
+#: src/lib/taon-cart/taon-cart.component.ts:464
+msgid "Checkout was cancelled and the order was updated."
+msgstr "Płatność została anulowana, a zamówienie zaktualizowane."
+
+#: src/lib/taon-cart/taon-cart.component.ts:467
+msgid "Checkout cancellation was not applied because the order is already finalized or the payment is still processing."
+msgstr "Anulowanie płatności nie zostało zastosowane, ponieważ zamówienie jest już sfinalizowane lub płatność jest nadal przetwarzana."
+
+#: src/lib/taon-cart/taon-cart.component.ts:474
+#: src/lib/taon-cart/taon-cart.component.ts:482
+msgid "Could not confirm cancellation with Stripe. Check your orders before trying again."
+msgstr "Nie udało się potwierdzić anulowania w Stripe. Sprawdź zamówienia przed ponowną próbą."
+
+#: src/lib/taon-cart/taon-cart.component.ts:501
 msgid "The request failed."
 msgstr "Żądanie nie powiodło się."
 
-#: src/lib/taon-cart/taon-cart.component.ts:462
+#: src/lib/taon-cart/taon-cart.component.ts:505
 msgid "The server returned an empty response."
 msgstr "Serwer zwrócił pustą odpowiedź."

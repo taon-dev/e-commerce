@@ -38,6 +38,7 @@ import {
 import { TaonCartProductThumbnailComponent } from './taon-cart-product-thumbnail/taon-cart-product-thumbnail.component';
 import {
   TaonCartCheckoutCancelParam,
+  TaonCartCheckoutOrderIdParam,
   TaonCartCheckoutSuccessParam,
   TaonCartModels,
   type TaonCartConfig,
@@ -190,14 +191,18 @@ export class TaonCartComponent implements OnInit, OnDestroy {
         }
 
         if (cancel === 'true') {
-          this.dialog.open(TaonPurchaseStatusDialogComponent, {
-            data: {
-              success: false,
-              message: this.t.gettext('You left checkout. Your order will be updated when Stripe confirms its status.'),
-            },
-          });
-
+          const orderId = Number(params.get(TaonCartCheckoutOrderIdParam));
           this.cleanQueryParams();
+          if (Number.isSafeInteger(orderId) && orderId > 0) {
+            void this.reconcileCancelledCheckout(orderId);
+          } else {
+            this.dialog.open(TaonPurchaseStatusDialogComponent, {
+              data: {
+                success: false,
+                message: this.t.gettext('You left checkout. Your order will be updated when Stripe confirms its status.'),
+              },
+            });
+          }
         }
       }),
     );
@@ -441,6 +446,44 @@ export class TaonCartComponent implements OnInit, OnDestroy {
       this.reportError(this.t.gettext('Unable to start Stripe Checkout.'), error);
     } finally {
       this.creatingCheckout.set(false);
+    }
+  }
+  //#endregion
+
+  //#region methods / reconcile cancelled checkout
+  private async reconcileCancelledCheckout(orderId: number): Promise<void> {
+    try {
+      const order = await this.request<TaonECommerceOrderEntity>(
+        this.api.controller.cancelMyCheckoutSession(orderId).request!(),
+      );
+      this.dialog.open(TaonPurchaseStatusDialogComponent, {
+        data: {
+          success: order.status === 'cancelled',
+          message:
+            order.status === 'cancelled'
+              ? this.t.gettext(
+                  'Checkout was cancelled and the order was updated.',
+                )
+              : this.t.gettext(
+                  'Checkout cancellation was not applied because the order is already finalized or the payment is still processing.',
+                ),
+        },
+      });
+    } catch (error) {
+      this.reportError(
+        this.t.gettext(
+          'Could not confirm cancellation with Stripe. Check your orders before trying again.',
+        ),
+        error,
+      );
+      this.dialog.open(TaonPurchaseStatusDialogComponent, {
+        data: {
+          success: false,
+          message: this.t.gettext(
+            'Could not confirm cancellation with Stripe. Check your orders before trying again.',
+          ),
+        },
+      });
     }
   }
   //#endregion

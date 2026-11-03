@@ -3,6 +3,7 @@ import type { Translation } from '@taon-dev/i18n/src';
 import { TaonSessionUserGroupEntity } from '@taon-dev/session/src';
 import { TaonCmsContentRepository } from '@taon-dev/cms/src';
 import { TaonBaseRepository, TaonRepository } from 'taon/src';
+import { In } from 'taon-typeorm/src';
 import type { EntityManager } from 'taon-typeorm/src';
 
 import { TaonECommerceCartEntity } from '../taon-e-commerce-cart/taon-e-commerce-cart.entity';
@@ -30,6 +31,7 @@ import {
   entitlementHasAccess,
   stripeSubscriptionState,
 } from '../taon-e-commerce-entitlement/taon-e-commerce-entitlement.utils';
+import { TaonCartCheckoutOrderIdParam } from '../taon-cart/taon-cart.models';
 //#endregion
 
 @TaonRepository({
@@ -554,6 +556,7 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
             subtotal,
             total: subtotal,
             stripeCheckoutSessionId: null,
+            stripeCheckoutSessionExpiresAt: null,
           }),
         );
         const orderItems = cart.items.map(item => {
@@ -586,9 +589,12 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
           })),
           subscription: recurringCount > 0,
           successUrl: urls.successUrl,
-          cancelUrl: urls.cancelUrl,
+          cancelUrl: `${urls.cancelUrl}${urls.cancelUrl.includes('?') ? '&' : '?'}${TaonCartCheckoutOrderIdParam}=${order.id}`,
         });
       order.stripeCheckoutSessionId = checkout.id;
+      order.stripeCheckoutSessionExpiresAt = new Date(
+        checkout.expires_at * 1000,
+      );
       await orderRepository.save(order);
       return { orderId: order.id, checkoutUrl: checkout.url };
     } catch (error) {
@@ -596,6 +602,94 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
       await orderRepository.save(order);
       throw error;
     }
+    //#endregion
+  }
+  //#endregion
+
+  //#region methods / cancel checkout session
+  async cancelCheckoutSession(
+    userId: number,
+    orderId: number,
+  ): Promise<TaonECommerceOrderEntity> {
+    //#region @websqlFunc
+    if (
+      !Number.isSafeInteger(userId) ||
+      userId <= 0 ||
+      !Number.isSafeInteger(orderId) ||
+      orderId <= 0
+    ) {
+      throw new Error('The checkout order is invalid.');
+    }
+    const orders = this.connection.getRepository(TaonECommerceOrderEntity);
+    const order = await orders.findOne({ where: { id: orderId, userId } });
+    if (!order) {
+      throw new Error('The checkout order was not found.');
+    }
+    if (order.status !== 'pending') {
+      return order;
+    }
+    if (!order.stripeCheckoutSessionId) {
+      throw new Error('The pending order has no Stripe Checkout session.');
+    }
+
+    let session =
+      await this.taonECommerceStripeRepository.getCheckoutSession(
+        order.stripeCheckoutSessionId,
+      );
+    if (session.status === 'open') {
+      const currentOrder = await orders.findOne({
+        where: { id: orderId, userId, status: 'pending' },
+      });
+      if (currentOrder?.stripeCheckoutSessionId === session.id) {
+        try {
+          session =
+            await this.taonECommerceStripeRepository.expireCheckoutSession(
+              session.id,
+            );
+        } catch (error) {
+          const reconciledSession =
+            await this.taonECommerceStripeRepository.getCheckoutSession(
+              session.id,
+            );
+          if (reconciledSession.status === 'open') {
+            throw error;
+          }
+          session = reconciledSession;
+        }
+      }
+    }
+
+    await this.connection.transaction('SERIALIZABLE', async manager => {
+      const latestOrder = await manager
+        .getRepository(TaonECommerceOrderEntity)
+        .findOne({ where: { id: orderId, userId } });
+      if (
+        !latestOrder ||
+        latestOrder.status !== 'pending' ||
+        latestOrder.stripeCheckoutSessionId !== session.id
+      ) {
+        return;
+      }
+      if (
+        session.payment_status === 'paid' ||
+        session.payment_status === 'no_payment_required'
+      ) {
+        await this.completeCheckoutSession(session, manager);
+      } else if (
+        session.status === 'expired' &&
+        session.payment_status === 'unpaid'
+      ) {
+        await this.markCheckoutSessionFailed(session, manager);
+      }
+    });
+
+    const updatedOrder = await orders.findOne({
+      where: { id: orderId, userId },
+    });
+    if (!updatedOrder) {
+      throw new Error('The checkout order was not found.');
+    }
+    return updatedOrder;
     //#endregion
   }
   //#endregion
@@ -625,7 +719,9 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
           event.data.object.id,
         );
       if (
-        session.status === 'expired' ||
+        (event.type === 'checkout.session.expired' &&
+          session.status === 'expired' &&
+          session.payment_status === 'unpaid') ||
         (event.type === 'checkout.session.async_payment_failed' &&
           session.payment_status === 'unpaid')
       ) {
@@ -828,17 +924,26 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         'The Stripe payment is already associated with another order.',
       );
     }
-    const shouldConsumeCart = order.status !== 'paid';
+    if (transaction.status === 'refunded') {
+      return;
+    }
+    const transition = await orderRepository.update(
+      {
+        id: order.id,
+        stripeCheckoutSessionId: session.id,
+        status: In(['pending', 'cancelled', 'failed']),
+      },
+      { status: 'paid', updatedAt: new Date() },
+    );
+    if (transition.affected !== 1) {
+      return;
+    }
     transaction.status = 'succeeded';
     await transactionRepository.save(transaction);
-    order.status = 'paid';
-    await orderRepository.save(order);
 
-    const cart = shouldConsumeCart
-      ? await manager
-          .getRepository(TaonECommerceCartEntity)
-          .findOne({ where: { userId: order.userId } })
-      : null;
+    const cart = await manager
+      .getRepository(TaonECommerceCartEntity)
+      .findOne({ where: { userId: order.userId } });
     if (cart) {
       const cartItems = manager.getRepository(TaonECommerceCartItemEntity);
       const ownedItems = await cartItems.find({ where: { cartId: cart.id } });
@@ -1028,6 +1133,12 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     manager: EntityManager,
   ): Promise<void> {
     //#region @websqlFunc
+    if (
+      session.payment_status === 'paid' ||
+      session.payment_status === 'no_payment_required'
+    ) {
+      return;
+    }
     const orderId = Number(session.metadata?.taonOrderId);
     if (!Number.isSafeInteger(orderId) || orderId <= 0 || !session.id) {
       throw new Error(
@@ -1044,8 +1155,6 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
     if (order.status !== 'pending') {
       return;
     }
-    order.status = session.status === 'expired' ? 'cancelled' : 'failed';
-    await orderRepository.save(order);
     const providerTransactionId =
       this.stripeObjectId(session.payment_intent) ?? session.id;
     const transactionRepository = manager.getRepository(
@@ -1061,9 +1170,24 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
         providerTransactionId,
         amount: order.total,
         currency: order.currency,
-        status: 'failed',
+        status: session.status === 'expired' ? 'cancelled' : 'failed',
       });
-    transaction.status = 'failed';
+    if (
+      transaction.status === 'succeeded' ||
+      transaction.status === 'refunded'
+    ) {
+      return;
+    }
+    const status = session.status === 'expired' ? 'cancelled' : 'failed';
+    const transition = await orderRepository.update(
+      { id: order.id, status: 'pending', stripeCheckoutSessionId: session.id },
+      { status, updatedAt: new Date() },
+    );
+    if (transition.affected !== 1) {
+      return;
+    }
+    transaction.status =
+      session.status === 'expired' ? 'cancelled' : 'failed';
     await transactionRepository.save(transaction);
     //#endregion
   }

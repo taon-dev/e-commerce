@@ -166,6 +166,15 @@
           }
         </mat-select>
       </mat-form-field>
+      @if (linkedPost(); as post) {
+        <p>
+          <a
+            href="#"
+            (click)="openLinkedPostEditor($event, post)">
+            {{ t.gettext('Edit linked post: [[ title ]]', { title: post.title }) }}
+          </a>
+        </p>
+      }
       @if (draft().inheritPermissionsFromPost && !draft().cmsContentId) {
         <p role="status">{{ t.gettext('No post is linked, so no post permissions can be inherited.') }}</p>
       }

@@ -26,3 +26,4 @@ export interface TaonCartConfig {
 
 export const TaonCartCheckoutSuccessParam = 'taon_cart_success';
 export const TaonCartCheckoutCancelParam = 'taon_cart_cancel';
+export const TaonCartCheckoutOrderIdParam = 'taon_order_id';

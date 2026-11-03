@@ -4,10 +4,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-course/taon-course-row/taon-course-row.component.ts:126
+#: src/lib/taon-course/taon-course-row/taon-course-row.component.ts:141
 msgid "The attachment could not be downloaded. Please try again."
-msgstr ""
+msgstr "Der Anhang konnte nicht heruntergeladen werden. Bitte versuchen Sie es erneut."
 
-#: src/lib/taon-course/taon-course-row/taon-course-row.component.ts:140
+#: src/lib/taon-course/taon-course-row/taon-course-row.component.ts:155
 msgid "The media could not be loaded. Close the player and try again."
-msgstr ""
+msgstr "Die Medien konnten nicht geladen werden. Schließen Sie den Player und versuchen Sie es erneut."

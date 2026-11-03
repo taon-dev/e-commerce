@@ -4,78 +4,91 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-cart/taon-cart.component.ts:116
+#: src/lib/taon-cart/taon-cart.component.ts:117
 msgid "Order ID"
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:117
+#: src/lib/taon-cart/taon-cart.component.ts:118
 msgid "Status"
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:118
+#: src/lib/taon-cart/taon-cart.component.ts:119
 msgid "Total"
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:119
+#: src/lib/taon-cart/taon-cart.component.ts:120
 msgid "Currency"
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:120
+#: src/lib/taon-cart/taon-cart.component.ts:121
 msgid "Created"
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:186
+#: src/lib/taon-cart/taon-cart.component.ts:187
 msgid "Checkout completed. Your purchase will appear after Stripe confirms payment."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:196
+#: src/lib/taon-cart/taon-cart.component.ts:202
 msgid "You left checkout. Your order will be updated when Stripe confirms its status."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:281
+#: src/lib/taon-cart/taon-cart.component.ts:286
 msgid "Unable to load your cart."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:297
+#: src/lib/taon-cart/taon-cart.component.ts:302
 msgid "Unable to load available products."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:310
+#: src/lib/taon-cart/taon-cart.component.ts:315
 msgid "This product is not available."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:315
+#: src/lib/taon-cart/taon-cart.component.ts:320
 msgid "This suggested product does not have a saved product ID."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:329
+#: src/lib/taon-cart/taon-cart.component.ts:334
 msgid "Unable to add this product to your cart."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:355
+#: src/lib/taon-cart/taon-cart.component.ts:360
 msgid "Unable to update the cart item."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:376
+#: src/lib/taon-cart/taon-cart.component.ts:381
 msgid "Unable to remove the cart item."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:394
+#: src/lib/taon-cart/taon-cart.component.ts:399
 msgid "Unable to load your orders."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:412
+#: src/lib/taon-cart/taon-cart.component.ts:417
 msgid "Unable to load your purchases."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:441
+#: src/lib/taon-cart/taon-cart.component.ts:446
 msgid "Unable to start Stripe Checkout."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:458
+#: src/lib/taon-cart/taon-cart.component.ts:464
+msgid "Checkout was cancelled and the order was updated."
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.ts:467
+msgid "Checkout cancellation was not applied because the order is already finalized or the payment is still processing."
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.ts:474
+#: src/lib/taon-cart/taon-cart.component.ts:482
+msgid "Could not confirm cancellation with Stripe. Check your orders before trying again."
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.ts:501
 msgid "The request failed."
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.ts:462
+#: src/lib/taon-cart/taon-cart.component.ts:505
 msgid "The server returned an empty response."
 msgstr ""

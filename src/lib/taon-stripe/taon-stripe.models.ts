@@ -34,6 +34,7 @@ export interface StripeApiError {
 export interface StripeCheckoutSessionEvent {
   id: string;
   status?: string;
+  expires_at?: number;
   mode?: string;
   payment_status?: string;
   payment_intent?: string | { id: string } | null;

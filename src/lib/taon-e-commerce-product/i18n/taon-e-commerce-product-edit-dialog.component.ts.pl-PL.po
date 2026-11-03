@@ -4,79 +4,84 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:118
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:119
 msgid "Lifetime"
 msgstr "Bezterminowo"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:119
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:120
 msgid "Item"
 msgstr "Pozycja"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:120
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:121
 msgid "Subscription"
 msgstr "Subskrypcja"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:124
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:125
 msgid "Seconds"
 msgstr "Sekundy"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:125
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:126
 msgid "Minutes"
 msgstr "Minuty"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:126
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:127
 msgid "Hours"
 msgstr "Godziny"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:127
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:128
 msgid "Days"
 msgstr "Dni"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:192
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:198
 msgid "The product ID in the route is invalid."
 msgstr "ID produktu w adresie jest nieprawidłowe."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:204
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:210
 msgid "Unable to load the product."
 msgstr "Nie można załadować produktu."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:237
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:243
 msgid "Unable to load product editor options."
 msgstr "Nie można załadować opcji edytora produktu."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:251
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:257
 msgid "The product editor options response was invalid."
 msgstr "Odpowiedź z opcjami edytora produktu jest nieprawidłowa."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:277
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:283
 msgid "Unable to load product permissions."
 msgstr "Nie można załadować uprawnień produktu."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:400
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:367
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:380
+msgid "The CMS editor route is unavailable."
+msgstr "Trasa edytora CMS jest niedostępna."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:430
 msgid "Enter a valid name, currency, price, quantity limit, stock limit, and subscription interval."
 msgstr "Podaj prawidłową nazwę, walutę, cenę, limit ilości, limit zapasów i okres subskrypcji."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:449
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:530
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:479
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:560
 msgid "Unable to save the product."
 msgstr "Nie można zapisać produktu."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:454
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:484
 msgid "The saved product response was invalid."
 msgstr "Odpowiedź dotycząca zapisanego produktu jest nieprawidłowa."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:467
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:497
 msgid "Unable to update the product permissions."
 msgstr "Nie można zaktualizować uprawnień produktu."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:486
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:516
 msgid "Unable to remove a product permission."
 msgstr "Nie można usunąć uprawnienia produktu."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:509
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:539
 msgid "Unable to attach a permission to the product."
 msgstr "Nie można przypisać uprawnienia do produktu."
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:558
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.ts:588
 msgid "Unable to duplicate the product."
 msgstr "Nie można zduplikować produktu."

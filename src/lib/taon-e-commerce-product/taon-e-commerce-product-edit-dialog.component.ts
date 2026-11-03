@@ -3,6 +3,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -155,6 +156,11 @@ export class TaonECommerceProductEditDialogComponent {
   readonly groups = signal<TaonGroupEntity[]>([]);
 
   readonly posts = signal<TaonCmsContentEntity[]>([]);
+
+  readonly linkedPost = computed(
+    () =>
+      this.posts().find(post => post.id === this.draft().cmsContentId) ?? null,
+  );
 
   readonly selectedGroupIds = signal<number[]>([]);
 
@@ -350,6 +356,30 @@ export class TaonECommerceProductEditDialogComponent {
     this.draft.update(draft => ({ ...draft, cmsContentId: value }));
   }
   //#endregion
+
+  openLinkedPostEditor(event: Event, post: TaonCmsContentEntity): void {
+    event.preventDefault();
+    let adminOutletRoute: ActivatedRoute | null = this.route;
+    while (adminOutletRoute && adminOutletRoute.outlet !== 'admin') {
+      adminOutletRoute = adminOutletRoute.parent;
+    }
+    if (!adminOutletRoute) {
+      this.error.set(this.t.gettext('The CMS editor route is unavailable.'));
+      return;
+    }
+    void this.router
+      .navigate(['cms', 'posts', post.id], {
+        relativeTo: adminOutletRoute,
+        queryParamsHandling: 'preserve',
+      })
+      .catch(error => {
+        console.error(
+          '[taon-e-commerce-product-edit] Unable to open linked post',
+          error,
+        );
+        this.error.set(this.t.gettext('The CMS editor route is unavailable.'));
+      });
+  }
 
   //#region methods / update permission inheritance
   updatePermissionInheritance(value: boolean): void {

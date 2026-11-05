@@ -4,13 +4,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.html:48
-msgid "Close"
-msgstr "Zamknij"
-
 #: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.html:30
 msgid "Lifetime purchase"
 msgstr "Zakup bezterminowy"
+
+#: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.html:48
+msgid "Close"
+msgstr "Zamknij"
 
 #: src/lib/taon-cart/taon-cart-product-dialog/taon-cart-product-dialog.component.html:55
 msgid "Go To Cart"

@@ -12,6 +12,10 @@ msgstr "Panel e-commerce"
 msgid "Loading e-commerce summary..."
 msgstr "Ładowanie podsumowania e-commerce..."
 
+#: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.html:8
+msgid "E-commerce summary"
+msgstr ""
+
 #: src/lib/taon-e-commerce-backoffice-dashboard/taon-e-commerce-backoffice-dashboard.component.html:10
 msgid "Paid orders"
 msgstr "Opłacone zamówienia"

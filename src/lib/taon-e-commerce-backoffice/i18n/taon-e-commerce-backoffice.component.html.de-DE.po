@@ -5,5 +5,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/lib/taon-e-commerce-backoffice/taon-e-commerce-backoffice.component.html:3
-msgid "In E-commerce section you can manager everything about your e-business."
-msgstr "Im E-Commerce-Bereich können Sie Ihren Onlinehandel verwalten."
+msgid "In the E-commerce section, you can manage everything about your e-business."
+msgstr "Im E-Commerce-Bereich können Sie Ihren gesamten Onlinehandel verwalten."

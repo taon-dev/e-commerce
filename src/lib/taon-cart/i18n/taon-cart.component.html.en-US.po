@@ -17,35 +17,6 @@ msgstr ""
 msgid "Buy"
 msgstr ""
 
-#: src/lib/taon-cart/taon-cart.component.html:55
-msgid "Cart"
-msgstr ""
-
-#: src/lib/taon-cart/taon-cart.component.html:108
-msgid "Checkout"
-msgstr ""
-
-#: src/lib/taon-cart/taon-cart.component.html:148
-#: src/lib/taon-cart/taon-cart.component.html:195
-msgid "Purchased"
-msgstr ""
-
-#: src/lib/taon-cart/taon-cart.component.html:152
-msgid "Active"
-msgstr ""
-
-#: src/lib/taon-cart/taon-cart.component.html:221
-msgid "Orders"
-msgstr ""
-
-#: src/lib/taon-cart/taon-cart.component.html:227
-msgid "Refreshing..."
-msgstr ""
-
-#: src/lib/taon-cart/taon-cart.component.html:227
-msgid "Refresh orders"
-msgstr ""
-
 #: src/lib/taon-cart/taon-cart.component.html:20
 msgid "Loading products..."
 msgstr ""
@@ -62,6 +33,10 @@ msgstr ""
 msgid "Go To Cart"
 msgstr ""
 
+#: src/lib/taon-cart/taon-cart.component.html:55
+msgid "Cart"
+msgstr ""
+
 #: src/lib/taon-cart/taon-cart.component.html:57
 msgid "Loading cart..."
 msgstr ""
@@ -74,12 +49,24 @@ msgstr ""
 msgid "[[ price ]] each"
 msgstr ""
 
+#: src/lib/taon-cart/taon-cart.component.html:76
+msgid "Decrease quantity"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:87
+msgid "Increase quantity"
+msgstr ""
+
 #: src/lib/taon-cart/taon-cart.component.html:98
 msgid "Remove"
 msgstr ""
 
 #: src/lib/taon-cart/taon-cart.component.html:104
 msgid "Go to Checkout"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:108
+msgid "Checkout"
 msgstr ""
 
 #: src/lib/taon-cart/taon-cart.component.html:110
@@ -103,6 +90,10 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
+#: src/lib/taon-cart/taon-cart.component.html:124
+msgid "Quantity"
+msgstr ""
+
 #: src/lib/taon-cart/taon-cart.component.html:133
 msgid "Subtotal: [[ subtotal ]]"
 msgstr ""
@@ -117,6 +108,15 @@ msgstr ""
 
 #: src/lib/taon-cart/taon-cart.component.html:144
 msgid "Preparing checkout..."
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:148
+#: src/lib/taon-cart/taon-cart.component.html:195
+msgid "Purchased"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:152
+msgid "Active"
 msgstr ""
 
 #: src/lib/taon-cart/taon-cart.component.html:154
@@ -166,6 +166,18 @@ msgstr ""
 
 #: src/lib/taon-cart/taon-cart.component.html:211
 msgid "No expiration"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:221
+msgid "Orders"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:227
+msgid "Refreshing..."
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:227
+msgid "Refresh orders"
 msgstr ""
 
 #: src/lib/taon-cart/taon-cart.component.html:230

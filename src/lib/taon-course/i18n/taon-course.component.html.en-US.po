@@ -13,6 +13,7 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
+#: src/lib/taon-course/taon-course.component.html:18
 #: src/lib/taon-course/taon-course.component.html:19
 msgid "The full course post is unavailable. Showing the preview course."
 msgstr ""
@@ -25,6 +26,7 @@ msgstr ""
 msgid "No lessons are available yet."
 msgstr ""
 
+#: src/lib/taon-course/taon-course.component.html:60
 #: src/lib/taon-course/taon-course.component.html:61
 msgid "Some lessons are not accessible with your current permissions."
 msgstr ""

@@ -6,4 +6,4 @@ msgstr ""
 
 #: src/lib/taon-cart-button/taon-cart-button.component.html:4
 msgid "Open shopping cart"
-msgstr ""
+msgstr "Warenkorb öffnen"

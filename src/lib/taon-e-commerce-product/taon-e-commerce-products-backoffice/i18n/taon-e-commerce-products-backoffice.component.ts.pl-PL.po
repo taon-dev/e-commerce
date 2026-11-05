@@ -26,7 +26,7 @@ msgstr "Waluta"
 
 #: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:48
 msgid "Active"
-msgstr "Aktywne"
+msgstr "Aktywny"
 
 #: src/lib/taon-e-commerce-product/taon-e-commerce-products-backoffice/taon-e-commerce-products-backoffice.component.ts:49
 msgid "Stripe synchronized"

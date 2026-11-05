@@ -13,6 +13,7 @@ msgstr "Ładowanie kursu..."
 msgid "Try again"
 msgstr "Spróbuj ponownie"
 
+#: src/lib/taon-course/taon-course.component.html:18
 #: src/lib/taon-course/taon-course.component.html:19
 msgid "The full course post is unavailable. Showing the preview course."
 msgstr "Pełny wpis kursu jest niedostępny. Wyświetlamy kurs w wersji podglądowej."
@@ -25,6 +26,7 @@ msgstr "Nie udało się załadować multimediów. Spróbuj ponownie."
 msgid "No lessons are available yet."
 msgstr "Nie ma jeszcze dostępnych lekcji."
 
+#: src/lib/taon-course/taon-course.component.html:60
 #: src/lib/taon-course/taon-course.component.html:61
 msgid "Some lessons are not accessible with your current permissions."
 msgstr "Nie masz uprawnień do części lekcji."

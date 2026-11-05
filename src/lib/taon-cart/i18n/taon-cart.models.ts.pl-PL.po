@@ -6,28 +6,28 @@ msgstr ""
 
 #: src/lib/taon-cart/taon-cart.models.ts:10
 msgid "Active"
-msgstr "Aktywne"
+msgstr "Aktywna"
 
 #: src/lib/taon-cart/taon-cart.models.ts:11
 msgid "Canceled"
-msgstr "Anulowano"
+msgstr "Anulowana"
 
 #: src/lib/taon-cart/taon-cart.models.ts:12
 msgid "Past due"
-msgstr "Zaległe"
+msgstr "Zaległa"
 
 #: src/lib/taon-cart/taon-cart.models.ts:13
 msgid "Unpaid"
-msgstr "Nieopłacono"
+msgstr "Nieopłacona"
 
 #: src/lib/taon-cart/taon-cart.models.ts:14
 msgid "Incomplete"
-msgstr "Nieukończono"
+msgstr "Nieukończona"
 
 #: src/lib/taon-cart/taon-cart.models.ts:15
 msgid "Paused"
-msgstr "Wstrzymano"
+msgstr "Wstrzymana"
 
 #: src/lib/taon-cart/taon-cart.models.ts:16
 msgid "Expired"
-msgstr "Wygasło"
+msgstr "Wygasła"

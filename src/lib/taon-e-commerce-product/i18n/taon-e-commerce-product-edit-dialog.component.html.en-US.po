@@ -12,18 +12,6 @@ msgstr "Edit product"
 msgid "Add product"
 msgstr "Add product"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:202
-msgid "Cancel"
-msgstr "Cancel"
-
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
-msgid "Saving..."
-msgstr "Saving..."
-
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
-msgid "Save"
-msgstr "Save"
-
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:4
 msgid "Loading product options..."
 msgstr "Loading product options..."
@@ -116,6 +104,10 @@ msgstr ""
 msgid "No post is linked, so no post permissions can be inherited."
 msgstr "No post is linked, so no post permissions can be inherited."
 
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:183
+msgid "Stripe synchronization information"
+msgstr ""
+
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:184
 msgid "Stripe synchronization"
 msgstr "Stripe synchronization"
@@ -145,6 +137,10 @@ msgstr "Never"
 msgid "Retry loading options"
 msgstr "Retry loading options"
 
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:202
+msgid "Cancel"
+msgstr "Cancel"
+
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:206
 msgid "Duplicating..."
 msgstr "Duplicating..."
@@ -152,3 +148,11 @@ msgstr "Duplicating..."
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:206
 msgid "Duplicate"
 msgstr "Duplicate"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
+msgid "Saving..."
+msgstr "Saving..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
+msgid "Save"
+msgstr "Save"

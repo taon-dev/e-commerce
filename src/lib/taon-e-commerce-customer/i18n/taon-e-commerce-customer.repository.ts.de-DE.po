@@ -14,7 +14,7 @@ msgstr "Der Warenkorb des aktuellen Benutzers kann nicht aktualisiert werden."
 
 #: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:202
 msgid "Product and quantity must be positive whole numbers."
-msgstr "Produkt und Menge müssen positive ganze Zahlen sein."
+msgstr "Produkt-ID und Menge müssen positive ganze Zahlen sein."
 
 #: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:214
 msgid "The selected product is not available."

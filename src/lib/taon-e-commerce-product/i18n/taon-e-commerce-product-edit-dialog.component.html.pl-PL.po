@@ -12,18 +12,6 @@ msgstr "Edytuj produkt"
 msgid "Add product"
 msgstr "Dodaj produkt"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:202
-msgid "Cancel"
-msgstr "Anuluj"
-
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
-msgid "Saving..."
-msgstr "Zapisywanie..."
-
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
-msgid "Save"
-msgstr "Zapisz"
-
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:4
 msgid "Loading product options..."
 msgstr "Ładowanie opcji produktu..."
@@ -38,7 +26,7 @@ msgstr "Opis"
 
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:30
 msgid "Active"
-msgstr "Aktywne"
+msgstr "Aktywny"
 
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:34
 msgid "Product type"
@@ -116,6 +104,10 @@ msgstr "Edytuj powiązany wpis: [[ title ]]"
 msgid "No post is linked, so no post permissions can be inherited."
 msgstr "Nie powiązano żadnego wpisu, więc nie można dziedziczyć uprawnień do wpisu."
 
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:183
+msgid "Stripe synchronization information"
+msgstr ""
+
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:184
 msgid "Stripe synchronization"
 msgstr "Synchronizacja Stripe"
@@ -145,6 +137,10 @@ msgstr "Nigdy"
 msgid "Retry loading options"
 msgstr "Ponów ładowanie opcji"
 
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:202
+msgid "Cancel"
+msgstr "Anuluj"
+
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:206
 msgid "Duplicating..."
 msgstr "Duplikowanie..."
@@ -152,3 +148,11 @@ msgstr "Duplikowanie..."
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:206
 msgid "Duplicate"
 msgstr "Duplikuj"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
+msgid "Saving..."
+msgstr "Zapisywanie..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
+msgid "Save"
+msgstr "Zapisz"

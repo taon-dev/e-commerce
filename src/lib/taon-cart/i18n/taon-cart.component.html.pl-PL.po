@@ -17,35 +17,6 @@ msgstr "Zamknij koszyk"
 msgid "Buy"
 msgstr "Kup"
 
-#: src/lib/taon-cart/taon-cart.component.html:55
-msgid "Cart"
-msgstr "Koszyk"
-
-#: src/lib/taon-cart/taon-cart.component.html:108
-msgid "Checkout"
-msgstr "Finalizuj"
-
-#: src/lib/taon-cart/taon-cart.component.html:148
-#: src/lib/taon-cart/taon-cart.component.html:195
-msgid "Purchased"
-msgstr "Zakupiono"
-
-#: src/lib/taon-cart/taon-cart.component.html:152
-msgid "Active"
-msgstr "Aktywne"
-
-#: src/lib/taon-cart/taon-cart.component.html:221
-msgid "Orders"
-msgstr "Zamówienia"
-
-#: src/lib/taon-cart/taon-cart.component.html:227
-msgid "Refreshing..."
-msgstr "Odświeżanie..."
-
-#: src/lib/taon-cart/taon-cart.component.html:227
-msgid "Refresh orders"
-msgstr "Odśwież zamówienia"
-
 #: src/lib/taon-cart/taon-cart.component.html:20
 msgid "Loading products..."
 msgstr "Ładowanie produktów..."
@@ -62,6 +33,10 @@ msgstr "Dodaj do koszyka"
 msgid "Go To Cart"
 msgstr "Przejdź do koszyka"
 
+#: src/lib/taon-cart/taon-cart.component.html:55
+msgid "Cart"
+msgstr "Koszyk"
+
 #: src/lib/taon-cart/taon-cart.component.html:57
 msgid "Loading cart..."
 msgstr "Ładowanie koszyka..."
@@ -74,6 +49,14 @@ msgstr "Twój koszyk jest pusty."
 msgid "[[ price ]] each"
 msgstr "[[ price ]] za sztukę"
 
+#: src/lib/taon-cart/taon-cart.component.html:76
+msgid "Decrease quantity"
+msgstr ""
+
+#: src/lib/taon-cart/taon-cart.component.html:87
+msgid "Increase quantity"
+msgstr ""
+
 #: src/lib/taon-cart/taon-cart.component.html:98
 msgid "Remove"
 msgstr "Usuń"
@@ -81,6 +64,10 @@ msgstr "Usuń"
 #: src/lib/taon-cart/taon-cart.component.html:104
 msgid "Go to Checkout"
 msgstr "Przejdź do płatności"
+
+#: src/lib/taon-cart/taon-cart.component.html:108
+msgid "Checkout"
+msgstr "Finalizacja zakupu"
 
 #: src/lib/taon-cart/taon-cart.component.html:110
 msgid "Add an active product to your cart to continue."
@@ -103,6 +90,10 @@ msgstr "Cena jednostkowa"
 msgid "Total"
 msgstr "Razem"
 
+#: src/lib/taon-cart/taon-cart.component.html:124
+msgid "Quantity"
+msgstr ""
+
 #: src/lib/taon-cart/taon-cart.component.html:133
 msgid "Subtotal: [[ subtotal ]]"
 msgstr "Suma częściowa: [[ subtotal ]]"
@@ -118,6 +109,15 @@ msgstr "Serwer ponownie weryfikuje ceny końcowe i dostępność."
 #: src/lib/taon-cart/taon-cart.component.html:144
 msgid "Preparing checkout..."
 msgstr "Przygotowywanie płatności..."
+
+#: src/lib/taon-cart/taon-cart.component.html:148
+#: src/lib/taon-cart/taon-cart.component.html:195
+msgid "Purchased"
+msgstr "Zakupiono"
+
+#: src/lib/taon-cart/taon-cart.component.html:152
+msgid "Active"
+msgstr "Aktywne"
 
 #: src/lib/taon-cart/taon-cart.component.html:154
 msgid "Loading purchases..."
@@ -167,6 +167,18 @@ msgstr "(Bezterminowo)"
 #: src/lib/taon-cart/taon-cart.component.html:211
 msgid "No expiration"
 msgstr "Bez daty wygaśnięcia"
+
+#: src/lib/taon-cart/taon-cart.component.html:221
+msgid "Orders"
+msgstr "Zamówienia"
+
+#: src/lib/taon-cart/taon-cart.component.html:227
+msgid "Refreshing..."
+msgstr "Odświeżanie..."
+
+#: src/lib/taon-cart/taon-cart.component.html:227
+msgid "Refresh orders"
+msgstr "Odśwież zamówienia"
 
 #: src/lib/taon-cart/taon-cart.component.html:230
 msgid "Loading orders..."

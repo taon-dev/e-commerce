@@ -38,7 +38,7 @@ msgstr "Synchronizowanie produktów ze Stripe..."
 
 #: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:44
 msgid "Synchronization finished: [[ succeeded ]] succeeded, [[ failed ]] failed."
-msgstr "Synchronizacja zakończona: [[ succeeded ]] zakończonych powodzeniem, [[ failed ]] nieudanych."
+msgstr "Synchronizacja zakończona: sukcesy: [[ succeeded ]], błędy: [[ failed ]]."
 
 #: src/lib/taon-e-commerce-product/taon-e-commerce-stripe-sync-dialog.component.ts:50
 msgid "[[ productName ]]: synchronized"

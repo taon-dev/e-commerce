@@ -12,18 +12,6 @@ msgstr "Produkt bearbeiten"
 msgid "Add product"
 msgstr "Produkt hinzufügen"
 
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:202
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
-msgid "Saving..."
-msgstr "Wird gespeichert..."
-
-#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
-msgid "Save"
-msgstr "Speichern"
-
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:4
 msgid "Loading product options..."
 msgstr "Produktoptionen werden geladen..."
@@ -62,7 +50,7 @@ msgstr "Leer lassen, um kein Limit pro Benutzer festzulegen."
 
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:82
 msgid "Overall stock limit"
-msgstr "Allgemeiner Lagerbestand"
+msgstr "Gesamtbestandsgrenze"
 
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:90
 msgid "Leave empty for unlimited stock."
@@ -116,6 +104,10 @@ msgstr "Verknüpften Beitrag bearbeiten: [[ title ]]"
 msgid "No post is linked, so no post permissions can be inherited."
 msgstr "Es ist kein Beitrag verknüpft, daher können keine Beitragsberechtigungen geerbt werden."
 
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:183
+msgid "Stripe synchronization information"
+msgstr ""
+
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:184
 msgid "Stripe synchronization"
 msgstr "Stripe-Synchronisierung"
@@ -145,6 +137,10 @@ msgstr "Nie"
 msgid "Retry loading options"
 msgstr "Optionen erneut laden"
 
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:202
+msgid "Cancel"
+msgstr "Abbrechen"
+
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:206
 msgid "Duplicating..."
 msgstr "Wird dupliziert..."
@@ -152,3 +148,11 @@ msgstr "Wird dupliziert..."
 #: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:206
 msgid "Duplicate"
 msgstr "Duplizieren"
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
+msgid "Saving..."
+msgstr "Wird gespeichert..."
+
+#: src/lib/taon-e-commerce-product/taon-e-commerce-product-edit-dialog.component.html:214
+msgid "Save"
+msgstr "Speichern"

@@ -14,7 +14,7 @@ msgstr "Nie można odświeżyć koszyka bieżącego użytkownika."
 
 #: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:202
 msgid "Product and quantity must be positive whole numbers."
-msgstr "Produkt i ilość muszą być dodatnimi liczbami całkowitymi."
+msgstr "ID produktu i ilość muszą być dodatnimi liczbami całkowitymi."
 
 #: src/lib/taon-e-commerce-customer/taon-e-commerce-customer.repository.ts:214
 msgid "The selected product is not available."

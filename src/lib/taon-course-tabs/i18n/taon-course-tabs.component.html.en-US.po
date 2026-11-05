@@ -8,10 +8,12 @@ msgstr ""
 msgid "Course"
 msgstr ""
 
+#: src/lib/taon-course-tabs/taon-course-tabs.component.html:15
 #: src/lib/taon-course-tabs/taon-course-tabs.component.html:17
 msgid "Course unavailable"
 msgstr ""
 
+#: src/lib/taon-course-tabs/taon-course-tabs.component.html:15
 #: src/lib/taon-course-tabs/taon-course-tabs.component.html:18
 msgid "Loading course..."
 msgstr ""

@@ -6,8 +6,8 @@ msgstr ""
 
 #: src/lib/taon-course/taon-course-row/taon-course-row.component.html:16
 msgid "Loading media..."
-msgstr ""
+msgstr "Ładowanie multimediów..."
 
 #: src/lib/taon-course/taon-course-row/taon-course-row.component.html:26
 msgid "Close player"
-msgstr ""
+msgstr "Zamknij odtwarzacz"

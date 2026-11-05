@@ -10,7 +10,7 @@ msgstr "Oczekuje"
 
 #: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transactions-backoffice.models.ts:11
 msgid "Succeeded"
-msgstr "Powodzenie"
+msgstr "Sukces"
 
 #: src/lib/taon-e-commerce-payment-transaction/taon-e-commerce-payment-transactions-backoffice/taon-e-commerce-payment-transactions-backoffice.models.ts:12
 msgid "Failed"

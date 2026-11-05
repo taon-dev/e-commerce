@@ -6,16 +6,18 @@ msgstr ""
 
 #: src/lib/taon-course-tabs/taon-course-tabs.component.html:4
 msgid "Course"
-msgstr ""
+msgstr "Kurs"
 
+#: src/lib/taon-course-tabs/taon-course-tabs.component.html:15
 #: src/lib/taon-course-tabs/taon-course-tabs.component.html:17
 msgid "Course unavailable"
-msgstr ""
+msgstr "Kurs niedostępny"
 
+#: src/lib/taon-course-tabs/taon-course-tabs.component.html:15
 #: src/lib/taon-course-tabs/taon-course-tabs.component.html:18
 msgid "Loading course..."
-msgstr ""
+msgstr "Ładowanie kursu..."
 
 #: src/lib/taon-course-tabs/taon-course-tabs.component.html:29
 msgid "No courses are available yet."
-msgstr ""
+msgstr "Nie ma jeszcze dostępnych kursów."

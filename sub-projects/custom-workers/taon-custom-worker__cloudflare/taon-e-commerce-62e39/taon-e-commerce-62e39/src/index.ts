@@ -11,6 +11,7 @@ const app = createFakeExpressApp();
 
 export default {
   fetch: createWorkerAdapter(app, async (overrideHost, req, res, env) => {
+    const start = performance.now();
     const TAON_LOCAL_DEV = env.TAON_LOCAL_DEV === 'true';
     GlobalStorage.set('TAON_LOCAL_DEV', TAON_LOCAL_DEV);
     GlobalStorage.set('TAON_TEMP_STORAGE', env.TAON_TEMP_STORAGE);
@@ -22,11 +23,15 @@ export default {
     // console.log('REQUEST DONE!')
     // console.log({ overrideHost });
     // console.log({ env });
+    console.log('[WORKER] startFn START');
     await startFn({
       overrideExpressApp: app,
       overrideHost,
       cloudflareEnv: env,
     });
+
+    console.log(`[WORKER] startFn DONE ${performance.now() - start}`);
+
     // @ts-ignore
     var ContextsEndpointStorageInstance = // @ts-ignore
       globalThis['$$$ContextsEndpointStorage$$$'];
@@ -34,11 +39,13 @@ export default {
     const endpoints: EndpointContext[] =
       ContextsEndpointStorageInstance.arr || [];
 
+    console.log('[WORKER] controllers hooks START');
     await Promise.all(
       endpoints.map(c =>
         c.initControllersHook(ContextsEndpointStorageInstance),
       ),
     );
+    console.log('[WORKER] controllers hooks DONE');
     console.log(ContextsEndpointStorageInstance.SPECIAL_APP_READY_MESSAGE);
   }),
 };

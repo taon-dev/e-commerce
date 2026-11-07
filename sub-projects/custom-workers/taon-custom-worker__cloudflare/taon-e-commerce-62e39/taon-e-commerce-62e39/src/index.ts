@@ -14,6 +14,9 @@ export default {
   fetch: createWorkerAdapter(app, async (overrideHost, req, res, env) => {
     const start = performance.now();
     const TAON_LOCAL_DEV = env.TAON_LOCAL_DEV === 'true';
+    const DISPLAY_RAW_SQL_COMMANDS =
+      env.DISPLAY_RAW_SQL_COMMANDS === 'true';
+
     GlobalStorage.set('TAON_LOCAL_DEV', TAON_LOCAL_DEV);
     GlobalStorage.set('TAON_TEMP_STORAGE', env.TAON_TEMP_STORAGE);
     GlobalStorage.set(

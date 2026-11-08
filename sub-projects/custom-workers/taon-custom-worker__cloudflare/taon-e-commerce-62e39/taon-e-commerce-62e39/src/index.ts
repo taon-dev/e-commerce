@@ -5,14 +5,22 @@ import {
   createFakeExpressApp,
 } from 'taon/src';
 
+// @ts-ignore
 import startFn from '../../../../../../tmp-source-esm-dist/app';
 import { GlobalStorage, UtilsSecretEnv } from 'tnp-core/src';
 const app = createFakeExpressApp();
 
 export default {
   fetch: createWorkerAdapter(app, async (overrideHost, req, res, env) => {
+    const start = performance.now();
     const TAON_LOCAL_DEV = env.TAON_LOCAL_DEV === 'true';
+
     GlobalStorage.set('TAON_LOCAL_DEV', TAON_LOCAL_DEV);
+    GlobalStorage.set(
+      'DISPLAY_RAW_SQL_COMMANDS',
+      env.DISPLAY_RAW_SQL_COMMANDS,
+    );
+    GlobalStorage.set('TAON_DEPLOYMENT_ID', env.TAON_DEPLOYMENT_ID);
     GlobalStorage.set('TAON_TEMP_STORAGE', env.TAON_TEMP_STORAGE);
     GlobalStorage.set(
       UtilsSecretEnv.MASTER_PASS_KEY,
@@ -22,11 +30,15 @@ export default {
     // console.log('REQUEST DONE!')
     // console.log({ overrideHost });
     // console.log({ env });
+    console.log('[WORKER] startFn START');
     await startFn({
       overrideExpressApp: app,
       overrideHost,
       cloudflareEnv: env,
     });
+
+    console.log(`[WORKER] startFn DONE ${performance.now() - start}`);
+
     // @ts-ignore
     var ContextsEndpointStorageInstance = // @ts-ignore
       globalThis['$$$ContextsEndpointStorage$$$'];
@@ -34,11 +46,13 @@ export default {
     const endpoints: EndpointContext[] =
       ContextsEndpointStorageInstance.arr || [];
 
+    console.log('[WORKER] controllers hooks START');
     await Promise.all(
       endpoints.map(c =>
         c.initControllersHook(ContextsEndpointStorageInstance),
       ),
     );
+    console.log(`[WORKER] controllers hooks DONE ${performance.now() - start}`);
     console.log(ContextsEndpointStorageInstance.SPECIAL_APP_READY_MESSAGE);
   }),
 };

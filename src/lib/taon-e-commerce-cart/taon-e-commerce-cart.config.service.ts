@@ -9,7 +9,7 @@ import { TaonECommerceCartProvider } from './taon-e-commerce-cart.provider';
 
 @Injectable()
 export class TaonECommerceCartConfigService extends TaonBaseAngularService {
-  private taonECommerceCartProvider = this.injectProvider(TaonECommerceCartProvider);
+  private taonECommerceCartProvider = this.inject(TaonECommerceCartProvider);
 
   get STRIPE_SECRET_KEY():string {
     return this.taonECommerceCartProvider.STRIPE_SECRET_KEY;

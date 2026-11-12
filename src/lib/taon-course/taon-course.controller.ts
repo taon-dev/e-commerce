@@ -22,13 +22,13 @@ export interface TaonCourseResponse {
 
 @TaonController({ className: 'TaonCourseController' })
 export class TaonCourseController extends TaonBaseController {
-  private readonly posts = this.injectCustomRepo(TaonCmsContentRepository);
+  private readonly posts = this.inject(TaonCmsContentRepository);
 
-  private readonly sessions = this.injectCustomRepo(TaonSessionRepository);
+  private readonly sessions = this.inject(TaonSessionRepository);
 
-  private readonly tokens = this.injectCustomRepo(TaonSessionKvRepository);
+  private readonly tokens = this.inject(TaonSessionKvRepository);
 
-  private readonly authorization = this.injectCustomRepo(
+  private readonly authorization = this.inject(
     TaonAuthContextRepository,
   );
 

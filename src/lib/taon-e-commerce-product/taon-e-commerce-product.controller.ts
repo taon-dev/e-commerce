@@ -59,23 +59,23 @@ export class TaonECommerceProductController extends TaonBaseCrudController<
   entityClassResolveFn: () => typeof TaonECommerceProductEntity = () =>
     TaonECommerceProductEntity;
 
-  private readonly taonECommerceProductRepository = this.injectCustomRepo(
+  private readonly taonECommerceProductRepository = this.inject(
     TaonECommerceProductRepository,
   );
 
-  private readonly taonECommerceStripeRepository = this.injectCustomRepo(
+  private readonly taonECommerceStripeRepository = this.inject(
     TaonECommerceStripeRepository,
   );
 
-  private readonly taonECommerceCustomerRepository = this.injectCustomRepo(
+  private readonly taonECommerceCustomerRepository = this.inject(
     TaonECommerceCustomerRepository,
   );
 
-  private readonly taonSessionRepository = this.injectCustomRepo(
+  private readonly taonSessionRepository = this.inject(
     TaonSessionRepository,
   );
 
-  private readonly taonAuthContextRepository = this.injectCustomRepo(
+  private readonly taonAuthContextRepository = this.inject(
     TaonAuthContextRepository,
   );
   //#endregion

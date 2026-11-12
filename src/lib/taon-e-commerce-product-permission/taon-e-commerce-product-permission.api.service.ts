@@ -10,7 +10,7 @@ import { TaonECommerceProductPermissionController } from './taon-e-commerce-prod
 
 @Injectable()
 export class TaonECommerceProductPermissionApiService extends TaonBaseAngularService {
-  public readonly taonECommerceProductPermissionController = this.injectController(TaonECommerceProductPermissionController);
+  public readonly taonECommerceProductPermissionController = this.inject(TaonECommerceProductPermissionController);
 
   public get allMyEntities$(): Observable<TaonECommerceProductPermissionEntity[]> {
     return this.taonECommerceProductPermissionController.getAll().request!().observable.pipe(

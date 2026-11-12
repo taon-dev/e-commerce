@@ -41,11 +41,11 @@ export class TaonECommerceCustomerRepository extends TaonBaseRepository<TaonECom
   entityClassResolveFn: () => typeof TaonECommerceCartEntity = () =>
     TaonECommerceCartEntity;
 
-  private readonly taonECommerceStripeRepository = this.injectCustomRepo(
+  private readonly taonECommerceStripeRepository = this.inject(
     TaonECommerceStripeRepository,
   );
 
-  private readonly cmsContentRepository = this.injectCustomRepo(
+  private readonly cmsContentRepository = this.inject(
     TaonCmsContentRepository,
   );
 

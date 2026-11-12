@@ -9,7 +9,7 @@ import { TaonECommerceProductProvider } from './taon-e-commerce-product.provider
 
 @Injectable()
 export class TaonECommerceProductConfigService extends TaonBaseAngularService {
-  private taonECommerceProductProvider = this.injectProvider(TaonECommerceProductProvider);
+  private taonECommerceProductProvider = this.inject(TaonECommerceProductProvider);
 
   get isEnableOption() {
     return this.taonECommerceProductProvider.enabledTaonECommerceProductOption;

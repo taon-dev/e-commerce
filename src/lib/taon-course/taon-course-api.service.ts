@@ -5,7 +5,7 @@ import { TaonCourseController, TaonCourseResponse } from './taon-course.controll
 
 @Injectable()
 export class TaonCourseApiService extends TaonBaseAngularService {
-  private readonly controller = this.injectController(TaonCourseController);
+  private readonly controller = this.inject(TaonCourseController);
 
   async load(publicSlug: string, privateSlug: string): Promise<TaonCourseResponse> {
     const response = await this.controller.getCourse(publicSlug, privateSlug).request!();

@@ -10,7 +10,7 @@ const t = Translation.for(Taon.__FILE_RELATIVE_PATH, Taon.LANG_IMPORT_MAP);
 export class TaonECommerceBackofficeSettingsApiService extends TaonBaseAngularService {
   t = t.for(this);
 
-  private readonly controller = this.injectController(
+  private readonly controller = this.inject(
     TaonECommerceBackofficeSettingsController,
   );
 

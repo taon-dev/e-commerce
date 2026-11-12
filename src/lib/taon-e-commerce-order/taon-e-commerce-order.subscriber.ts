@@ -9,7 +9,7 @@ import { TaonECommerceOrderProvider } from './taon-e-commerce-order.provider';
   // allowedEvents: ['afterUpdate'],
 })
 export class TaonECommerceOrderSubscriber extends TaonBaseSubscriberForEntity {
-  private readonly taonECommerceOrderProvider = this.injectProvider(TaonECommerceOrderProvider);
+  private readonly taonECommerceOrderProvider = this.inject(TaonECommerceOrderProvider);
   listenTo(): typeof TaonECommerceOrderEntity {
     return TaonECommerceOrderEntity;
   }

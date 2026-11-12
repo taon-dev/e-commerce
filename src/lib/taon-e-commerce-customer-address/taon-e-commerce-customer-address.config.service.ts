@@ -9,7 +9,7 @@ import { TaonECommerceCustomerAddressProvider } from './taon-e-commerce-customer
 
 @Injectable()
 export class TaonECommerceCustomerAddressConfigService extends TaonBaseAngularService {
-  private taonECommerceCustomerAddressProvider = this.injectProvider(TaonECommerceCustomerAddressProvider);
+  private taonECommerceCustomerAddressProvider = this.inject(TaonECommerceCustomerAddressProvider);
 
   get isEnableOption() {
     return this.taonECommerceCustomerAddressProvider.enabledTaonECommerceCustomerAddressOption;

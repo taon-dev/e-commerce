@@ -30,19 +30,19 @@ export interface TaonECommerceStripeConfiguration {
 export class TaonECommerceProductApiService extends TaonBaseAngularService {
   readonly t = t.for(this);
 
-  protected readonly taonECommerceProductController = this.injectController(
+  protected readonly taonECommerceProductController = this.inject(
     TaonECommerceProductController,
   );
 
-  private readonly customerController = this.injectController(
+  private readonly customerController = this.inject(
     TaonECommerceCustomerController,
   );
 
-  readonly cmsContentController = this.injectController(
+  readonly cmsContentController = this.inject(
     TaonCmsContentController,
   );
 
-  readonly groupController = this.injectController(TaonGroupController);
+  readonly groupController = this.inject(TaonGroupController);
 
   public get crudController(): TaonECommerceProductController {
     return this.taonECommerceProductController;

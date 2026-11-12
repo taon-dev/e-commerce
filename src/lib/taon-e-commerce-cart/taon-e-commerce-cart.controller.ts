@@ -20,7 +20,7 @@ import { TaonECommerceCartRepository } from './taon-e-commerce-cart.repository';
 export class TaonECommerceCartController extends TaonBaseCrudController<TaonECommerceCartEntity> {
   entityClassResolveFn: () => typeof TaonECommerceCartEntity = () => TaonECommerceCartEntity;
 
-  taonECommerceCartRepository = this.injectCustomRepo(TaonECommerceCartRepository);
+  taonECommerceCartRepository = this.inject(TaonECommerceCartRepository);
 
   //#region methods & getters / hello world
   /**

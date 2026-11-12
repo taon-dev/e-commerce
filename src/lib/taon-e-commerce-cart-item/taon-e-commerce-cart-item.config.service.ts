@@ -9,7 +9,7 @@ import { TaonECommerceCartItemProvider } from './taon-e-commerce-cart-item.provi
 
 @Injectable()
 export class TaonECommerceCartItemConfigService extends TaonBaseAngularService {
-  private taonECommerceCartItemProvider = this.injectProvider(TaonECommerceCartItemProvider);
+  private taonECommerceCartItemProvider = this.inject(TaonECommerceCartItemProvider);
 
   get isEnableOption() {
     return this.taonECommerceCartItemProvider.enabledTaonECommerceCartItemOption;

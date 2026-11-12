@@ -26,7 +26,7 @@ export class TaonECommerceProductPermissionController extends TaonBaseCrudContro
 > {
   entityClassResolveFn: () => typeof TaonECommerceProductPermissionEntity = () => TaonECommerceProductPermissionEntity;
 
-  private readonly taonECommerceProductPermissionRepository = this.injectCustomRepo(TaonECommerceProductPermissionRepository);
+  private readonly taonECommerceProductPermissionRepository = this.inject(TaonECommerceProductPermissionRepository);
 
   //#region methods & getters / hello world
   /**

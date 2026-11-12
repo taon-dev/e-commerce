@@ -21,7 +21,7 @@ export class TaonECommerceCartItemController extends TaonBaseCrudController<Taon
   entityClassResolveFn: () => typeof TaonECommerceCartItemEntity = () =>
     TaonECommerceCartItemEntity;
 
-  taonECommerceCartItemRepository = this.injectCustomRepo(
+  taonECommerceCartItemRepository = this.inject(
     TaonECommerceCartItemRepository,
   );
 

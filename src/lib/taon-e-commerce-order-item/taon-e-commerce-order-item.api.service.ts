@@ -10,7 +10,7 @@ import { TaonECommerceOrderItemController } from './taon-e-commerce-order-item.c
 
 @Injectable()
 export class TaonECommerceOrderItemApiService extends TaonBaseAngularService {
-  public readonly taonECommerceOrderItemController = this.injectController(TaonECommerceOrderItemController);
+  public readonly taonECommerceOrderItemController = this.inject(TaonECommerceOrderItemController);
 
   public get allMyEntities$(): Observable<TaonECommerceOrderItemEntity[]> {
     return this.taonECommerceOrderItemController.getAll().request!().observable.pipe(

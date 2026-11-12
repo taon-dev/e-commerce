@@ -9,7 +9,7 @@ import { TaonECommercePaymentTransactionProvider } from './taon-e-commerce-payme
 
 @Injectable()
 export class TaonECommercePaymentTransactionConfigService extends TaonBaseAngularService {
-  private taonECommercePaymentTransactionProvider = this.injectProvider(TaonECommercePaymentTransactionProvider);
+  private taonECommercePaymentTransactionProvider = this.inject(TaonECommercePaymentTransactionProvider);
 
   get isEnableOption() {
     return this.taonECommercePaymentTransactionProvider.enabledTaonECommercePaymentTransactionOption;

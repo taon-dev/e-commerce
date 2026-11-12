@@ -5,5 +5,5 @@ import { TaonECommerceCustomerController } from './taon-e-commerce-customer.cont
 
 @Injectable()
 export class TaonECommerceCustomerApiService extends TaonBaseAngularService {
-  readonly controller = this.injectController(TaonECommerceCustomerController);
+  readonly controller = this.inject(TaonECommerceCustomerController);
 }

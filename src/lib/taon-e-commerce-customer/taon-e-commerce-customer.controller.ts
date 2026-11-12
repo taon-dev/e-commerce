@@ -42,15 +42,15 @@ export class TaonECommerceCustomerController extends TaonBaseController<
   {},
   TaonECommerceCustomerController
 > {
-  private readonly sessionRepository = this.injectCustomRepo(
+  private readonly sessionRepository = this.inject(
     TaonSessionRepository,
   );
 
-  private readonly customerRepository = this.injectCustomRepo(
+  private readonly customerRepository = this.inject(
     TaonECommerceCustomerRepository,
   );
 
-  private readonly cmsStorageController = this.injectController(
+  private readonly cmsStorageController = this.inject(
     TaonCmsContentStorageController,
   );
 

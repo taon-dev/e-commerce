@@ -26,7 +26,7 @@ import {
   className: 'TaonECommerceStripeRepository',
 })
 export class TaonECommerceStripeRepository extends TaonBaseCustomRepository {
-  protected readonly taonECommerceCartProvider = this.injectProvider(
+  protected readonly taonECommerceCartProvider = this.inject(
     TaonECommerceCartProvider,
   );
 

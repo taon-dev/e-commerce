@@ -26,7 +26,7 @@ export class TaonECommerceCustomerAddressController extends TaonBaseCrudControll
 > {
   entityClassResolveFn: () => typeof TaonECommerceCustomerAddressEntity = () => TaonECommerceCustomerAddressEntity;
 
-  private readonly taonECommerceCustomerAddressRepository = this.injectCustomRepo(TaonECommerceCustomerAddressRepository);
+  private readonly taonECommerceCustomerAddressRepository = this.inject(TaonECommerceCustomerAddressRepository);
 
   //#region methods & getters / hello world
   /**

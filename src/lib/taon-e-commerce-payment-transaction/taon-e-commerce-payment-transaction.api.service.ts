@@ -10,7 +10,7 @@ import { TaonECommercePaymentTransactionController } from './taon-e-commerce-pay
 
 @Injectable()
 export class TaonECommercePaymentTransactionApiService extends TaonBaseAngularService {
-  public readonly taonECommercePaymentTransactionController = this.injectController(TaonECommercePaymentTransactionController);
+  public readonly taonECommercePaymentTransactionController = this.inject(TaonECommercePaymentTransactionController);
 
   public get allMyEntities$(): Observable<TaonECommercePaymentTransactionEntity[]> {
     return this.taonECommercePaymentTransactionController.getAll().request!().observable.pipe(

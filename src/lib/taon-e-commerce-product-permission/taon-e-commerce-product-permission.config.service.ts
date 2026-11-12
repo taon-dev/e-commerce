@@ -9,7 +9,7 @@ import { TaonECommerceProductPermissionProvider } from './taon-e-commerce-produc
 
 @Injectable()
 export class TaonECommerceProductPermissionConfigService extends TaonBaseAngularService {
-  private taonECommerceProductPermissionProvider = this.injectProvider(TaonECommerceProductPermissionProvider);
+  private taonECommerceProductPermissionProvider = this.inject(TaonECommerceProductPermissionProvider);
 
   get isEnableOption() {
     return this.taonECommerceProductPermissionProvider.enabledTaonECommerceProductPermissionOption;

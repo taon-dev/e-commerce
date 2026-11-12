@@ -26,7 +26,7 @@ export class TaonECommercePaymentTransactionController extends TaonBaseCrudContr
 > {
   entityClassResolveFn: () => typeof TaonECommercePaymentTransactionEntity = () => TaonECommercePaymentTransactionEntity;
 
-  private readonly taonECommercePaymentTransactionRepository = this.injectCustomRepo(TaonECommercePaymentTransactionRepository);
+  private readonly taonECommercePaymentTransactionRepository = this.inject(TaonECommercePaymentTransactionRepository);
 
   //#region methods & getters / hello world
   /**

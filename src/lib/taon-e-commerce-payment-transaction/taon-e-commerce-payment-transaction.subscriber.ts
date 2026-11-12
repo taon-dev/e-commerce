@@ -9,7 +9,7 @@ import { TaonECommercePaymentTransactionProvider } from './taon-e-commerce-payme
   // allowedEvents: ['afterUpdate'],
 })
 export class TaonECommercePaymentTransactionSubscriber extends TaonBaseSubscriberForEntity {
-  private readonly taonECommercePaymentTransactionProvider = this.injectProvider(TaonECommercePaymentTransactionProvider);
+  private readonly taonECommercePaymentTransactionProvider = this.inject(TaonECommercePaymentTransactionProvider);
   listenTo(): typeof TaonECommercePaymentTransactionEntity {
     return TaonECommercePaymentTransactionEntity;
   }

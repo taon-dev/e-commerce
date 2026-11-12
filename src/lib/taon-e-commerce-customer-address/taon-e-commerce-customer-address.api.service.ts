@@ -10,7 +10,7 @@ import { TaonECommerceCustomerAddressController } from './taon-e-commerce-custom
 
 @Injectable()
 export class TaonECommerceCustomerAddressApiService extends TaonBaseAngularService {
-  public readonly taonECommerceCustomerAddressController = this.injectController(TaonECommerceCustomerAddressController);
+  public readonly taonECommerceCustomerAddressController = this.inject(TaonECommerceCustomerAddressController);
 
   public get allMyEntities$(): Observable<TaonECommerceCustomerAddressEntity[]> {
     return this.taonECommerceCustomerAddressController.getAll().request!().observable.pipe(

@@ -9,7 +9,7 @@ import { TaonECommerceCartItemProvider } from './taon-e-commerce-cart-item.provi
   // allowedEvents: ['afterUpdate'],
 })
 export class TaonECommerceCartItemSubscriber extends TaonBaseSubscriberForEntity {
-  taonECommerceCartItemProvider = this.injectProvider(TaonECommerceCartItemProvider);
+  taonECommerceCartItemProvider = this.inject(TaonECommerceCartItemProvider);
   listenTo(): typeof TaonECommerceCartItemEntity {
     return TaonECommerceCartItemEntity;
   }

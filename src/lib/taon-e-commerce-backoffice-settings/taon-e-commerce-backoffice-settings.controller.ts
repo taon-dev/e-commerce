@@ -13,7 +13,7 @@ import { TaonECommerceSettingsKvRepository } from './taon-e-commerce-settings.kv
   className: 'TaonECommerceBackofficeSettingsController',
 })
 export class TaonECommerceBackofficeSettingsController extends TaonBaseController {
-  private readonly settings = this.injectCustomRepo(
+  private readonly settings = this.inject(
     TaonECommerceSettingsKvRepository,
   );
 

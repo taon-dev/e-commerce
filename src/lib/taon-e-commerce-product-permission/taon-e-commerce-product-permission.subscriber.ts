@@ -9,7 +9,7 @@ import { TaonECommerceProductPermissionProvider } from './taon-e-commerce-produc
   // allowedEvents: ['afterUpdate'],
 })
 export class TaonECommerceProductPermissionSubscriber extends TaonBaseSubscriberForEntity {
-  private readonly taonECommerceProductPermissionProvider = this.injectProvider(TaonECommerceProductPermissionProvider);
+  private readonly taonECommerceProductPermissionProvider = this.inject(TaonECommerceProductPermissionProvider);
   listenTo(): typeof TaonECommerceProductPermissionEntity {
     return TaonECommerceProductPermissionEntity;
   }
